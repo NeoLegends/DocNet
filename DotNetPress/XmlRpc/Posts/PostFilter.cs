@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using CookComputing.XmlRpc;
 
-namespace DotNetPress.XmlRpcHandling
+namespace DocNetPress.XmlRpc.Posts
 {
     [Serializable]
-    public struct Filter
+    public struct PostFilter
     {
         [XmlRpcMember("post_type")]
         public String PostType;

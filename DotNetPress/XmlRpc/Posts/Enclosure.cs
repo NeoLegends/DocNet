@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CookComputing.XmlRpc;
 
-namespace DotNetPress.XmlRpcHandling
+namespace DocNetPress.XmlRpc.Posts
 {
     [Serializable]
     public struct Enclosure

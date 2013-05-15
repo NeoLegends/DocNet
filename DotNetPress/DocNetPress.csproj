@@ -7,8 +7,8 @@
     <ProjectGuid>{3C1DC7EB-70D6-4FB1-8CB9-28D712EFBAA0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DotNetPress</RootNamespace>
-    <AssemblyName>DotNetPress</AssemblyName>
+    <RootNamespace>DocNetPress</RootNamespace>
+    <AssemblyName>DocNetPress</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -38,7 +38,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\DotNetPress.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\DocNetPress.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,7 +49,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Release\DotNetPress.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\DocNetPress.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -77,12 +77,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="XmlRpcHandling\CustomField.cs" />
-    <Compile Include="XmlRpcHandling\Enclosure.cs" />
-    <Compile Include="XmlRpcHandling\Filter.cs" />
-    <Compile Include="XmlRpcHandling\Post.cs" />
-    <Compile Include="XmlRpcHandling\PostContent.cs" />
-    <Compile Include="XmlRpcHandling\Term.cs" />
+    <Compile Include="XmlRpc\Media\MediaItem.cs" />
+    <Compile Include="XmlRpc\Media\MediaItemUploadData.cs" />
+    <Compile Include="XmlRpc\Media\MediaItemMetadata.cs" />
+    <Compile Include="XmlRpc\Media\MediaItemSize.cs" />
+    <Compile Include="XmlRpc\Media\MediaLibraryFilter.cs" />
+    <Compile Include="XmlRpc\Media\MediaItemUploadResult.cs" />
+    <Compile Include="XmlRpc\Media\PostThumbnailImageMeta.cs" />
+    <Compile Include="XmlRpc\Media\Size.cs" />
+    <Compile Include="XmlRpc\Posts\CustomField.cs" />
+    <Compile Include="XmlRpc\Posts\Enclosure.cs" />
+    <Compile Include="XmlRpc\Posts\PostFilter.cs" />
+    <Compile Include="XmlRpc\Posts\Post.cs" />
+    <Compile Include="XmlRpc\Posts\PostRetreive.cs" />
+    <Compile Include="XmlRpc\Posts\PostInsert.cs" />
+    <Compile Include="XmlRpc\Taxonomies\Term.cs" />
     <Page Include="Resources\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -95,7 +104,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="XmlRpcHandling\IWordPress.cs" />
+    <Compile Include="XmlRpc\IWordPress.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -151,6 +160,9 @@
       <Project>{1b4b0a58-0afb-4090-91dd-18912cc7de65}</Project>
       <Name>XmlRpcProxy</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Generator\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

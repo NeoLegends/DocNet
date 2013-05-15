@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DotNetPress
+namespace DocNetPress
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml

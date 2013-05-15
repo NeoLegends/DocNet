@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotNetPress.XmlRpcHandling
+namespace DocNetPress.XmlRpc.Taxonomies
 {
+    [Serializable]
     public struct Term
     {
     }

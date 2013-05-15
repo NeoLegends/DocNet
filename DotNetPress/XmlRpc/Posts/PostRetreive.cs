@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CookComputing.XmlRpc;
+using DocNetPress.XmlRpc.Taxonomies;
+using DocNetPress.XmlRpc.Media;
 
-namespace DotNetPress.XmlRpcHandling
+namespace DocNetPress.XmlRpc.Posts
 {
     [Serializable]
-    public class Post
+    public class PostRetreive : Post
     {
         [XmlRpcMember("post_id")]
         public String ID;
@@ -34,24 +36,16 @@ namespace DotNetPress.XmlRpcHandling
         [XmlRpcMember("menu_order")]
         public int MenuOrder;
         
-        [XmlRpcMember("comment_status")]
-        public String CommentStatus;
-        
         [XmlRpcMember("ping_status")]
         public String PingStatus;
-        
-        [XmlRpcMember("sticky")]
-        public bool IsSticky;
 
         [XmlRpcMember("custom_fields")]
-        public CustomField[] CustomFields;
-
-        [XmlRpcMember("enclosure")]
-        public Enclosure Enclosure;
+        public CustomFieldWithID[] CustomFields;
 
         [XmlRpcMember("terms")]
         public Term[] Terms;
 
-        public Post() { }
+        [XmlRpcMember("post_thumbnail")]
+        public MediaItem Thumbnail;
     }
 }

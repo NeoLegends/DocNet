@@ -7,7 +7,7 @@
     <ProjectGuid>{55E27CBD-7287-4A8E-BFC6-98104253924A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DocNetPress.Development</RootNamespace>
+    <RootNamespace>DocNetPress</RootNamespace>
     <AssemblyName>DocNetPress.Development</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Generators\PageGenerator.cs" />
+    <Compile Include="Generators\PageOrder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XmlRpc\IWordPress.cs" />
     <Compile Include="XmlRpc\Media\MediaItem.cs" />

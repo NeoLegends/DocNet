@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3C1DC7EB-70D6-4FB1-8CB9-28D712EFBAA0}</ProjectGuid>
+    <ProjectGuid>{FE7E512E-0C34-40AE-A0F7-256039E7BEFE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DocNetPress</RootNamespace>
-    <AssemblyName>DocNetPress</AssemblyName>
+    <RootNamespace>DocNetPress.Gui</RootNamespace>
+    <AssemblyName>DocNetPress.Gui</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>veröffentlichen\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,6 +25,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -38,7 +38,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\DocNetPress.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\DocNetPress.Gui.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,17 +48,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\DocNetPress.Gui.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Release\DocNetPress.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>DotNetPress.DotNetPress.pfx</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignManifests>false</SignManifests>
+    <AssemblyOriginatorKeyFile>DocNetPress.Gui.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -80,29 +77,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="XmlRpc\Media\MediaItem.cs" />
-    <Compile Include="XmlRpc\Media\MediaItemUploadData.cs" />
-    <Compile Include="XmlRpc\Media\MediaItemMetadata.cs" />
-    <Compile Include="XmlRpc\Media\MediaItemSize.cs" />
-    <Compile Include="XmlRpc\Media\MediaLibraryFilter.cs" />
-    <Compile Include="XmlRpc\Media\MediaItemUploadResult.cs" />
-    <Compile Include="XmlRpc\Media\PostThumbnailImageMeta.cs" />
-    <Compile Include="XmlRpc\Media\Size.cs" />
-    <Compile Include="XmlRpc\Posts\CustomField.cs" />
-    <Compile Include="XmlRpc\Posts\Enclosure.cs" />
-    <Compile Include="XmlRpc\Posts\PostFilter.cs" />
-    <Compile Include="XmlRpc\Posts\Post.cs" />
-    <Compile Include="XmlRpc\Posts\PostRetreive.cs" />
-    <Compile Include="XmlRpc\Posts\PostInsert.cs" />
-    <Compile Include="XmlRpc\Taxonomies\Taxonomy.cs" />
-    <Compile Include="XmlRpc\Taxonomies\Term.cs" />
-    <Compile Include="XmlRpc\Taxonomies\TermInsert.cs" />
-    <Compile Include="XmlRpc\Taxonomies\TermRetreive.cs" />
-    <Compile Include="XmlRpc\Taxonomies\TermFilter.cs" />
-    <Page Include="Resources\Button.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -111,11 +85,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="XmlRpc\IWordPress.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -135,7 +112,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="DotNetPress.DotNetPress.pfx" />
+    <None Include="DocNetPress.Gui.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -163,12 +140,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XmlRpcProxy\XmlRpcProxy.csproj">
-      <Project>{1b4b0a58-0afb-4090-91dd-18912cc7de65}</Project>
-      <Name>XmlRpcProxy</Name>
+    <ProjectReference Include="..\DocNetPress.Development\DocNetPress.Development.csproj">
+      <Project>{55e27cbd-7287-4a8e-bfc6-98104253924a}</Project>
+      <Name>DocNetPress.Development</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

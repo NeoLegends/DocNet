@@ -7,13 +7,13 @@ using System.Windows;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("DocNetPress")]
-[assembly: AssemblyDescription("A simple documentation tool that uses your WordPress-Blog as host and style for your .NET code documentation")]
+[assembly: AssemblyTitle("DocNetPress.Gui")]
+[assembly: AssemblyDescription("A WPF GUI for DocNetPress")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Moritz Gunz")]
-[assembly: AssemblyProduct("DocNetPress")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyProduct("DocNetPress.Gui")]
+[assembly: AssemblyCopyright("Copyright © Moritz Gunz 2013")]
+[assembly: AssemblyTrademark("DocNetPress")]
 [assembly: AssemblyCulture("")]
 
 // Durch Festlegen von ComVisible auf "false" werden die Typen in dieser Assembly unsichtbar 

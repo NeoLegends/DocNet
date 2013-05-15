@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DocNetPress
+namespace DocNetPress.Gui
 {
     /// <summary>
     /// Interaktionslogik für "App.xaml"

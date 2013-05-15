@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,25 @@ namespace DotNetPress
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Initializes a new Main Window
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void TBLocalDocumentationFileBrowse_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog()
+                                 {
+                                     DefaultExt = "xml",
+                                     DereferenceLinks = true,
+                                     Multiselect = false,
+                                     Title = "Choose your generated XML-Documentation file"
+                                 };
+            ofd.ShowDialog();
+            TBLocalDocumentationFile.Text = ofd.FileName.Trim();
         }
     }
 }

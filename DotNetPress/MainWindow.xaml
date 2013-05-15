@@ -6,9 +6,16 @@
         Background="#1c1c1c">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="135*"/>
-            <ColumnDefinition Width="239*"/>
-            <ColumnDefinition Width="131*"/>
+            <!-- Labels -->
+            <ColumnDefinition Width="138*"/>
+
+            <!-- Text boxes, Main Button -->
+            <ColumnDefinition Width="242*"/>
+            <ColumnDefinition Width="82*"/>
+            <ColumnDefinition Width="9*"/>
+
+            <!-- Browse Button and End -->
+            <ColumnDefinition Width="32*"/>
             <ColumnDefinition Width="14*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -34,22 +41,23 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Label Content="DotNetPress" Grid.Row="0" FontSize="34" Foreground="White" Grid.ColumnSpan="4" Margin="5,0,0,0"/>
+        <Label Content="DotNetPress" Grid.Row="0" FontSize="34" Foreground="White" Grid.ColumnSpan="6" Margin="5,0,0,0"/>
 
         <!-- Content -->
         <Label Content="Documentation File" Grid.Row="2" Grid.Column="0" Foreground="White" HorizontalAlignment="Right" Width="113"/>
         <TextBox x:Name="TBLocalDocumentationFile" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Button x:Name="TBLocalDocumentationFileBrowse" Grid.Row="2" Grid.Column="4" Content="..." Style="{StaticResource BStyleDark}" Height="30" Click="TBLocalDocumentationFileBrowse_Click"/>
 
         <Label Content="WordPress Username" Grid.Row="4" Grid.Column="0" Foreground="White" HorizontalAlignment="Right" Width="123"/>
-        <TextBox x:Name="TBWordPressUsername" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="TBWordPressUsername" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4"/>
 
         <Label Content="WordPress Password" Grid.Row="6" Grid.Column="0" Foreground="White" HorizontalAlignment="Right" Width="120"/>
-        <TextBox x:Name="TBWordPressPassword" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="TBWordPressPassword" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="4"/>
 
         <Label Content="WordPress URL" Grid.Row="8" Grid.Column="0" Foreground="White" HorizontalAlignment="Right" Width="91"/>
-        <TextBox x:Name="TBWordPressURL" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2"/>
-        
+        <TextBox x:Name="TBWordPressURL" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="4"/>
+
         <!-- Button -->
-        <Button x:Name="BInsertDocumentation" Grid.Row="10" Grid.Column="2" Content="Generate Posts" Style="{StaticResource BStyleDark}" Height="30"/>
+        <Button x:Name="BInsertDocumentation" Grid.Row="10" Grid.Column="2" Content="Generate Posts" Style="{StaticResource BStyleDark}" Height="30" Grid.ColumnSpan="3"/>
     </Grid>
 </Window>

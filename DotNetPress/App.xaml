@@ -5,14 +5,14 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Button.xaml"/>
+                <ResourceDictionary Source="Resources/Button.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Name="TBStyleDark" TargetType="TextBox">
                 <Setter Property="Background" Value="#2d2d30"/>
                 <Setter Property="Foreground" Value="White"/>
                 <Setter Property="Grid.ColumnSpan" Value="2"/>
-                <Setter Property="FontSize" Value="22"/>
+                <Setter Property="FontSize" Value="18"/>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

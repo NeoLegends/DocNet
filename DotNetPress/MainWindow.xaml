@@ -52,7 +52,7 @@
         <TextBox x:Name="TBWordPressUsername" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4"/>
 
         <Label Content="WordPress Password" Grid.Row="6" Grid.Column="0" Foreground="White" HorizontalAlignment="Right" Width="120"/>
-        <TextBox x:Name="TBWordPressPassword" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="4"/>
+        <PasswordBox x:Name="TBWordPressPassword" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="4" Background="#2d2d30" Foreground="White" FontSize="18"/>
 
         <Label Content="WordPress URL" Grid.Row="8" Grid.Column="0" Foreground="White" HorizontalAlignment="Right" Width="91"/>
         <TextBox x:Name="TBWordPressURL" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="4"/>

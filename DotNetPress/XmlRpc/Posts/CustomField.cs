@@ -8,11 +8,8 @@ using CookComputing.XmlRpc;
 namespace DocNetPress.XmlRpc.Posts
 {
     [Serializable]
-    public struct CustomFieldWithID
+    public struct CustomField
     {
-        [XmlRpcMember("id")]
-        public String ID;
-
         [XmlRpcMember("key")]
         public String Key;
 
@@ -21,8 +18,11 @@ namespace DocNetPress.XmlRpc.Posts
     }
 
     [Serializable]
-    public struct CustomField
+    public struct CustomFieldWithID
     {
+        [XmlRpcMember("id")]
+        public String ID;
+
         [XmlRpcMember("key")]
         public String Key;
 

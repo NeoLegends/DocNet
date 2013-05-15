@@ -32,7 +32,7 @@ namespace DocNetPress.XmlRpc.Media
         int Parent;
 
         [XmlRpcMember("thumbnail")]
-        string Thumbnail;
+        String Thumbnail;
 
         [XmlRpcMember("metadata")]
         MediaItemMetadata Metadata;

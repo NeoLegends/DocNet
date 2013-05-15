@@ -43,7 +43,7 @@ namespace DocNetPress.XmlRpc.Posts
         public CustomFieldWithID[] CustomFields;
 
         [XmlRpcMember("terms")]
-        public Term[] Terms;
+        public Taxonomy[] Terms;
 
         [XmlRpcMember("post_thumbnail")]
         public MediaItem Thumbnail;

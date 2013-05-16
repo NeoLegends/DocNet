@@ -20,7 +20,8 @@ namespace DocNetPress.Generators
         /// 3. Remarks
         /// 4. Example
         /// 5. Exceptions
-        /// 6. See also
+        /// 6. Inheritance Hierarchy
+        /// 7. See also
         /// </remarks>
         Standard,
 
@@ -33,49 +34,8 @@ namespace DocNetPress.Generators
         /// Fully customized order
         /// </summary>
         /// <remarks>
-        /// Give the order via <see cref="DocNetPress.Generators.PagePart"/>-Enum
+        /// Give the order via <see cref="DocNetPress.Generators.ClassPagePart"/>-Enum
         /// </remarks>
         Custom
-    }
-
-    /// <summary>
-    /// Enum listing all page parts
-    /// </summary>
-    public enum PagePart
-    {
-        /// <summary>
-        /// Method / Property 
-        /// </summary>
-        MethodSignature,
-
-        /// <summary>
-        /// Summary
-        /// </summary>
-        Summary,
-
-        /// <summary>
-        /// Remarks
-        /// </summary>
-        Remarks,
-
-        /// <summary>
-        /// Example code
-        /// </summary>
-        Example,
-
-        /// <summary>
-        /// Exceptions
-        /// </summary>
-        Exceptions,
-
-        /// <summary>
-        /// See also
-        /// </summary>
-        SeeAlso,
-
-        /// <summary>
-        /// All custom documentation tags
-        /// </summary>
-        CustomTags
     }
 }

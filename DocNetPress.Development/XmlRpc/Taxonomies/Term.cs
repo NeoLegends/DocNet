@@ -35,5 +35,10 @@ namespace DocNetPress.XmlRpc.Taxonomies
         /// </summary>
         [XmlRpcMember("description")]
         String Description;
+
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        public Term() { }
     }
 }

@@ -39,5 +39,10 @@ namespace DocNetPress.XmlRpc.Taxonomies
 
         [XmlRpcMember("count")]
         int Count;
+
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        public TermRetreive() { }
     }
 }

@@ -17,5 +17,10 @@ namespace DocNetPress.XmlRpc.Taxonomies
         /// </summary>
         [XmlRpcMember("parent")]
         public int Parent;
+
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        public TermInsert() { }
     }
 }

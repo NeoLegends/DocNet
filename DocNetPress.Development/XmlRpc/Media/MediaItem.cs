@@ -39,5 +39,10 @@ namespace DocNetPress.XmlRpc.Media
 
         [XmlRpcMember("image_meta")]
         PostThumbnailImageMeta ImageMeta;
+
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        public MediaItem() { }
     }
 }

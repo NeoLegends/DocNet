@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace DocNetPress.XmlRpc.Posts
 {
+    /// <summary>
+    /// Represents a post as it is being entered into a WordPress-Database
+    /// </summary>
     [Serializable]
     public class PostInsert : Post
     {
@@ -16,13 +19,15 @@ namespace DocNetPress.XmlRpc.Posts
         [XmlRpcMember("ping_status")]
         public String PingState;
 
+        /// <summary>
+        /// The parent's post ID
+        /// </summary>
         [XmlRpcMember("post_parent")]
         public int Parent;
 
-        [XmlRpcMember("post_thumbnail")]
-        public int Thumbnail;
-
-        [XmlRpcMember("custom_fields")]
-        public CustomField[] CustomFields;
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        public PostInsert() { }
     }
 }

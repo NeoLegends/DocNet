@@ -30,7 +30,7 @@ namespace DocNetPress.XmlRpc
         /// <param name="postID">The ID of the post to get</param>
         /// <returns>a <see cref="DocNetPress.XmlRpc.Posts.Post"/> containing the post information</returns>
         [XmlRpcMethod("wp.getPost")]
-        Post GetPost(
+        PostRetreive GetPost(
                 [XmlRpcParameter("blog_id")]
                 int blogID,
                 String username,
@@ -49,7 +49,7 @@ namespace DocNetPress.XmlRpc
         /// <param name="fields">The <see cref="DocNetPress.XmlRpc.Posts.CustomField"/>s to filter the posts by</param>
         /// <returns>A <see cref="DocNetPress.XmlRpc.Posts.Post"/> containing the post information</returns>
         [XmlRpcMethod("wp.getPost")]
-        Post GetPost(
+        PostRetreive GetPost(
                 [XmlRpcParameter("blog_id")]
                 int blogID, 
                 String username, 
@@ -67,7 +67,7 @@ namespace DocNetPress.XmlRpc
         /// <param name="password">The password of the user</param>
         /// <returns>An array of <see cref="DocNetPress.XmlRpc.Posts.Post"/>s with all posts the blog currently has</returns>
         [XmlRpcMethod("wp.getPosts")]
-        Post[] GetPosts(
+        PostRetreive[] GetPosts(
                 [XmlRpcParameter("blog_id")]
                 int blogID, 
                 String username, 
@@ -83,7 +83,7 @@ namespace DocNetPress.XmlRpc
         /// <param name="filter">The <see cref="DocNetPress.XmlRpc.Posts.PostFilter"/> filtering the results</param>
         /// <returns>An array of <see cref="DocNetPress.XmlRpc.Posts.Post"/>s with all matches</returns>
         [XmlRpcMethod("wp.getPosts")]
-        Post[] GetPosts(
+        PostRetreive[] GetPosts(
                 [XmlRpcParameter("blog_id")]
                 int blogID,
                 String username,
@@ -100,7 +100,7 @@ namespace DocNetPress.XmlRpc
         /// <param name="fields">The <see cref="DocNetPress.XmlRpc.Posts.CustomField"/>s to filter the posts by</param>
         /// <returns>An array of <see cref="DocNetPress.XmlRpc.Posts.Post"/>s with all matches</returns>
         [XmlRpcMethod("wp.getPosts")]
-        Post[] GetPosts(
+        PostRetreive[] GetPosts(
                 [XmlRpcParameter("blog_id")]
                 int blogID, 
                 String username, 
@@ -118,7 +118,7 @@ namespace DocNetPress.XmlRpc
         /// <param name="filter">The <see cref="DocNetPress.XmlRpc.Posts.PostFilter"/> to filter the posts by</param>
         /// <returns>An array of <see cref="DocNetPress.XmlRpc.Posts.Post"/>s with all matches</returns>
         [XmlRpcMethod("wp.getPosts")]
-        Post[] GetPosts(
+        PostRetreive[] GetPosts(
                 [XmlRpcParameter("blog_id")]
                 int blogID,
                 String username,

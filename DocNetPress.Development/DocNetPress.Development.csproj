@@ -51,6 +51,7 @@
     <Compile Include="Generators\PostGenerator.cs" />
     <Compile Include="Generators\PostType.cs" />
     <Compile Include="Generators\PostUploader.cs" />
+    <Compile Include="Generators\SummaryGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XmlRpc\IWordPress.cs" />
     <Compile Include="XmlRpc\Media\MediaItem.cs" />

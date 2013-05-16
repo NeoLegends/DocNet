@@ -26,6 +26,9 @@ namespace DocNetPress.Generators
         /// <summary>
         /// List containing all <see cref="DocNetPress.Generators.IPageElement"/>s responsible for property pages
         /// </summary>
+        /// <remarks>
+        /// The order of the elements in this list also gives the final order of the elements in the WordPress post
+        /// </remarks>
         public List<IPageElement> PageElements
         {
             get
@@ -40,7 +43,7 @@ namespace DocNetPress.Generators
         private PostType _PostType = PostType.Page;
 
         /// <summary>
-        /// Whether the generated post will be a page or a post
+        /// Whether the generated post will be a page, a post or something entirely custom
         /// </summary>
         public PostType PostType
         {
@@ -58,11 +61,6 @@ namespace DocNetPress.Generators
         /// If we're dealing with a custom post type, insert it's name here
         /// </summary>
         public String CustomPostTypeName { get; set; }
-
-        /// <summary>
-        /// Locks this class instance
-        /// </summary>
-        private object lockObject = new object();
 
         /// <summary>
         /// Initializes an empty <see cref="DocNetPress.Generators.PostGenerator"/>-Instance
@@ -112,10 +110,43 @@ namespace DocNetPress.Generators
         /// <returns>The generates <see cref="DocNetPress.XmlRpc.Posts.Post"/>s containing a well-formatted documentation</returns>
         public PostInsert[] GeneratePosts()
         {
-            lock (lockObject)
-            {
-                return null;
-            }
+            
+        }
+
+        /// <summary>
+        /// Adds an <see cref="DocNetPress.Generators.IPageElement"/> to the list of generators
+        /// </summary>
+        /// <param name="element">The <see cref="DocNetPress.Generators.IPageElement"/> to add</param>
+        public void AddPageElement(IPageElement element)
+        {
+            this.PageElements.Add(element);
+        }
+
+        /// <summary>
+        /// Adds a range of <see cref="DocNetPress.Generators.IPageElement"/> to the list of generators
+        /// </summary>
+        /// <param name="element">The <see cref="DocNetPress.Generators.IPageElement"/>s to add</param>
+        public void AddPageElement(IEnumerable<IPageElement> elements)
+        {
+            this.PageElements.AddRange(elements);
+        }
+
+        /// <summary>
+        /// Adds an <see cref="DocNetPress.Generators.IPageElement"/> to the list of generators at a given index
+        /// </summary>
+        /// <param name="element">The <see cref="DocNetPress.Generators.IPageElement"/> to add</param>
+        public void AddPageElement(int index, IPageElement element)
+        {
+            this.PageElements.Insert(index, element);
+        }
+
+        /// <summary>
+        /// Adds a range of <see cref="DocNetPress.Generators.IPageElement"/> to the list of generators at a given index
+        /// </summary>
+        /// <param name="element">The <see cref="DocNetPress.Generators.IPageElement"/>s to add</param>
+        public void AddPageElement(int index, IEnumerable<IPageElement> elements)
+        {
+            this.PageElements.InsertRange(index, elements);
         }
 
         /// <summary>

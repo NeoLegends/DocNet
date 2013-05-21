@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CookComputing.XmlRpc;
 
-namespace DocNetPress.XmlRpc.Posts
+namespace DocNetPress.Development.XmlRpc.Posts
 {
     /// <summary>
     /// A filter able to filter posts by given criteria

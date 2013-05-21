@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocNetPress.XmlRpc.Media
+namespace DocNetPress.Development.XmlRpc.Media
 {
     [Serializable]
     public struct MediaItemUploadResult

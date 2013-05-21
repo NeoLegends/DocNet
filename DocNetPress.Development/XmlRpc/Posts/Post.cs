@@ -1,11 +1,12 @@
 ﻿using CookComputing.XmlRpc;
+using DocNetPress.Development.Development.XmlRpc.Posts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocNetPress.XmlRpc.Posts
+namespace DocNetPress.Development.XmlRpc.Posts
 {
     /// <summary>
     /// A general WordPress post class

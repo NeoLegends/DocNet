@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocNetPress.Generators
+namespace DocNetPress.Development.Generators
 {
     /// <summary>
     /// Enum giving the type of the post

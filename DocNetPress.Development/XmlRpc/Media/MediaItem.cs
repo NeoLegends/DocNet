@@ -5,28 +5,28 @@ using System.Text;
 using System.Threading.Tasks;
 using CookComputing.XmlRpc;
 
-namespace DocNetPress.XmlRpc.Media
+namespace DocNetPress.Development.XmlRpc.Media
 {
     [Serializable]
     public class MediaItem
     {
         [XmlRpcMember("title")]
-        string Title;
+        String Title;
 
         [XmlRpcMember("link")]
-        string Link;
+        String Link;
 
         [XmlRpcMember("caption")]
-        string Caption;
+        String Caption;
 
         [XmlRpcMember("description")]
-        string Description;
+        String Description;
 
         [XmlRpcMember("date_created_gmt")]
         DateTime DateGMT;
 
         [XmlRpcMember("attachment_id")]
-        string AttachmentID;
+        String AttachmentID;
 
         [XmlRpcMember("parent")]
         int Parent;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocNetPress.XmlRpc.Posts
+namespace DocNetPress.Development.XmlRpc.Posts
 {
     /// <summary>
     /// Represents a post as it is being entered into a WordPress-Database

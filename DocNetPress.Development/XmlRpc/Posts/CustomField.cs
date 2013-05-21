@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CookComputing.XmlRpc;
 
-namespace DocNetPress.XmlRpc.Posts
+namespace DocNetPress.Development.XmlRpc.Posts
 {
     /// <summary>
     /// Represents a custom post field

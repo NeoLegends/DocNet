@@ -1,12 +1,12 @@
-﻿using DocNetPress.XmlRpc;
+﻿using CookComputing.XmlRpc;
+using DocNetPress.Development.XmlRpc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CookComputing.XmlRpc;
 
-namespace DocNetPress.Generators
+namespace DocNetPress.Development.Generators
 {
     /// <summary>
     /// Uploads generated Documentation posts into a WordPress-Installation automatically taking care of double entries

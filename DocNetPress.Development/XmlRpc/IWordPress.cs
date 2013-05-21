@@ -1,14 +1,14 @@
-﻿using System;
+﻿using CookComputing.XmlRpc;
+using DocNetPress.Development.XmlRpc.Media;
+using DocNetPress.Development.XmlRpc.Posts;
+using DocNetPress.Development.XmlRpc.Taxonomies;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CookComputing.XmlRpc;
-using DocNetPress.XmlRpc.Posts;
-using DocNetPress.XmlRpc.Media;
-using DocNetPress.XmlRpc.Taxonomies;
 
-namespace DocNetPress.XmlRpc
+namespace DocNetPress.Development.XmlRpc
 {
     /// <summary>
     /// Interface used to communicate with WordPress's XML-RPC interface

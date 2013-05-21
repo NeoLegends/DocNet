@@ -1,11 +1,12 @@
-﻿using DocNetPress.XmlRpc.Posts;
+﻿using DocNetPress.Development.Generators;
+using DocNetPress.Development.XmlRpc.Posts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocNetPress.Generators
+namespace DocNetPress.Development.Generators
 {
     /// <summary>
     /// Generates WordPress-Pages from a given .NET-XML-Documentation file
@@ -24,7 +25,7 @@ namespace DocNetPress.Generators
         private readonly List<IPageElement> _PageElements = new List<IPageElement>();
 
         /// <summary>
-        /// List containing all <see cref="DocNetPress.Generators.IPageElement"/>s responsible for property pages
+        /// List containing all <see cref="DocNetPress.Development.Generators.IPageElement"/>s responsible for property pages
         /// </summary>
         /// <remarks>
         /// The order of the elements in this list also gives the final order of the elements in the WordPress post
@@ -108,9 +109,9 @@ namespace DocNetPress.Generators
         /// to a WordPress installation
         /// </summary>
         /// <returns>The generates <see cref="DocNetPress.XmlRpc.Posts.Post"/>s containing a well-formatted documentation</returns>
-        public PostInsert[] GeneratePosts()
+        public PostInsert[] Generate()
         {
-            
+            throw new NotImplementedException();
         }
 
         /// <summary>

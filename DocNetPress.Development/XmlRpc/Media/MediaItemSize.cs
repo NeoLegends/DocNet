@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CookComputing.XmlRpc;
 
-namespace DocNetPress.XmlRpc.Media
+namespace DocNetPress.Development.XmlRpc.Media
 {
     [Serializable]
     public struct MediaItemSize

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CookComputing.XmlRpc;
 
-namespace DocNetPress.XmlRpc.Taxonomies
+namespace DocNetPress.Development.XmlRpc.Taxonomies
 {
     /// <summary>
     /// Contains the retreived data when calling WordPress

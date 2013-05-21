@@ -1,13 +1,12 @@
-﻿using System;
+﻿using CookComputing.XmlRpc;
+using DocNetPress.Development.XmlRpc.Taxonomies;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CookComputing.XmlRpc;
-using DocNetPress.XmlRpc.Taxonomies;
-using DocNetPress.XmlRpc.Media;
 
-namespace DocNetPress.XmlRpc.Posts
+namespace DocNetPress.Development.XmlRpc.Posts
 {
     /// <summary>
     /// Represents a post as it is being retreived from the WordPress-Installation

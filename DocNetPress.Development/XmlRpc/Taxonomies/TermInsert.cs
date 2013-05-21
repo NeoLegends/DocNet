@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocNetPress.XmlRpc.Taxonomies
+namespace DocNetPress.Development.XmlRpc.Taxonomies
 {
     /// <summary>
     /// Contains data being sent to WordPress to create a new Term

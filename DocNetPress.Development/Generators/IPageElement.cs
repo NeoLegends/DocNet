@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocNetPress.Generators
+namespace DocNetPress.Development.Generators
 {
     /// <summary>
     /// Allows an object to be used as page element generator for DocNetPress
@@ -19,8 +20,9 @@ namespace DocNetPress.Generators
         /// will take care of the space between the page elements automatically. If your generator is not able to process the given input, return null.
         /// </remarks>
         /// <param name="xmlFile">The path to the XML-File containing the assembly documentation</param>
-        /// <param name="memberXmlNode">The node / member name whose documentation shall be generated</param>
+        /// <param name="memberNodeXPath">The "member"-Attribute text</param>
+        /// <param name="culture">The culture to output the HTML-Code by</param>
         /// <returns>The generated documentation HTML-Code ready to insert into the post content</returns>
-        public String GetPageContent(String xmlFile, String memberXmlNode);
+        String GetPageContent(String xmlFile, String memberNodeXPath, CultureInfo culture);
     }
 }

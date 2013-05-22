@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DocNetPress.Development.Generator
+namespace DocNetPress.Development.PageGenerator
 {
     /// <summary>
     /// Lists the types of documentation members

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocNetPress.Development.Generator
+namespace DocNetPress.Development.PageGenerator
 {
     /// <summary>
     /// Uploads generated Documentation posts into a WordPress-Installation automatically taking care of double entries

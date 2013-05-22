@@ -42,6 +42,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,11 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Generators\IPageElement.cs" />
-    <Compile Include="Generators\PostGenerator.cs" />
-    <Compile Include="Generators\PostType.cs" />
-    <Compile Include="Generators\PostUploader.cs" />
-    <Compile Include="Generators\SummaryGenerator.cs" />
+    <Compile Include="Generator\IPageElement.cs" />
+    <Compile Include="Generator\MemberType.cs" />
+    <Compile Include="Generator\PostGenerator.cs" />
+    <Compile Include="Generator\PostType.cs" />
+    <Compile Include="Generator\PostUploader.cs" />
+    <Compile Include="Generator\SummaryElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XmlRpc\IWordPress.cs" />
     <Compile Include="XmlRpc\Media\MediaItem.cs" />

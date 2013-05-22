@@ -50,11 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PageGenerator\Extensions\Output.cs" />
     <Compile Include="PageGenerator\Extensions\IPageElement.cs" />
-    <Compile Include="PageGenerator\Extensions\PageElement.cs" />
-    <Compile Include="PageGenerator\Extensions\Type.cs" />
+    <Compile Include="PageGenerator\Extensions\FrameworkTypes.cs" />
     <Compile Include="PageGenerator\Extensions\TypeExtractor.cs" />
-    <Compile Include="PageGenerator\Extensions\UndefinedTypeException.cs" />
     <Compile Include="Resources\Strings.es.Designer.cs">
       <DependentUpon>Strings.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -75,7 +74,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="PageGenerator\MemberType.cs" />
     <Compile Include="PageGenerator\PostGenerator.cs" />
     <Compile Include="PageGenerator\PostType.cs" />
     <Compile Include="PageGenerator\PostUploader.cs" />

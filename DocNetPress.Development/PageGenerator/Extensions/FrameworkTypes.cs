@@ -8,7 +8,7 @@ namespace DocNetPress.Development.PageGenerator.Extensions
     /// <summary>
     /// Lists the available Types in the .NET Framework
     /// </summary>
-    public enum Type
+    public enum FrameworkTypes
     {
         /// <summary>
         /// The type represents a class

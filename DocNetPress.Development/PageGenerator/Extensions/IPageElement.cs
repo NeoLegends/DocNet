@@ -22,12 +22,12 @@ namespace DocNetPress.Development.PageGenerator.Extensions
         /// 
         /// If possible, take care of the given culture and change the language
         /// </remarks>
-        /// <param name="assemblyPath">The path to the DLL file for member access using reflection</param>
-        /// <param name="nodeType">The type of the given documentation node</param>
+        /// <param name="assemblyPath">The path to the assembly file for member access using reflection</param>
+        /// <param name="memberType">The type of the given documentation node</param>
         /// <param name="nodeContent">The content of the read member node</param>
-        /// <param name="nodeMemberAttribute">The "member"-Attribute text</param>
+        /// <param name="fullMemberName">The "member"-Attribute text</param>
         /// <param name="culture">The culture to output the HTML-Code in</param>
         /// <returns>The generated documentation HTML-Code ready to insert into the post content</returns>
-        String GetPostContent(String assemblyPath, String nodeContent, MemberTypes nodeType, String nodeMemberAttribute, CultureInfo culture = null);
+        String GetPostContent(String assemblyPath, String nodeContent, MemberTypes memberType, String fullMemberName, CultureInfo culture = null);
     }
 }

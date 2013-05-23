@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DocNetPress.Development.PageGenerator.Extensions
+namespace DocNetPress.Development.PageGenerator.Extensions.SyntaxElement
 {
     /// <summary>
     /// Lists the available outputs for code
     /// </summary>
+    [Serializable]
     public enum OutputField
     {
         /// <summary>
@@ -19,21 +20,5 @@ namespace DocNetPress.Development.PageGenerator.Extensions
         /// Uses the standard WordPress quotebox
         /// </summary>
         QuoteBox
-    }
-
-    /// <summary>
-    /// Lists the available output languages for code
-    /// </summary>
-    public enum OutputLanguage
-    {
-        /// <summary>
-        /// Generated code will be outputted as C#
-        /// </summary>
-        CSharp,
-
-        /// <summary>
-        /// Generated code will be outputted as VB.NET
-        /// </summary>
-        VisualBasic
     }
 }

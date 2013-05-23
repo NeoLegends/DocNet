@@ -10,17 +10,35 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace DocNetPress.Development.PageGenerator.Extensions
+namespace DocNetPress.Development.PageGenerator.Extensions.SummaryElement
 {
     /// <summary>
     /// Generates the summary part of a documentation page
     /// </summary>
+    [Serializable]
     public class SummaryElement :  IPostElement
     {
         /// <summary>
+        /// Backing field for xmlDocument
+        /// </summary>
+        private XmlDocument _xmlDocument = new XmlDocument();
+
+        /// <summary>
         /// An XmlDocument-Instance for easier dealing with XML
         /// </summary>
-        private XmlDocument xmlDocument = new XmlDocument();
+        private XmlDocument xmlDocument
+        {
+            get
+            {
+                if (_xmlDocument == null)
+                    _xmlDocument = new XmlDocument();
+                return _xmlDocument;
+            }
+            set
+            {
+                _xmlDocument = value;
+            }
+        }
 
         /// <summary>
         /// Backing field for HeadlineLevel
@@ -51,12 +69,12 @@ namespace DocNetPress.Development.PageGenerator.Extensions
         /// Generates HTML-Code from the given assembly member ready to insert into the post content
         /// </summary>
         /// <param name="assemblyPath">The path to the DLL file for member access using reflection</param>
-        /// <param name="nodeType">The type of the given documentation node</param>
+        /// <param name="memberType">The type of the given documentation node</param>
         /// <param name="nodeContent">The content of the read member node</param>
         /// <param name="nodeMemberAttribute">The "member"-Attribute text</param>
         /// <param name="culture">The culture to output the HTML-Code in</param>
         /// <returns>The generated documentation HTML-Code ready to insert into the post content</returns>
-        public String GetPostContent(String assemblyPath, String nodeContent, MemberTypes nodeType, String nodeMemberAttribute, CultureInfo culture = null)
+        public String GetPostContent(String assemblyPath, String nodeContent, MemberTypes memberType, String nodeMemberAttribute, CultureInfo culture = null)
         {
             // Load up the Xml Code and get the summary node
             xmlDocument.LoadXml(nodeContent);

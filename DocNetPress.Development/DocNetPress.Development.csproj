@@ -50,9 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PageGenerator\Extensions\Output.cs" />
+    <Compile Include="PageGenerator\Extensions\MemberNameGenerator.cs" />
+    <Compile Include="PageGenerator\Extensions\SyntaxElement\OutputField.cs" />
     <Compile Include="PageGenerator\Extensions\IPageElement.cs" />
-    <Compile Include="PageGenerator\Extensions\FrameworkTypes.cs" />
     <Compile Include="PageGenerator\Extensions\TypeExtractor.cs" />
     <Compile Include="Resources\Strings.es.Designer.cs">
       <DependentUpon>Strings.es.resx</DependentUpon>
@@ -77,8 +77,8 @@
     <Compile Include="PageGenerator\PostGenerator.cs" />
     <Compile Include="PageGenerator\PostType.cs" />
     <Compile Include="PageGenerator\PostUploader.cs" />
-    <Compile Include="PageGenerator\Extensions\SummaryElement.cs" />
-    <Compile Include="PageGenerator\Extensions\SyntaxElement.cs" />
+    <Compile Include="PageGenerator\Extensions\SummaryElement\SummaryElement.cs" />
+    <Compile Include="PageGenerator\Extensions\SyntaxElement\SyntaxElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XmlRpc\IWordPress.cs" />
     <Compile Include="XmlRpc\Media\MediaItem.cs" />

@@ -21,7 +21,9 @@ namespace DocNetPress.Development.PageGenerator.Extensions
         {
             Type t = Assembly.LoadFrom(assemblyFile).GetType(fullMemberName);
             if (t != null)
-                return t.MemberType;
+            {
+                
+            }
             else
                 throw new NullReferenceException("There was an error extracting the type from the assembly.");
         }
@@ -37,10 +39,8 @@ namespace DocNetPress.Development.PageGenerator.Extensions
             foreach (Type type in Assembly.LoadFrom(assemblyFile).GetTypes())
             {
                 MethodInfo method = type.GetMethod(MemberNameGenerator.GetShortMemberName(fullMethodName));
-                if ((method != null) && ((type.FullName + method.Name) == fullMethodName))
-                {
+                if (method != null && type.FullName + method.Name == fullMethodName)
                     return method.ReturnType;
-                }
             }
             return null;
         }

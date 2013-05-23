@@ -28,6 +28,6 @@ namespace DocNetPress.Development.PageGenerator.Extensions
         /// <param name="fullMemberName">The "member"-Attribute text</param>
         /// <param name="culture">The culture to output the HTML-Code in</param>
         /// <returns>The generated documentation HTML-Code ready to insert into the post content</returns>
-        String GetPostContent(String assemblyPath, String nodeContent, MemberTypes memberType, String fullMemberName, CultureInfo culture = null);
+        String GetPostContent(String assemblyPath, String nodeContent, TypeInformation memberType, String fullMemberName, CultureInfo culture = null);
     }
 }

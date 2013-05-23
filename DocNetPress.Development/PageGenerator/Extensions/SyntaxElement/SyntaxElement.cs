@@ -92,31 +92,25 @@ namespace DocNetPress.Development.PageGenerator.Extensions.SyntaxElement
         /// <param name="fullMemberName">The "member"-Attribute text</param>
         /// <param name="culture">The culture to output the HTML-Code in</param>
         /// <returns>The generated documentation HTML-Code ready to insert into the post content</returns>
-        public String GetPostContent(String assemblyPath, String nodeContent, MemberTypes memberType, String fullMemberName, CultureInfo culture = null)
+        public String GetPostContent(String assemblyPath, String nodeContent, TypeInformation memberType, String fullMemberName, CultureInfo culture = null)
         {
             using (StringWriter sw = new StringWriter())
             using (var xWriter = XmlWriter.Create(sw))
             {
                 xWriter.WriteElementString("h" + HeadlineLevel.ToString(), Strings.Syntax);
 
-                // Write content
-                if (memberType == MemberTypes.Method ||
-                    memberType == MemberTypes.Property ||
-                    memberType == MemberTypes.Field ||
-                    memberType == MemberTypes.Event)
+
+                String content = MemberNameGenerator.GenerateMemberSignature(assemblyPath, fullMemberName, memberType);
+                if (OutputField == OutputField.Crayon)
                 {
-                    String content = MemberNameGenerator.GenerateMemberSignature(assemblyPath, fullMemberName, memberType);
-                    if (OutputField == OutputField.Crayon)
-                    {
-                        xWriter.WriteStartElement("pre");
-                        xWriter.WriteAttributeString("class", "lang:c# decode=true");
-                        xWriter.WriteString(content);
-                        xWriter.WriteEndElement();
-                    }
-                    else if (OutputField == OutputField.QuoteBox)
-                    {
-                        xWriter.WriteElementString("blockquote", content);
-                    }
+                    xWriter.WriteStartElement("pre");
+                    xWriter.WriteAttributeString("class", "lang:c# decode=true");
+                    xWriter.WriteString(content);
+                    xWriter.WriteEndElement();
+                }
+                else if (OutputField == OutputField.QuoteBox)
+                {
+                    xWriter.WriteElementString("blockquote", content);
                 }
 
                 // Finished writing, return generated Code 

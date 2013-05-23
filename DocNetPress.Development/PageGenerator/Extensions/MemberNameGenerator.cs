@@ -56,22 +56,11 @@ namespace DocNetPress.Development.PageGenerator.Extensions
         /// </summary>
         /// <param name="assemblyPath">The assembly to extract the member signature from</param>
         /// <param name="fullMemberName">The full member name</param>
-        /// <param name="nodeType"> Gives the current member type we're dealing with</param>
+        /// <param name="memberTypeInformation"> Gives the current member type we're dealing with</param>
         /// <returns></returns>
-        public static String GenerateMemberSignature(String assemblyPath, String fullMemberName, MemberTypes nodeType)
+        public static String GenerateMemberSignature(String assemblyPath, String fullMemberName, TypeInformation memberTypeInformation)
         {
-            if (nodeType == MemberTypes.Method)
-                return "public " + TypeExtractor.GetMethodReturnType(assemblyPath, fullMemberName).ToString() + MemberNameGenerator.GetShortMemberName(fullMemberName);
-            else if (nodeType == MemberTypes.Constructor)
-                return "public " + MemberNameGenerator.GetShortMemberName(fullMemberName);
-            else if (nodeType == MemberTypes.Property)
-                return "public " + MemberNameGenerator.GetShortMemberName(fullMemberName);
-            else if (nodeType == MemberTypes.Field)
-                return "public " + MemberNameGenerator.GeneratePropertySignature(assemblyPath, fullMemberName);
-            else if (nodeType == MemberTypes.Event)
-                return "public event " + MemberNameGenerator.GetShortMemberName(fullMemberName);
-            else
-                return null;
+            throw new NotImplementedException();
         }
 
         /// <summary>

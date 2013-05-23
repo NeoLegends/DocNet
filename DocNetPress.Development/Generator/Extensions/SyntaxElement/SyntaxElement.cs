@@ -14,7 +14,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
     /// Generates the "Syntax" part of a documentation page
     /// </summary>
     [Serializable]
-    public class SyntaxElement : IPostElement
+    public class SyntaxElement : IPageElement
     {
         /// <summary>
         /// Backing field for xmlDocument
@@ -83,16 +83,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             }
         }
         
-        /// <summary>
-        /// Generates HTML-Code from the given assembly member ready to insert into the post content
-        /// </summary>
-        /// <param name="assemblyPath">The path to the DLL file for member access using reflection</param>
-        /// <param name="memberType">The type of the given documentation node</param>
-        /// <param name="nodeContent">The content of the read member node</param>
-        /// <param name="fullMemberName">The "member"-Attribute text</param>
-        /// <param name="culture">The culture to output the HTML-Code in</param>
-        /// <returns>The generated documentation HTML-Code ready to insert into the post content</returns>
-        public String GetPostContent(String assemblyPath, String nodeContent, TypeInformation memberType, String fullMemberName, CultureInfo culture = null)
+        public String GetClassPageContent(Type type, String fullMemberName, String nodeContent, CultureInfo culture = null)
         {
             // Variables
             using (StringWriter sw = new StringWriter())
@@ -100,9 +91,8 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             {
                 // Headline
                 xWriter.WriteElementString("h" + HeadlineLevel.ToString(), Strings.Syntax);
-
+                String content = String.Empty;
                 // Content
-                String content = MemberNameGenerator.GenerateMemberSignature(assemblyPath, fullMemberName, memberType);
                 if (OutputField == OutputField.Crayon)
                 {
                     xWriter.WriteStartElement("pre");
@@ -119,6 +109,36 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
                 xWriter.WriteEndDocument();
                 return sw.ToString();
             }
+        }
+
+        public string GetTypeDocumentation(Type typeDetails, string documentationNode, CultureInfo culture = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetMethodDocumentation(MethodInfo methodDetails, string documentationNode, CultureInfo culture = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetFieldDocumentation(FieldInfo fieldDetails, string documentationNode, CultureInfo culture = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetPropertyDocumentation(PropertyInfo propertyDetails, string documentationNode, CultureInfo culture = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetEventDocumentation(EventInfo eventDetails, string documentationNode, CultureInfo culture = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetErrorDocumentation(string assemblyPath, string fullMemberName, string documentationNode, CultureInfo culture = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

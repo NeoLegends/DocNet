@@ -51,12 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Generator\Extensions\MemberNameGenerator.cs" />
-    <Compile Include="Generator\Extensions\MemberType.cs" />
-    <Compile Include="Generator\Extensions\TypeMembers.cs" />
     <Compile Include="Generator\Extensions\SyntaxElement\OutputField.cs" />
     <Compile Include="Generator\Extensions\IPageElement.cs" />
-    <Compile Include="Generator\Extensions\TypeExtractor.cs" />
-    <Compile Include="Generator\Extensions\TypeInformation.cs" />
     <Compile Include="Resources\Strings.es.Designer.cs">
       <DependentUpon>Strings.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -50,40 +50,5 @@ namespace DocNetPress.Development.Generator.Extensions
                 result.Append(parts[i]);
             return result.ToString();
         }
-
-        /// <summary>
-        /// Generates the member signature from the given assembly, the full member name and it's <see cref="System.Reflection.MemberTypes"/>
-        /// </summary>
-        /// <param name="assemblyPath">The assembly to extract the member signature from</param>
-        /// <param name="fullMemberName">The full member name</param>
-        /// <param name="memberTypeInformation"> Gives the current member type we're dealing with</param>
-        /// <returns></returns>
-        public static String GenerateMemberSignature(String assemblyPath, String fullMemberName, TypeInformation memberTypeInformation)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Gets the propery signature from the given assembly and the full property name
-        /// </summary>
-        /// <param name="assemblyPath">The assembly to extract the property signature from</param>
-        /// <param name="fullPropertyName">The full property name</param>
-        /// <returns>The full property signature with the short property name</returns>
-        private static String GeneratePropertySignature(String assemblyPath, String fullPropertyName)
-        {
-            String shortPropertyName = MemberNameGenerator.GetShortMemberName(fullPropertyName);
-            Type type = Assembly.LoadFrom(assemblyPath).GetTypes().FirstOrDefault(t => t.FullName == MemberNameGenerator.GetParentMemberNameElement(fullPropertyName));
-            PropertyInfo pInfo = type.GetProperty(shortPropertyName);
-            StringBuilder sb = new StringBuilder(100).Append("public ").Append(shortPropertyName);
-
-            if (pInfo.CanRead && !pInfo.CanWrite)
-                sb.Append(" { get; }");
-            else if (!pInfo.CanRead && pInfo.CanWrite)
-                sb.Append(" { set; }");
-            else if (pInfo.CanRead && pInfo.CanWrite)
-                sb.Append(" { get; set; }");
-
-            return sb.ToString();
-        }
     }
 }

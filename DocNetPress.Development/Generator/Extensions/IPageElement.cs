@@ -9,25 +9,87 @@ using System.Threading.Tasks;
 namespace DocNetPress.Development.Generator.Extensions
 {
     /// <summary>
-    /// Allows an object to be used as page element generator for DocNetPress
+    /// Allows an object to be used as type page element generator for DocNetPress
     /// </summary>
-    public interface IPostElement
+    public interface IPageElement
     {
         /// <summary>
-        /// Generates HTML-Code from the given assembly member ready to insert into the post content
+        /// Generates documentation based on the given <see cref="System.Type"/>, the inner text of the documentation XmlNode currently being parsed
+        /// and a given culture to generate the output in
         /// </summary>
-        /// <remarks>
-        /// Do not include breaks or any kind of formatting at the beginning of the result HTML, the <see cref="DocNetPress.Generators.PostGenerator"/>
-        /// will take care of the space between the page elements automatically. If your generator is not able to process the given input, return null.
-        /// 
-        /// If possible, take care of the given culture and change the language
-        /// </remarks>
-        /// <param name="assemblyPath">The path to the assembly file for member access using reflection</param>
-        /// <param name="memberType">The type of the given documentation node</param>
-        /// <param name="nodeContent">The content of the read member node</param>
-        /// <param name="fullMemberName">The "member"-Attribute text</param>
-        /// <param name="culture">The culture to output the HTML-Code in</param>
-        /// <returns>The generated documentation HTML-Code ready to insert into the post content</returns>
-        String GetPostContent(String assemblyPath, String nodeContent, TypeInformation memberType, String fullMemberName, CultureInfo culture = null);
+        /// <param name="typeDetails">The <see cref="System.Type"/> for further information about the kind of type to be documented</param>
+        /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
+        /// <param name="culture">The culture to generate the documentation in</param>
+        /// <returns>
+        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
+        /// is not able to parse the given input
+        /// </returns>
+        String GetTypeDocumentation(Type typeDetails, String documentationNode, CultureInfo culture = null);
+
+        /// <summary>
+        /// Generates documentation based on the given <see cref="System.Reflection.MethodInfo"/>, the inner text of the documentation XmlNode currently being parsed
+        /// and a given culture to generate the output in
+        /// </summary>
+        /// <param name="typeDetails">The <see cref="System.Type"/> for further information about the method to be documented</param>
+        /// <param name="documentationNode">The documentation code containing all user-written documentation text</param>
+        /// <param name="culture">The culture to generate the documentation in</param>
+        /// <returns>
+        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
+        /// is not able to parse the given input
+        /// </returns>
+        String GetMethodDocumentation(MethodInfo methodDetails, String documentationNode, CultureInfo culture = null);
+
+        /// <summary>
+        /// Generates documentation based on the given <see cref="System.Reflection.FieldInfo"/>, the inner text of the documentation XmlNode currently being parsed
+        /// and optionally a given culture to generate the output in
+        /// </summary>
+        /// <param name="fieldDetails">The <see cref="System.Reflection.FieldInfo"/> providing further information about the field to document</param>
+        /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
+        /// <param name="culture">The culture to generate the documentation in</param>
+        /// <returns>
+        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
+        /// is not able to parse the given input
+        /// </returns>
+        String GetFieldDocumentation(FieldInfo fieldDetails, String documentationNode, CultureInfo culture = null);
+
+        /// <summary>
+        /// Generates documentation based on the given <see cref="System.Reflection.PropertyInfo"/>, the inner text of the documentation XmlNode currently being parsed
+        /// and optionally a given culture to generate the output in
+        /// </summary>
+        /// <param name="propertyDetails">Provides further information about the property to be documentated</param>
+        /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
+        /// <param name="culture">The culture to generate the documentation in</param>
+        /// <returns>
+        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
+        /// is not able to parse the given input
+        /// </returns>
+        String GetPropertyDocumentation(PropertyInfo propertyDetails, String documentationNode, CultureInfo culture = null);
+
+        /// <summary>
+        /// Generates documentation based on the given <see cref="System.Reflection.EventInfo"/>, the inner text of the documentation XmlNode currently being parsed
+        /// and optionally a given culture to generate the output in
+        /// </summary>
+        /// <param name="eventDetails"><see cref="System.Reflection.EventInfo"/> containing further data about the event to document</param>
+        /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
+        /// <param name="culture">The culture to generate the documentation in</param>
+        /// <returns>
+        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
+        /// is not able to parse the given input
+        /// </returns>
+        String GetEventDocumentation(EventInfo eventDetails, String documentationNode, CultureInfo culture = null);
+
+        /// <summary>
+        /// This method is fired when there's a reference inside the XML documentation code the compiler couldn't resolve at compile time, so it's not determined what
+        /// the documentated element actually is. (It can be a type, field, property, event, etc) I leave it up to you to deal with those cases
+        /// </summary>
+        /// <param name="assemblyPath">The path to the assembly the documentation code belongs to</param>
+        /// <param name="fullMemberName">The full name of the member that failed to document</param>
+        /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
+        /// <param name="culture">The culture to generate the documentation in</param>
+        /// <returns>
+        /// Generated HTML-Code from the given documentation node or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
+        /// is not able to parse the given input
+        /// </returns>
+        String GetErrorDocumentation(String assemblyPath, String fullMemberName, String documentationNode, CultureInfo culture = null);
     }
 }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DocNetPress.Development.PageGenerator.Extensions
+namespace DocNetPress.Development.Generator.Extensions
 {
     /// <summary>
-    /// Lists all available member types
+    /// Lists all available type-prefix members ("T")
     /// </summary>
     public enum TypeMembers
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DocNetPress.Development.PageGenerator.Extensions.SyntaxElement
+namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
 {
     /// <summary>
     /// Lists the available outputs for code

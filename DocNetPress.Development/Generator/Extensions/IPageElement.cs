@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocNetPress.Development.PageGenerator.Extensions
+namespace DocNetPress.Development.Generator.Extensions
 {
     /// <summary>
     /// Allows an object to be used as page element generator for DocNetPress

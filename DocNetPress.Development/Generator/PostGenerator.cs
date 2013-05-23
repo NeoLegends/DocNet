@@ -1,4 +1,4 @@
-﻿using DocNetPress.Development.PageGenerator.Extensions;
+﻿using DocNetPress.Development.Generator.Extensions;
 using DocNetPress.Development.XmlRpc.Posts;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocNetPress.Development.PageGenerator
+namespace DocNetPress.Development.Generator
 {
     /// <summary>
     /// Generates WordPress-Pages from a given .NET-XML-Documentation file
@@ -25,7 +25,7 @@ namespace DocNetPress.Development.PageGenerator
         private readonly List<IPostElement> _PageElements = new List<IPostElement>();
 
         /// <summary>
-        /// List containing all <see cref="DocNetPress.Development.PageGenerator.IPostElement"/>s responsible for property pages
+        /// List containing all <see cref="DocNetPress.Development.Generator.IPostElement"/>s responsible for property pages
         /// </summary>
         /// <remarks>
         /// The order of the elements in this list also gives the final order of the elements in the WordPress post

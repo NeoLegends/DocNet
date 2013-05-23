@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace DocNetPress.Development.PageGenerator.Extensions
+namespace DocNetPress.Development.Generator.Extensions
 {
     /// <summary>
     /// Provides static methods to get information about types from given assemblies
@@ -17,15 +17,9 @@ namespace DocNetPress.Development.PageGenerator.Extensions
         /// <param name="fullMemberName">The full name of the member to check the type of</param>
         /// <param name="assemblyFile">The path to the assembly file to extract the return type from</param>
         /// <returns>Whether the given type is a class, interface, enum / and so on</returns>
-        public static MemberTypes GetMemberType(String fullMemberName, String assemblyFile)
+        public static TypeInformation GetMemberType(String fullMemberName, String assemblyFile)
         {
-            Type t = Assembly.LoadFrom(assemblyFile).GetType(fullMemberName);
-            if (t != null)
-            {
-                
-            }
-            else
-                throw new NullReferenceException("There was an error extracting the type from the assembly.");
+            
         }
 
         /// <summary>

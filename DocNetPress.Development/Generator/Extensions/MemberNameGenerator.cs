@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace DocNetPress.Development.PageGenerator.Extensions
+namespace DocNetPress.Development.Generator.Extensions
 {
     /// <summary>
     /// Provides methods for easy dealing with member names
@@ -74,15 +74,16 @@ namespace DocNetPress.Development.PageGenerator.Extensions
             String shortPropertyName = MemberNameGenerator.GetShortMemberName(fullPropertyName);
             Type type = Assembly.LoadFrom(assemblyPath).GetTypes().FirstOrDefault(t => t.FullName == MemberNameGenerator.GetParentMemberNameElement(fullPropertyName));
             PropertyInfo pInfo = type.GetProperty(shortPropertyName);
+            StringBuilder sb = new StringBuilder(100).Append("public ").Append(shortPropertyName);
 
             if (pInfo.CanRead && !pInfo.CanWrite)
-                return shortPropertyName + " { get; }";
+                sb.Append(" { get; }");
             else if (!pInfo.CanRead && pInfo.CanWrite)
-                return shortPropertyName + " { set; }";
+                sb.Append(" { set; }");
             else if (pInfo.CanRead && pInfo.CanWrite)
-                return shortPropertyName + " { get; set; }";
-            else
-                return null;
+                sb.Append(" { get; set; }");
+
+            return sb.ToString();
         }
     }
 }

@@ -83,37 +83,37 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             }
         }
         
-        public String GetClassPageContent(Type type, String fullMemberName, String nodeContent, CultureInfo culture = null)
-        {
-            // Variables
-            using (StringWriter sw = new StringWriter())
-            using (var xWriter = XmlWriter.Create(sw))
-            {
-                // Headline
-                xWriter.WriteElementString("h" + HeadlineLevel.ToString(), Strings.Syntax);
-                String content = String.Empty;
-                // Content
-                if (OutputField == OutputField.Crayon)
-                {
-                    xWriter.WriteStartElement("pre");
-                    xWriter.WriteAttributeString("class", "lang:c# decode=true");
-                    xWriter.WriteString(content);
-                    xWriter.WriteEndElement();
-                }
-                else if (OutputField == OutputField.QuoteBox)
-                {
-                    xWriter.WriteElementString("blockquote", content);
-                }
-
-                // Finished writing, return generated Code 
-                xWriter.WriteEndDocument();
-                return sw.ToString();
-            }
-        }
-
         public string GetTypeDocumentation(Type typeDetails, string documentationNode, CultureInfo culture = null)
         {
-            throw new NotImplementedException();
+            /* Old Colde
+
+                // Variables
+                using (StringWriter sw = new StringWriter())
+                using (var xWriter = XmlWriter.Create(sw))
+                {
+                    // Headline
+                    xWriter.WriteElementString("h" + HeadlineLevel.ToString(), Strings.Syntax);
+
+                    // Content
+                    String content = String.Empty;
+                    if (OutputField == OutputField.Crayon)
+                    {
+                        xWriter.WriteStartElement("pre");
+                        xWriter.WriteAttributeString("class", "lang:c# decode=true");
+                        xWriter.WriteString(content);
+                        xWriter.WriteEndElement();
+                    }
+                    else if (OutputField == OutputField.QuoteBox)
+                    {
+                        xWriter.WriteElementString("blockquote", content);
+                    }
+
+                    // Finished writing, return generated Code 
+                    xWriter.WriteEndDocument();
+                    return sw.ToString();
+                }
+             
+            */ 
         }
 
         public string GetMethodDocumentation(MethodInfo methodDetails, string documentationNode, CultureInfo culture = null)

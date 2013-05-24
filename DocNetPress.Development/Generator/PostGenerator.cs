@@ -22,7 +22,7 @@ namespace DocNetPress.Development.Generator
         /// <summary>
         /// Backing field for PropertyPageElements
         /// </summary>
-        private readonly List<IPostElement> _PageElements = new List<IPostElement>();
+        private readonly List<IPageElement> _PageElements = new List<IPageElement>();
 
         /// <summary>
         /// List containing all <see cref="DocNetPress.Development.Generator.IPostElement"/>s responsible for property pages
@@ -30,7 +30,7 @@ namespace DocNetPress.Development.Generator
         /// <remarks>
         /// The order of the elements in this list also gives the final order of the elements in the WordPress post
         /// </remarks>
-        public List<IPostElement> PageElements
+        public List<IPageElement> PageElements
         {
             get
             {
@@ -64,7 +64,24 @@ namespace DocNetPress.Development.Generator
         public String CustomPostTypeName { get; set; }
 
         /// <summary>
-        /// Initializes an empty <see cref="DocNetPress.Generators.PostGenerator"/>-Instance
+        /// The <see cref="DocNetPress.Generator.Extensions.IPageElement"/> at the specific index
+        /// </summary>
+        /// <param name="index">The index of the <see cref="DocNetPress.Generator.Extensions.IPageElement"/></param>
+        /// <returns>The <see cref="DocNetPress.Generator.Extensions.IPageElement"/> at the given index</returns>
+        public IPageElement this[int index]
+        {
+            get
+            {
+                return this.PageElements[index];
+            }
+            set
+            {
+                this.PageElements[index] = value;
+            }
+        }
+
+        /// <summary>
+        /// Initializes an empty <see cref="DocNetPress.Generator.PostGenerator"/>-Instance
         /// </summary>
         public PostGenerator()
         {
@@ -72,18 +89,18 @@ namespace DocNetPress.Development.Generator
         }
 
         /// <summary>
-        /// Initializes a new <see cref="DocNetPress.Generators.PostGenerator"/>-Instance and sets the path to the documentation file
+        /// Initializes a new <see cref="DocNetPress.Generator.PostGenerator"/>-Instance and sets the path to the documentation file
         /// </summary>
-        /// <param name="documentationFileName">The path to the documentation file read by the <see cref="DocNetPress.Generators.PostGenerator"/></param>
+        /// <param name="documentationFileName">The path to the documentation file read by the <see cref="DocNetPress.Generator.PostGenerator"/></param>
         public PostGenerator(String documentationFileName) : this()
         {
             this.DocumentationFile = documentationFileName;
         }
 
         /// <summary>
-        /// Initializes a new <see cref="DocNetPress.Generators.PostGenerator"/>-Instance and sets the path to the documentation file and the post type
+        /// Initializes a new <see cref="DocNetPress.Generator.PostGenerator"/>-Instance and sets the path to the documentation file and the post type
         /// </summary>
-        /// <param name="documentationFileName">The path to the documentation file read by the <see cref="DocNetPress.Generators.PostGenerator"/></param>
+        /// <param name="documentationFileName">The path to the documentation file read by the <see cref="DocNetPress.Generator.PostGenerator"/></param>
         /// <param name="postType">Whether the generator shall generate WordPress pages, posts or an entirely custom taxonomy</param>
         public PostGenerator(String documentationFileName, PostType postType)
             : this(documentationFileName)
@@ -92,10 +109,10 @@ namespace DocNetPress.Development.Generator
         }
 
         /// <summary>
-        /// Initializes a new <see cref="DocNetPress.Generators.PostGenerator"/>-Instance and sets the path to the documentation file, the post type and
+        /// Initializes a new <see cref="DocNetPress.Generator.PostGenerator"/>-Instance and sets the path to the documentation file, the post type and
         /// the custom taxonomy name
         /// </summary>
-        /// <param name="documentationFileName">The path to the documentation file read by the <see cref="DocNetPress.Generators.PostGenerator"/></param>
+        /// <param name="documentationFileName">The path to the documentation file read by the <see cref="DocNetPress.Generator.PostGenerator"/></param>
         /// <param name="postType">Whether the generator shall generate WordPress pages, posts or an entirely custom taxonomy</param>
         /// <param name="customPostTypeName">The name of the taxonomy to insert the posts into</param>
         public PostGenerator(String documentationFileName, PostType postType, String customPostTypeName)
@@ -115,39 +132,47 @@ namespace DocNetPress.Development.Generator
         }
 
         /// <summary>
-        /// Adds an <see cref="DocNetPress.Generators.IPageElement"/> to the list of generators
+        /// Adds an <see cref="DocNetPress.Generator.Extensions.IPageElement"/> to the list of generators
         /// </summary>
-        /// <param name="element">The <see cref="DocNetPress.Generators.IPageElement"/> to add</param>
-        public void AddPageElement(IPostElement element)
+        /// <param name="element">The <see cref="DocNetPress.Generator.Extensions.IPageElement"/> to add</param>
+        public void AddPageElement(IPageElement element)
         {
             this.PageElements.Add(element);
         }
 
         /// <summary>
-        /// Adds a range of <see cref="DocNetPress.Generators.IPageElement"/> to the list of generators
+        /// Adds a range of <see cref="DocNetPress.Generator.Extensions.IPageElement"/> to the list of generators
         /// </summary>
-        /// <param name="element">The <see cref="DocNetPress.Generators.IPageElement"/>s to add</param>
-        public void AddPageElement(IEnumerable<IPostElement> elements)
+        /// <param name="element">The <see cref="DocNetPress.Generator.Extensions.IPageElement"/>s to add</param>
+        public void AddPageElement(IEnumerable<IPageElement> elements)
         {
             this.PageElements.AddRange(elements);
         }
 
         /// <summary>
-        /// Adds an <see cref="DocNetPress.Generators.IPageElement"/> to the list of generators at a given index
+        /// Adds an <see cref="DocNetPress.Generator.Extensions.IPageElement"/> to the list of generators at a given index
         /// </summary>
-        /// <param name="element">The <see cref="DocNetPress.Generators.IPageElement"/> to add</param>
-        public void AddPageElement(int index, IPostElement element)
+        /// <param name="element">The <see cref="DocNetPress.Generator.Extensions.IPageElement"/> to add</param>
+        public void AddPageElement(int index, IPageElement element)
         {
             this.PageElements.Insert(index, element);
         }
 
         /// <summary>
-        /// Adds a range of <see cref="DocNetPress.Generators.IPageElement"/> to the list of generators at a given index
+        /// Adds a range of <see cref="DocNetPress.Generator.Extensions.IPageElement"/> to the list of generators at a given index
         /// </summary>
-        /// <param name="element">The <see cref="DocNetPress.Generators.IPageElement"/>s to add</param>
-        public void AddPageElement(int index, IEnumerable<IPostElement> elements)
+        /// <param name="element">The <see cref="DocNetPress.Generator.Extensions.IPageElement"/>s to add</param>
+        public void AddPageElement(int index, IEnumerable<IPageElement> elements)
         {
             this.PageElements.InsertRange(index, elements);
+        }
+
+        /// <summary>
+        /// Removes all <see cref="DocNetPress.Generator.Extensions.IPageElement"/>s
+        /// </summary>
+        public void ClearPageElements()
+        {
+            this.PageElements.Clear();
         }
 
         /// <summary>

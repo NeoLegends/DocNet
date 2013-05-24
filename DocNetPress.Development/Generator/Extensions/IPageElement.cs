@@ -14,6 +14,11 @@ namespace DocNetPress.Development.Generator.Extensions
     public interface IPageElement
     {
         /// <summary>
+        /// The PageElement's name
+        /// </summary>
+        String Name { get; }
+
+        /// <summary>
         /// Generates documentation based on the given <see cref="System.Type"/>, the inner text of the documentation XmlNode currently being parsed
         /// and a given culture to generate the output in
         /// </summary>

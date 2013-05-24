@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DocNetPress.Development.Resources {
+namespace DocNetPress.Development.Generator.Extensions.SyntaxElement {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace DocNetPress.Development.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DocNetPress.Development.Resources.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DocNetPress.Development.Generator.Extensions.SyntaxElement.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,11 @@ namespace DocNetPress.Development.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Examples ähnelt.
-        /// </summary>
-        internal static string Examples {
-            get {
-                return ResourceManager.GetString("Examples", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Exceptions ähnelt.
-        /// </summary>
-        internal static string Exceptions {
-            get {
-                return ResourceManager.GetString("Exceptions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Remarks ähnelt.
-        /// </summary>
-        internal static string Remarks {
-            get {
-                return ResourceManager.GetString("Remarks", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die See Also ähnelt.
-        /// </summary>
-        internal static string SeeAlso {
-            get {
-                return ResourceManager.GetString("SeeAlso", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Summary ähnelt.
-        /// </summary>
-        internal static string Summary {
-            get {
-                return ResourceManager.GetString("Summary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Syntax ähnelt.
         /// </summary>
-        internal static string Syntax {
+        internal static string SyntaxHeadline {
             get {
-                return ResourceManager.GetString("Syntax", resourceCulture);
+                return ResourceManager.GetString("SyntaxHeadline", resourceCulture);
             }
         }
     }

@@ -14,7 +14,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <summary>
         /// Uses crayon syntax highlighter
         /// </summary>
-        Crayon,
+        CrayonSyntaxHighlighter,
 
         /// <summary>
         /// Uses the standard WordPress quotebox

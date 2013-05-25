@@ -91,6 +91,50 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         }
 
         /// <summary>
+        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// </summary>
+        public bool SupportsCSharp
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// </summary>
+        public bool SupportsVBNET
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// </summary>
+        public bool SupportsFSharp
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// </summary>
+        public bool SupportsJScript
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Generates the summary page of a given documentation node content
         /// </summary>
         /// <param name="nodeContent">The content of the node currently being parsed</param>

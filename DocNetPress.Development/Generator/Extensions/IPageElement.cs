@@ -19,17 +19,38 @@ namespace DocNetPress.Development.Generator.Extensions
         String Name { get; }
 
         /// <summary>
+        /// Whether the element can output C# code or not
+        /// </summary>
+        bool SupportsCSharp { get; }
+
+        /// <summary>
+        /// Whether the element can output VB.NET code or not
+        /// </summary>
+        bool SupportsVBNET { get; }
+
+        /// <summary>
+        /// Whether the element can output F# code or not
+        /// </summary>
+        bool SupportsFSharp { get; }
+
+        /// <summary>
+        /// Whether the element can output JScript or not
+        /// </summary>
+        bool SupportsJScript { get; }
+
+        /// <summary>
         /// Generates documentation based on the given <see cref="System.Type"/>, the inner text of the documentation XmlNode currently being parsed
         /// and a given culture to generate the output in
         /// </summary>
         /// <param name="typeDetails">The <see cref="System.Type"/> for further information about the kind of type to be documented</param>
         /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
         /// <param name="culture">The culture to generate the documentation in</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// is not able to parse the given input
         /// </returns>
-        String GetTypeDocumentation(Type typeDetails, String documentationNode, CultureInfo culture = null);
+        String GetTypeDocumentation(Type typeDetails, String documentationNode, OutputLanguage language, CultureInfo culture = null);
 
         /// <summary>
         /// Generates documentation based on the given <see cref="System.Reflection.MethodInfo"/>, the inner text of the documentation XmlNode currently being parsed
@@ -38,11 +59,12 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="typeDetails">The <see cref="System.Type"/> for further information about the method to be documented</param>
         /// <param name="documentationNode">The documentation code containing all user-written documentation text</param>
         /// <param name="culture">The culture to generate the documentation in</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// is not able to parse the given input
         /// </returns>
-        String GetMethodDocumentation(MethodInfo methodDetails, String documentationNode, CultureInfo culture = null);
+        String GetMethodDocumentation(MethodInfo methodDetails, String documentationNode, OutputLanguage language, CultureInfo culture = null);
 
         /// <summary>
         /// Generates documentation based on the given <see cref="System.Reflection.FieldInfo"/>, the inner text of the documentation XmlNode currently being parsed
@@ -51,11 +73,12 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="fieldDetails">The <see cref="System.Reflection.FieldInfo"/> providing further information about the field to document</param>
         /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
         /// <param name="culture">The culture to generate the documentation in</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// is not able to parse the given input
         /// </returns>
-        String GetFieldDocumentation(FieldInfo fieldDetails, String documentationNode, CultureInfo culture = null);
+        String GetFieldDocumentation(FieldInfo fieldDetails, String documentationNode, OutputLanguage language, CultureInfo culture = null);
 
         /// <summary>
         /// Generates documentation based on the given <see cref="System.Reflection.PropertyInfo"/>, the inner text of the documentation XmlNode currently being parsed
@@ -64,11 +87,12 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="propertyDetails">Provides further information about the property to be documentated</param>
         /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
         /// <param name="culture">The culture to generate the documentation in</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// is not able to parse the given input
         /// </returns>
-        String GetPropertyDocumentation(PropertyInfo propertyDetails, String documentationNode, CultureInfo culture = null);
+        String GetPropertyDocumentation(PropertyInfo propertyDetails, String documentationNode, OutputLanguage language, CultureInfo culture = null);
 
         /// <summary>
         /// Generates documentation based on the given <see cref="System.Reflection.EventInfo"/>, the inner text of the documentation XmlNode currently being parsed
@@ -77,11 +101,12 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="eventDetails"><see cref="System.Reflection.EventInfo"/> containing further data about the event to document</param>
         /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
         /// <param name="culture">The culture to generate the documentation in</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// is not able to parse the given input
         /// </returns>
-        String GetEventDocumentation(EventInfo eventDetails, String documentationNode, CultureInfo culture = null);
+        String GetEventDocumentation(EventInfo eventDetails, String documentationNode, OutputLanguage language, CultureInfo culture = null);
 
         /// <summary>
         /// This method is fired when there's a reference inside the XML documentation code the compiler couldn't resolve at compile time, so it's not determined what
@@ -91,10 +116,11 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="fullMemberName">The full name of the member that failed to document</param>
         /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
         /// <param name="culture">The culture to generate the documentation in</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
         /// Generated HTML-Code from the given documentation node or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// is not able to parse the given input
         /// </returns>
-        String GetErrorDocumentation(String assemblyPath, String fullMemberName, String documentationNode, CultureInfo culture = null);
+        String GetErrorDocumentation(String assemblyPath, String fullMemberName, String documentationNode, OutputLanguage language, CultureInfo culture = null);
     }
 }

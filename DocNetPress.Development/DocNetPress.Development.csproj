@@ -51,19 +51,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Generator\Extensions\HeadlineLevel.cs" />
-    <Compile Include="Generator\Extensions\MemberNameGenerator.cs" />
-    <Compile Include="Generator\Extensions\SummaryElement\Strings.Designer.cs">
+    <Compile Include="Generator\Extensions\OutputLanguage.cs" />
+    <Compile Include="Generator\Extensions\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
     <Compile Include="Generator\Extensions\SyntaxElement\OutputField.cs" />
     <Compile Include="Generator\Extensions\IPageElement.cs" />
-    <Compile Include="Generator\Extensions\SyntaxElement\Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
     <Compile Include="Generator\PostGenerator.cs" />
     <Compile Include="Generator\PostType.cs" />
     <Compile Include="Generator\PostUploader.cs" />
@@ -101,11 +96,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Generator\Extensions\SummaryElement\Strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Generator\Extensions\SyntaxElement\Strings.resx">
+    <EmbeddedResource Include="Generator\Extensions\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>

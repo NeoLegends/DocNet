@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DocNetPress.Development.Generator.Extensions.SyntaxElement {
+namespace DocNetPress.Development.Generator.Extensions {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DocNetPress.Development.Generator.Extensions.SyntaxElement.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DocNetPress.Development.Generator.Extensions.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,15 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Summary ähnelt.
+        /// </summary>
+        internal static string SummaryHeadline {
+            get {
+                return ResourceManager.GetString("SummaryHeadline", resourceCulture);
             }
         }
         

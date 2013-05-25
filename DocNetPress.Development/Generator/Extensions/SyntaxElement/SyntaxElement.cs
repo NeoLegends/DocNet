@@ -88,6 +88,50 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             }
         }
 
+        /// <summary>
+        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// </summary>
+        public bool SupportsCSharp
+        {
+            get
+            { 
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// </summary>
+        public bool SupportsVBNET
+        {
+            get 
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// </summary>
+        public bool SupportsFSharp
+        {
+            get 
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// </summary>
+        public bool SupportsJScript
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         #region Implementation
 
         #region Type Documentation
@@ -99,7 +143,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <param name="documentationNode">The inner text of the .NET documentation node containing all custom documentation text</param>
         /// <param name="culture">The culture to generate the output in</param>
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
-        public string GetTypeDocumentation(Type typeDetails, string documentationNode, CultureInfo culture = null)
+        public string GetTypeDocumentation(Type typeDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.WriteSyntaxBox(this.GenerateTypeSignature(typeDetails));
         }
@@ -175,7 +219,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
-        public string GetMethodDocumentation(MethodInfo methodDetails, string documentationNode, CultureInfo culture = null)
+        public string GetMethodDocumentation(MethodInfo methodDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.WriteSyntaxBox(this.GenerateMethodSignature(methodDetails));
         }
@@ -252,7 +296,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
-        public string GetFieldDocumentation(FieldInfo fieldDetails, string documentationNode, CultureInfo culture = null)
+        public string GetFieldDocumentation(FieldInfo fieldDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.WriteSyntaxBox(this.GenerateFieldSignature(fieldDetails));
         }
@@ -277,7 +321,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
                 result.Append("protected ");
 
             // Further field attributes
-            if (!fieldDetails.IsLiteral && fieldDetails.IsStatic)
+            if (fieldDetails.IsStatic && !fieldDetails.IsLiteral)
                 result.Append("static ");
             if (fieldDetails.IsLiteral)
                 result.Append("const ");
@@ -305,7 +349,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
-        public string GetPropertyDocumentation(PropertyInfo propertyDetails, string documentationNode, CultureInfo culture = null)
+        public string GetPropertyDocumentation(PropertyInfo propertyDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.WriteSyntaxBox(this.GeneratePropertySignature(propertyDetails));
         }
@@ -319,11 +363,19 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         {
             StringBuilder result = new StringBuilder(100);
 
-            foreach (object attribute in propertyDetails.GetCustomAttributes(true))
+            // Attributes
+            foreach (CustomAttributeData attribute in propertyDetails.GetCustomAttributesData())
             {
                 result.Append("[");
-                result.Append(attribute.GetType().Name);
-                result.Append("]");
+                result.Append(attribute.Constructor.DeclaringType.Name);
+                result.Append("(");
+
+                // Parameters
+                ParameterInfo[] attributeConstructorParameters = attribute.Constructor.GetParameters();
+                String attributeParameterSignature = String.Join(", ", attributeConstructorParameters.Select(pi => pi.ParameterType.Name + " " + pi.Name));
+                result.Append(attributeParameterSignature);
+
+                result.Append(")]");
                 result.Append(Environment.NewLine);
             }
 
@@ -375,7 +427,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
 
         #region Event Documentation
 
-        public string GetEventDocumentation(EventInfo eventDetails, string documentationNode, CultureInfo culture = null)
+        public string GetEventDocumentation(EventInfo eventDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.WriteSyntaxBox(this.GenerateEventSignature(eventDetails));
         }
@@ -391,7 +443,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
 
         #region Error Documentation
 
-        public string GetErrorDocumentation(string assemblyPath, string fullMemberName, string documentationNode, CultureInfo culture = null)
+        public string GetErrorDocumentation(string assemblyPath, string fullMemberName, string documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return null;
         }

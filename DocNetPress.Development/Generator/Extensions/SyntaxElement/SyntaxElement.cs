@@ -145,7 +145,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
         public string GetTypeDocumentation(Type typeDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateTypeSignature(typeDetails));
+            return this.WriteSyntaxBox(this.GenerateTypeSignature(typeDetails), language);
         }
 
         /// <summary>
@@ -157,21 +157,8 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         {
             StringBuilder result = new StringBuilder(150);
 
-            // Method attributes
-            foreach (CustomAttributeData attribute in typeDetails.GetCustomAttributesData())
-            {
-                result.Append("[");
-                result.Append(attribute.Constructor.DeclaringType.Name);
-                result.Append("(");
-
-                // Parameters
-                ParameterInfo[] attributeConstructorParameters = attribute.Constructor.GetParameters();
-                String attributeParameterSignature = String.Join(", ", attributeConstructorParameters.Select(pi => pi.ParameterType.Name + " " + pi.Name));
-                result.Append(attributeParameterSignature);
-
-                result.Append(")]");
-                result.Append(Environment.NewLine);
-            }
+            // Attributes
+            result.AppendLine(this.GenerateAttributeSignature(typeDetails));
 
             // Access modificators
             if (typeDetails.IsClass)
@@ -221,7 +208,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// </returns>
         public string GetMethodDocumentation(MethodInfo methodDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateMethodSignature(methodDetails));
+            return this.WriteSyntaxBox(this.GenerateMethodSignature(methodDetails), language);
         }
 
         /// <summary>
@@ -233,21 +220,8 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         {
             StringBuilder result = new StringBuilder(150);
 
-            // Method attributes
-            foreach (CustomAttributeData attribute in methodDetails.GetCustomAttributesData())
-            {
-                result.Append("[");
-                result.Append(attribute.Constructor.DeclaringType.Name);
-                result.Append("(");
-
-                // Parameters
-                ParameterInfo[] attributeConstructorParameters = attribute.Constructor.GetParameters();
-                String attributeParameterSignature = String.Join(", ", attributeConstructorParameters.Select(pi => pi.ParameterType.Name + " " + pi.Name));
-                result.Append(attributeParameterSignature);
-
-                result.Append(")]");
-                result.Append(Environment.NewLine);
-            }
+            // Attributes
+            result.AppendLine(this.GenerateAttributeSignature(methodDetails));
 
             // Method Body
             if (methodDetails.IsPublic)
@@ -298,7 +272,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// </returns>
         public string GetFieldDocumentation(FieldInfo fieldDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateFieldSignature(fieldDetails));
+            return this.WriteSyntaxBox(this.GenerateFieldSignature(fieldDetails), language);
         }
 
         /// <summary>
@@ -309,6 +283,9 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         private String GenerateFieldSignature(FieldInfo fieldDetails)
         {
             StringBuilder result = new StringBuilder(100);
+
+            // Attributes
+            result.AppendLine(this.GenerateAttributeSignature(fieldDetails));
 
             // Access modificator
             if (fieldDetails.IsPublic)
@@ -351,7 +328,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// </returns>
         public string GetPropertyDocumentation(PropertyInfo propertyDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GeneratePropertySignature(propertyDetails));
+            return this.WriteSyntaxBox(this.GeneratePropertySignature(propertyDetails), language);
         }
 
         /// <summary>
@@ -364,21 +341,9 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             StringBuilder result = new StringBuilder(100);
 
             // Attributes
-            foreach (CustomAttributeData attribute in propertyDetails.GetCustomAttributesData())
-            {
-                result.Append("[");
-                result.Append(attribute.Constructor.DeclaringType.Name);
-                result.Append("(");
+            result.AppendLine(this.GenerateAttributeSignature(propertyDetails));
 
-                // Parameters
-                ParameterInfo[] attributeConstructorParameters = attribute.Constructor.GetParameters();
-                String attributeParameterSignature = String.Join(", ", attributeConstructorParameters.Select(pi => pi.ParameterType.Name + " " + pi.Name));
-                result.Append(attributeParameterSignature);
-
-                result.Append(")]");
-                result.Append(Environment.NewLine);
-            }
-
+            // Property name
             result.Append(propertyDetails.PropertyType.Name + " ");
             result.Append(propertyDetails.Name + " ");
 
@@ -427,22 +392,45 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
 
         #region Event Documentation
 
+        /// <summary>
+        /// Generates documentation based on the given <see cref="System.Reflection.EventInfo"/>, the inner text of the documentation XmlNode currently being parsed
+        /// and optionally a given culture to generate the output in
+        /// </summary>
+        /// <param name="eventDetails"><see cref="System.Reflection.EventInfo"/> containing further data about the event to document</param>
+        /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
+        /// <param name="culture">The culture to generate the documentation in</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
+        /// <returns>
+        /// Valid HTML-Code ready to insert into a WordPress post
+        /// </returns>
         public string GetEventDocumentation(EventInfo eventDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateEventSignature(eventDetails));
+            return this.WriteSyntaxBox(this.GenerateEventSignature(eventDetails), language);
         }
 
+        /// <summary>
+        /// Internal version of <see cref="M:DocNetPress.Development.Generator.Extensions.SummaryElement.SummaryElement.GetEventDocumentation"/>
+        /// </summary>
+        /// <param name="eventDetails">The <see cref="System.Reflection.EventInfo"/> to generate the documentation from</param>
+        /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
         private String GenerateEventSignature(EventInfo eventDetails)
         {
             StringBuilder result = new StringBuilder(100);
 
-            throw new NotImplementedException();
+            result.AppendLine(this.GenerateAttributeSignature(eventDetails));
+
+
+
+            return result.ToString();
         }
 
         #endregion
 
         #region Error Documentation
 
+        /// <summary>
+        /// The <see cref="DocNetPress.Development.Generator.Extensions.SyntaxElement.SyntaxElement"/> does not support resolving unresolved paths
+        /// </summary>
         public string GetErrorDocumentation(string assemblyPath, string fullMemberName, string documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return null;
@@ -455,7 +443,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// </summary>
         /// <param name="content">The content to write into the syntax box</param>
         /// <returns>The finished HTML-Code</returns>
-        private String WriteSyntaxBox(String content)
+        private String WriteSyntaxBox(String content, OutputLanguage language)
         {
             // Variables
             using (StringWriter sw = new StringWriter())
@@ -468,7 +456,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
                 if (OutputField == OutputField.CrayonSyntaxHighlighter)
                 {
                     xWriter.WriteStartElement("pre");
-                    xWriter.WriteAttributeString("class", "lang:c# decode=true");
+                    xWriter.WriteAttributeString("class", "lang:" + this.GetOutputLanguageString(language) + " decode=true");
                     xWriter.WriteString(content);
                     xWriter.WriteEndElement();
                 }
@@ -481,6 +469,52 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
                 xWriter.WriteEndDocument();
                 return sw.ToString();
             }
+        }
+
+        /// <summary>
+        /// Generates the Crayon language string corresponding to the given <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/>
+        /// </summary>
+        /// <param name="language">The <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/> giving the desired output language</param>
+        /// <returns>The Crayon conform language string</returns>
+        private String GetOutputLanguageString(OutputLanguage language)
+        {
+            if (language == OutputLanguage.CSharp)
+                return "c#";
+            else if (language == OutputLanguage.FSharp)
+                return "default";
+            else if (language == OutputLanguage.JScript)
+                return "js";
+            else if (language == OutputLanguage.VBNET)
+                return "vb";
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// Generates the whole attribute signature from the given <see cref="System.Reflection.MemberInfo"/>
+        /// </summary>
+        /// <param name="memberInfo">The <see cref="System.Reflection.MemberInfo"/> to extract the attribute signature from</param>
+        /// <returns>The finished attribute signature</returns>
+        private String GenerateAttributeSignature(MemberInfo memberInfo)
+        {
+            StringBuilder result = new StringBuilder(150);
+
+            // Attributes
+            foreach (CustomAttributeData attribute in memberInfo.GetCustomAttributesData())
+            {
+                result.Append("[");
+                result.Append(attribute.Constructor.DeclaringType.Name);
+                result.Append("(");
+
+                // Parameters
+                ParameterInfo[] attributeConstructorParameters = attribute.Constructor.GetParameters();
+                String attributeParameterSignature = String.Join(", ", attributeConstructorParameters.Select(pInfo => pInfo.ParameterType.Name + " " + pInfo.Name));
+                result.Append(attributeParameterSignature);
+
+                result.Append(")]");
+            }
+
+            return result.ToString();
         }
 
         #endregion

@@ -92,15 +92,89 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
 
         #region Type Documentation
 
+        /// <summary>
+        /// Generates documentation for a given <see cref="System.Type"/>
+        /// </summary>
+        /// <param name="typeDetails">The <see cref="System.Type"/> to generate the documentation from</param>
+        /// <param name="documentationNode">The inner text of the .NET documentation node containing all custom documentation text</param>
+        /// <param name="culture">The culture to generate the output in</param>
+        /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
         public string GetTypeDocumentation(Type typeDetails, string documentationNode, CultureInfo culture = null)
         {
-            return null;
+            return this.WriteSyntaxBox(this.GenerateTypeSignature(typeDetails));
+        }
+
+        /// <summary>
+        /// Internal version of <see cref="M:DocNetPress.Development.Generator.Extensions.SummaryElement.SummaryElement.GetTypeDocumentation"/>
+        /// </summary>
+        /// <param name="typeDetails">The <see cref="System.Type"/> to generate the documentation from</param>
+        /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
+        private String GenerateTypeSignature(Type typeDetails)
+        {
+            StringBuilder result = new StringBuilder(150);
+
+            // Method attributes
+            foreach (CustomAttributeData attribute in typeDetails.GetCustomAttributesData())
+            {
+                result.Append("[");
+                result.Append(attribute.Constructor.DeclaringType.Name);
+                result.Append("(");
+
+                // Parameters
+                ParameterInfo[] attributeConstructorParameters = attribute.Constructor.GetParameters();
+                String attributeParameterSignature = String.Join(", ", attributeConstructorParameters.Select(pi => pi.ParameterType.Name + " " + pi.Name));
+                result.Append(attributeParameterSignature);
+
+                result.Append(")]");
+                result.Append(Environment.NewLine);
+            }
+
+            // Access modificators
+            if (typeDetails.IsClass)
+                result.Append("public " + (typeDetails.IsAbstract ? "abstract " : (typeDetails.IsSealed ? "sealed " : null)) + "class ");
+            else if (typeDetails.IsInterface)
+                result.Append("public interface ");
+            else if (typeDetails.IsEnum)
+                result.Append("public enum ");
+            else if (typeDetails.IsValueType)
+                result.Append("public struct ");
+
+            // Class name
+            result.Append(typeDetails.Name + " ");
+
+            // Generic parameters
+            if (typeDetails.IsGenericType)
+            {
+                result.Append("<");
+                String genericParameterSignature = String.Join(", ", typeDetails.GetGenericArguments().Select(t => t.Name));
+                result.Append(genericParameterSignature);
+                result.Append(">");
+            }
+
+            // Deriving stuff
+            if (typeDetails.BaseType != null || typeDetails.GetInterfaces().Length > 0)
+                result.Append(": ");
+            result.Append(typeDetails.BaseType != null ? typeDetails.BaseType.Name + ", " : null);
+            String deriveSignature = String.Join(", ", typeDetails.GetInterfaces().Select(t => t.Name));
+            result.Append(deriveSignature);
+
+            return result.ToString();
         }
 
         #endregion
 
         #region Method Documentation
 
+        /// <summary>
+        /// Generates documentation based on the given <see cref="System.Reflection.MethodInfo"/>, the inner text of the documentation XmlNode currently being parsed
+        /// and a given culture to generate the output in
+        /// </summary>
+        /// <param name="typeDetails">The <see cref="System.Type"/> for further information about the method to be documented</param>
+        /// <param name="documentationNode">The documentation code containing all user-written documentation text</param>
+        /// <param name="culture">The culture to generate the documentation in</param>
+        /// <returns>
+        /// Valid HTML-Code ready to insert into a WordPress post
+        /// </returns>
         public string GetMethodDocumentation(MethodInfo methodDetails, string documentationNode, CultureInfo culture = null)
         {
             return this.WriteSyntaxBox(this.GenerateMethodSignature(methodDetails));
@@ -116,11 +190,18 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             StringBuilder result = new StringBuilder(150);
 
             // Method attributes
-            foreach (object attribute in methodDetails.GetCustomAttributes(true))
+            foreach (CustomAttributeData attribute in methodDetails.GetCustomAttributesData())
             {
                 result.Append("[");
-                result.Append(attribute.GetType().Name);
-                result.Append("]");
+                result.Append(attribute.Constructor.DeclaringType.Name);
+                result.Append("(");
+
+                // Parameters
+                ParameterInfo[] attributeConstructorParameters = attribute.Constructor.GetParameters();
+                String attributeParameterSignature = String.Join(", ", attributeConstructorParameters.Select(pi => pi.ParameterType.Name + " " + pi.Name));
+                result.Append(attributeParameterSignature);
+
+                result.Append(")]");
                 result.Append(Environment.NewLine);
             }
 
@@ -140,15 +221,17 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             if (methodDetails.IsVirtual)
                 result.Append("virtual ");
 
-            // Method name and parameters
-            result.Append(methodDetails.ReturnType.Name == "Void" ? "void" : methodDetails.ReturnType.Name + " ");
+            // Method name
+            result.Append(methodDetails.ReturnType.Name == "Void" ? "void " : methodDetails.ReturnType.Name + " ");
             result.Append(methodDetails.Name);
+
             result.Append("(");
-            foreach (ParameterInfo pInfo in methodDetails.GetParameters())
-                result.Append( // FIX: Add support for ref / out parameters
-                    pInfo.ParameterType.Name + " " + pInfo.Name + 
-                    (pInfo.IsOptional ? " = " + pInfo.RawDefaultValue.ToString() : null)
-                );
+
+            // Parameters
+            ParameterInfo[] methodParamters = methodDetails.GetParameters();
+            String parameterSignature = String.Join(", ", methodParamters.Select(pi => pi.ParameterType.Name + " " + pi.Name));
+
+            result.Append(parameterSignature);
             result.Append(");");
 
             // Finished
@@ -159,11 +242,26 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
 
         #region Field Documentation
 
+        /// <summary>
+        /// Generates documentation based on the given <see cref="System.Reflection.FieldInfo"/>, the inner text of the documentation XmlNode currently being parsed
+        /// and optionally a given culture to generate the output in
+        /// </summary>
+        /// <param name="fieldDetails">The <see cref="System.Reflection.FieldInfo"/> providing further information about the field to document</param>
+        /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
+        /// <param name="culture">The culture to generate the documentation in</param>
+        /// <returns>
+        /// Valid HTML-Code ready to insert into a WordPress post
+        /// </returns>
         public string GetFieldDocumentation(FieldInfo fieldDetails, string documentationNode, CultureInfo culture = null)
         {
             return this.WriteSyntaxBox(this.GenerateFieldSignature(fieldDetails));
         }
 
+        /// <summary>
+        /// Internal version of <see cref="M:DocNetPress.Development.Generator.Extensions.SummaryElement.SummaryElement.GetFieldDocumentation"/>
+        /// </summary>
+        /// <param name="fieldDetails">The <see cref="System.Reflection.FieldInfo"/> to generate the documentation from</param>
+        /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
         private String GenerateFieldSignature(FieldInfo fieldDetails)
         {
             StringBuilder result = new StringBuilder(100);
@@ -179,9 +277,11 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
                 result.Append("protected ");
 
             // Further field attributes
-            if (fieldDetails.IsStatic)
+            if (!fieldDetails.IsLiteral && fieldDetails.IsStatic)
                 result.Append("static ");
-            if (fieldDetails.IsInitOnly)
+            if (fieldDetails.IsLiteral)
+                result.Append("const ");
+            else if (fieldDetails.IsInitOnly)
                 result.Append("readonly ");
 
             // Field name
@@ -195,14 +295,37 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
 
         #region Property Documentation
 
+        /// <summary>
+        /// Generates documentation based on the given <see cref="System.Reflection.PropertyInfo"/>, the inner text of the documentation XmlNode currently being parsed
+        /// and optionally a given culture to generate the output in
+        /// </summary>
+        /// <param name="propertyDetails">Provides further information about the property to be documentated</param>
+        /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
+        /// <param name="culture">The culture to generate the documentation in</param>
+        /// <returns>
+        /// Valid HTML-Code ready to insert into a WordPress post
+        /// </returns>
         public string GetPropertyDocumentation(PropertyInfo propertyDetails, string documentationNode, CultureInfo culture = null)
         {
             return this.WriteSyntaxBox(this.GeneratePropertySignature(propertyDetails));
         }
 
+        /// <summary>
+        /// Internal version of <see cref="M:DocNetPress.Development.Generator.Extensions.SummaryElement.SummaryElement.GetPropertyDocumentation"/>
+        /// </summary>
+        /// <param name="propertyDetails">The <see cref="System.Reflection.PropertyInfo"/> to generate the documentation from</param>
+        /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
         private String GeneratePropertySignature(PropertyInfo propertyDetails)
         {
             StringBuilder result = new StringBuilder(100);
+
+            foreach (object attribute in propertyDetails.GetCustomAttributes(true))
+            {
+                result.Append("[");
+                result.Append(attribute.GetType().Name);
+                result.Append("]");
+                result.Append(Environment.NewLine);
+            }
 
             result.Append(propertyDetails.PropertyType.Name + " ");
             result.Append(propertyDetails.Name + " ");
@@ -214,24 +337,34 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             if (getAccessor != null)
             {
                 if (getAccessor.IsPublic)
-                    result.Append("public get; ");
-                if (getAccessor.IsPrivate)
-                    result.Append("private get; ");
+                    result.Append("public ");
+                else if (getAccessor.IsPrivate)
+                    result.Append("private ");
                 else if (getAccessor.IsFamilyOrAssembly)
-                    result.Append("internal get; ");
+                    result.Append("internal ");
                 else if (getAccessor.IsFamily)
-                    result.Append("protected get; ");
+                    result.Append("protected ");
+
+                if (getAccessor.IsStatic)
+                    result.Append("static ");
+
+                result.Append("get; ");
             }
             if (setAccessor != null)
             {
                 if (setAccessor.IsPublic)
-                    result.Append("public set; ");
+                    result.Append("public ");
                 if (setAccessor.IsPrivate)
-                    result.Append("private set; ");
+                    result.Append("private ");
                 else if (setAccessor.IsFamilyOrAssembly)
-                    result.Append("internal set; ");
+                    result.Append("internal ");
                 else if (setAccessor.IsFamily)
-                    result.Append("protected set; ");
+                    result.Append("protected ");
+
+                if (setAccessor.IsStatic)
+                    result.Append("static ");
+
+                result.Append("set; ");
             }
             result.Append("}");
 
@@ -247,9 +380,11 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             return this.WriteSyntaxBox(this.GenerateEventSignature(eventDetails));
         }
 
-        private String GenerateEventSignature(EventInfo propertyDetails)
+        private String GenerateEventSignature(EventInfo eventDetails)
         {
+            StringBuilder result = new StringBuilder(100);
 
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -258,7 +393,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
 
         public string GetErrorDocumentation(string assemblyPath, string fullMemberName, string documentationNode, CultureInfo culture = null)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         #endregion

@@ -137,10 +137,24 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         {
             StringBuilder result = new StringBuilder(150);
 
-            // Attributes
-            result.AppendLine(this.GenerateAttributeSignature(typeDetails));
+            result.AppendLine(this.GetAttributeSignature(typeDetails));
+            result.Append(this.GetTypeAccessModificatorsAndTypes(typeDetails));
+            result.Append(typeDetails.Name + " ");
+            result.Append(this.GetTypeGenericSignature(typeDetails));
+            result.Append(this.GetTypeInheritanceSignature(typeDetails));
 
-            // Access modificators
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Generates the access modificator signature of the given <see cref="System.Type"/> and adds "class", "interface", "enum", etc
+        /// </summary>
+        /// <param name="typeDetails">The <see cref="System.Type"/> to generate the access modificator signature from</param>
+        /// <returns>The access modificator signature of the given <see cref="System.Type"/></returns>
+        private String GetTypeAccessModificatorsAndTypes(Type typeDetails)
+        {
+            StringBuilder result = new StringBuilder(35);
+
             if (typeDetails.IsClass)
                 result.Append("public " + (typeDetails.IsAbstract ? "abstract " : (typeDetails.IsSealed ? "sealed " : null)) + "class ");
             else if (typeDetails.IsInterface)
@@ -150,24 +164,46 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             else if (typeDetails.IsValueType)
                 result.Append("public struct ");
 
-            // Class name
-            result.Append(typeDetails.Name + " ");
+            return result.ToString();
+        }
 
-            // Generic parameters
+        /// <summary>
+        /// Generates the generic signature of the given <see cref="System.Type"/>
+        /// </summary>
+        /// <param name="typeDetails">The <see cref="System.Type"/> to generate the generic signature from</param>
+        /// <returns>The generic signature of the given <see cref="System.Type"/></returns>
+        private String GetTypeGenericSignature(Type typeDetails)
+        {
             if (typeDetails.IsGenericType)
             {
+                StringBuilder result = new StringBuilder(50);
+
                 result.Append("<");
                 String genericParameterSignature = String.Join(", ", typeDetails.GetGenericArguments().Select(t => t.Name));
                 result.Append(genericParameterSignature);
                 result.Append(">");
-            }
 
-            // Deriving stuff
+                return result.ToString();
+            }
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// Generates the inheritance signature of the given <see cref="System.Type"/>
+        /// </summary>
+        /// <param name="typeDetails">The <see cref="System.Type"/> to generate the inhericante signature from</param>
+        /// <returns>The inheritance signature of the given <see cref="System.Type"/></returns>
+        private String GetTypeInheritanceSignature(Type typeDetails)
+        {
+            StringBuilder result = new StringBuilder(25);
+
             if (typeDetails.BaseType != null || typeDetails.GetInterfaces().Length > 0)
+            {
                 result.Append(": ");
-            result.Append(typeDetails.BaseType != null ? typeDetails.BaseType.Name + ", " : null);
-            String deriveSignature = String.Join(", ", typeDetails.GetInterfaces().Select(t => t.Name));
-            result.Append(deriveSignature);
+                result.Append(typeDetails.BaseType != null ? typeDetails.BaseType.Name + ", " : null);
+                result.Append(String.Join(", ", typeDetails.GetInterfaces().Select(t => t.Name)));
+            }
 
             return result.ToString();
         }
@@ -202,10 +238,25 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         {
             StringBuilder result = new StringBuilder(150);
 
-            // Attributes
-            result.AppendLine(this.GenerateAttributeSignature(methodDetails));
+            result.AppendLine(this.GetAttributeSignature(methodDetails));
+            result.Append(this.GetMethodAccessModificatorSignature(methodDetails));
+            result.Append(this.GetMethodDataTypeAndName(methodDetails));
+            result.Append(this.GenerateMethodGenericParameterSignature(methodDetails));
+            result.Append(this.GetMethodParameterSignature(methodDetails));
 
-            // Method Body
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Generates the method access modificator signature
+        /// </summary>
+        /// <param name="methodDetails">The <see cref="System.Reflection.MethodInfo"/> to generate the access modificator signature from</param>
+        /// <returns>The method access modificator signature</returns>
+        private String GetMethodAccessModificatorSignature(MethodInfo methodDetails)
+        {
+            StringBuilder result = new StringBuilder(50);
+
+            // Access modificators
             if (methodDetails.IsPublic)
                 result.Append("public ");
             else if (methodDetails.IsPrivate)
@@ -221,21 +272,56 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             if (methodDetails.IsVirtual)
                 result.Append("virtual ");
 
-            // Method name
-            result.Append(methodDetails.ReturnType.Name == "Void" ? "void " : methodDetails.ReturnType.Name + " ");
-            result.Append(methodDetails.Name);
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Concatenates method type and name
+        /// </summary>
+        /// <param name="methodDetails">The <see cref="System.Reflection.MethodInfo"/> to concatenate type and name from</param>
+        /// <returns>The methods data type, name and a whitespace</returns>
+        private String GetMethodDataTypeAndName(MethodInfo methodDetails)
+        {
+            return (methodDetails.ReturnType.Name == "Void" ? "void " : methodDetails.ReturnType.Name) + " " + methodDetails.Name;
+        }
+
+        /// <summary>
+        /// Generates the parameter signature of the given method (with braces)
+        /// </summary>
+        /// <param name="methodDetails">The <see cref="System.Reflection.MethodInfo"/> to generate the parameter signature from</param>
+        /// <returns>The parameter signature of the given method</returns>
+        private String GetMethodParameterSignature(MethodInfo methodDetails)
+        {
+            StringBuilder result = new StringBuilder(75);
 
             result.Append("(");
-
-            // Parameters
             ParameterInfo[] methodParamters = methodDetails.GetParameters();
-            String parameterSignature = String.Join(", ", methodParamters.Select(pi => pi.ParameterType.Name + " " + pi.Name));
-
-            result.Append(parameterSignature);
+            result.Append(String.Join(", ", methodParamters.Select(pi => pi.ParameterType.Name + " " + pi.Name)));
             result.Append(");");
 
-            // Finished
             return result.ToString();
+        }
+
+        /// <summary>
+        /// Generates the generic parameter signature of the given <see cref="System.Reflection.MethodInfo"/>
+        /// </summary>
+        /// <param name="methodDetails">The <see cref="System.Reflection.MethodInfo"/> to generate the generic parameter signature of</param>
+        /// <returns>The generic parameter signature of the given method</returns>
+        private String GenerateMethodGenericParameterSignature(MethodInfo methodDetails)
+        {
+            if (methodDetails.IsGenericMethod)
+            {
+                StringBuilder result = new StringBuilder(25);
+
+                result.Append("<");
+                Type[] genericTypes = methodDetails.GetGenericArguments();
+                result.Append(String.Join(", ", genericTypes.Select(t => t.Name)));
+                result.Append(">");
+
+                return result.ToString();
+            }
+            else
+                return null;
         }
 
         #endregion
@@ -268,10 +354,22 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         {
             StringBuilder result = new StringBuilder(100);
 
-            // Attributes
-            result.AppendLine(this.GenerateAttributeSignature(fieldDetails));
+            result.AppendLine(this.GetAttributeSignature(fieldDetails));
+            result.Append(this.GetFieldAccessModificatorSignature(fieldDetails));
+            result.Append(this.GetFieldTypeAndName(fieldDetails));
 
-            // Access modificator
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Generates the access modificator signature of the given <see cref="System.Reflection.FieldInfo"/>
+        /// </summary>
+        /// <param name="fieldDetails">The <see cref="System.Reflection.FieldInfo"/> to generate the access modificator signature from</param>
+        /// <returns>The access modificator signature of the given field</returns>
+        private String GetFieldAccessModificatorSignature(FieldInfo fieldDetails)
+        {
+            StringBuilder result = new StringBuilder(50);
+
             if (fieldDetails.IsPublic)
                 result.Append("public ");
             else if (fieldDetails.IsPrivate)
@@ -281,7 +379,6 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             else if (fieldDetails.IsFamily)
                 result.Append("protected ");
 
-            // Further field attributes
             if (fieldDetails.IsStatic && !fieldDetails.IsLiteral)
                 result.Append("static ");
             if (fieldDetails.IsLiteral)
@@ -289,11 +386,17 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             else if (fieldDetails.IsInitOnly)
                 result.Append("readonly ");
 
-            // Field name
-            result.Append(fieldDetails.FieldType.Name + " ");
-            result.Append(fieldDetails.Name + ";");
-
             return result.ToString();
+        }
+
+        /// <summary>
+        /// Gets type and name of the given <see cref="System.Reflection.FieldInfo"/>
+        /// </summary>
+        /// <param name="fieldDetails">The <see cref="System.Reflection.FieldInfo"/> to get type and name of</param>
+        /// <returns>Field type and name with a semicolon at the end</returns>
+        private String GetFieldTypeAndName(FieldInfo fieldDetails)
+        {
+            return fieldDetails.FieldType.Name + " " + fieldDetails.Name + ";";
         }
 
         #endregion
@@ -326,50 +429,66 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         {
             StringBuilder result = new StringBuilder(100);
 
-            // Attributes
-            result.AppendLine(this.GenerateAttributeSignature(propertyDetails));
+            result.AppendLine(this.GetAttributeSignature(propertyDetails));
+            result.Append(this.GetPropertyTypeAndName(propertyDetails));
+            result.Append(this.GetPropertyGetterSetterSignature(propertyDetails));
 
-            // Property name
-            result.Append(propertyDetails.PropertyType.Name + " ");
-            result.Append(propertyDetails.Name + " ");
+            return result.ToString();
+        }
 
-            // Get / Set Accessors
-            MethodInfo getAccessor = propertyDetails.GetGetMethod(true),
-                       setAccessor = propertyDetails.GetSetMethod(true);
+        /// <summary>
+        /// Gets the type and name of the given property
+        /// </summary>
+        /// <param name="propertyDetails">The <see cref="System.Reflection.PropertyInfo"/> to extract the values from</param>
+        /// <returns>Property type and name concatenated with a whitespace at the end</returns>
+        private String GetPropertyTypeAndName(PropertyInfo propertyDetails)
+        {
+            return propertyDetails.PropertyType.Name + " " + propertyDetails.Name + " ";
+        }
+
+        /// <summary>
+        /// Generates the getter / setter signature from the given <see cref="System.Reflection.PropertyInfo"/>
+        /// </summary>
+        /// <param name="propertyDetails">The <see cref="System.Reflection.PropertyInfo"/> to extract the getter / setter signature from</param>
+        /// <returns>The getter / setter signature</returns>
+        private String GetPropertyGetterSetterSignature(PropertyInfo propertyDetails)
+        {
+            StringBuilder result = new StringBuilder(25);
+
             result.Append("{ ");
-            if (getAccessor != null)
-            {
-                if (getAccessor.IsPublic)
-                    result.Append("public ");
-                else if (getAccessor.IsPrivate)
-                    result.Append("private ");
-                else if (getAccessor.IsFamilyOrAssembly)
-                    result.Append("internal ");
-                else if (getAccessor.IsFamily)
-                    result.Append("protected ");
-
-                if (getAccessor.IsStatic)
-                    result.Append("static ");
-
-                result.Append("get; ");
-            }
-            if (setAccessor != null)
-            {
-                if (setAccessor.IsPublic)
-                    result.Append("public ");
-                if (setAccessor.IsPrivate)
-                    result.Append("private ");
-                else if (setAccessor.IsFamilyOrAssembly)
-                    result.Append("internal ");
-                else if (setAccessor.IsFamily)
-                    result.Append("protected ");
-
-                if (setAccessor.IsStatic)
-                    result.Append("static ");
-
-                result.Append("set; ");
-            }
+            result.Append(this.GetPropertyGetSetMethodSignature(propertyDetails.GetGetMethod(true), true));
+            result.Append(this.GetPropertyGetSetMethodSignature(propertyDetails.GetSetMethod(true), false));
             result.Append("}");
+
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Generates the signature for either the getter or the setter method of a property
+        /// </summary>
+        /// <param name="accessor">The getter / setter method</param>
+        /// <param name="getOrSet">Whether the method shall generate a get or set accessor signature</param>
+        /// <returns>The accessor signature</returns>
+        private String GetPropertyGetSetMethodSignature(MethodInfo accessor, bool getOrSet)
+        {
+            StringBuilder result = new StringBuilder(25);
+
+            if (accessor.IsPublic)
+                result.Append("public ");
+            else if (accessor.IsPrivate)
+                result.Append("private ");
+            else if (accessor.IsFamilyOrAssembly)
+                result.Append("internal ");
+            else if (accessor.IsFamily)
+                result.Append("protected ");
+
+            if (accessor.IsStatic)
+                result.Append("static ");
+
+            if (getOrSet)
+                result.Append("get; ");
+            else
+                result.Append("set; ");
 
             return result.ToString();
         }
@@ -405,7 +524,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             StringBuilder result = new StringBuilder(100);
 
             // Attributes
-            result.AppendLine(this.GenerateAttributeSignature(eventDetails));
+            result.AppendLine(this.GetAttributeSignature(eventDetails));
 
             // Event signature
             result.Append("public event ");
@@ -500,7 +619,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// </summary>
         /// <param name="memberInfo">The <see cref="System.Reflection.MemberInfo"/> to extract the attribute signature from</param>
         /// <returns>The finished attribute signature</returns>
-        private String GenerateAttributeSignature(MemberInfo memberInfo)
+        private String GetAttributeSignature(MemberInfo memberInfo)
         {
             StringBuilder result = new StringBuilder(150);
 

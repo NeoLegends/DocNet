@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Generator\Extensions\HeadlineLevel.cs" />
     <Compile Include="Generator\Extensions\OutputLanguage.cs" />
+    <Compile Include="Generator\Extensions\SeeAlsoElement\SeeAlsoElement.cs" />
     <Compile Include="Generator\Extensions\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -103,7 +104,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Generator\Extensions\ExampleElement\" />
-    <Folder Include="Generator\Extensions\SeeAlsoElement\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

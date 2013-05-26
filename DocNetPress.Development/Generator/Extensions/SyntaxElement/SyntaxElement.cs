@@ -110,6 +110,19 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             }
         }
 
+        /// <summary>
+        /// Initializes a new <see cref="DocNetPress.Development.Generator.Extensions.SyntaxElement.SyntaxElement"/>
+        /// </summary>
+        public SyntaxElement() { }
+
+        /// <summary>
+        /// Initializes a new <see cref="DocNetPress.Development.Generator.Extensions.SyntaxElement.SyntaxElement"/>
+        /// </summary>
+        public SyntaxElement(HeadlineLevel headlineLevel)
+        {
+            this.HeadlineLevel = headlineLevel;
+        }
+
         #region Implementation
 
         #region Type Documentation

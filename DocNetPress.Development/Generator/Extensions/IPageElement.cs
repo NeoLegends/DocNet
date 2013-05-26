@@ -20,6 +20,11 @@ namespace DocNetPress.Development.Generator.Extensions
         String Name { get; }
 
         /// <summary>
+        /// The size of the headline
+        /// </summary>
+        HeadlineLevel HeadlineLevel { set; }
+
+        /// <summary>
         /// Whether the element can output C# code or not
         /// </summary>
         bool SupportsCSharp { get; }

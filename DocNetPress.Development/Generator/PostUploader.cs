@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace DocNetPress.Development.Generator
 {
     /// <summary>
-    /// Uploads generated Documentation posts into a WordPress-Installation automatically taking care of double entries
+    /// Uploads generated Documentation posts into a WordPress-Installation while automatically taking care of double entries
     /// </summary>
     [Serializable]
     public class PostUploader
@@ -52,17 +52,27 @@ namespace DocNetPress.Development.Generator
         }
 
         /// <summary>
-        /// Initializes an empty <see cref="DocNetPress.Generators.PostUploader"/>
+        /// Initializes an empty <see cref="DocNetPress.Development.Generators.PostUploader"/>
         /// </summary>
         public PostUploader() { }
 
         /// <summary>
-        /// Initializes a new <see cref="DocNetPress.Generators.PostUploader"/>
+        /// Initializes a new <see cref="DocNetPress.Development.Generators.PostUploader"/>
         /// </summary>
         /// <param name="wordPressXmlRpcApiUrl">The URL to the target installation's XML-RPC interface</param>
         public PostUploader(String wordPressXmlRpcApiUrl)
         {
             this.WordPressXmlRpcApiUrl = wordPressXmlRpcApiUrl;
+        }
+
+        public static String ResolveMemberNameToUrl(String fullMemberName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Uri ResolveMemberNameToUri(String fullMemberName)
+        {
+            return new Uri(PostUploader.ResolveMemberNameToUrl(fullMemberName));
         }
     }
 }

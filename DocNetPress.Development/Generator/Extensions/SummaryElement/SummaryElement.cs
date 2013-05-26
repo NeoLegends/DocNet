@@ -113,6 +113,19 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         }
 
         /// <summary>
+        /// Initializes a new <see cref="DocNetPress.Development.Generator.Extensions.SummaryElement.SummaryElement"/>
+        /// </summary>
+        public SummaryElement() { }
+
+        /// <summary>
+        /// Initializes a new <see cref="DocNetPress.Development.Generator.Extensions.SummaryElement.SummaryElement"/>
+        /// </summary>
+        public SummaryElement(HeadlineLevel headlineLevel)
+        {
+            this.HeadlineLevel = headlineLevel;
+        }
+
+        /// <summary>
         /// Generates the summary page of a given documentation node content
         /// </summary>
         /// <param name="nodeContent">The content of the node currently being parsed</param>

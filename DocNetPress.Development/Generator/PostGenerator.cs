@@ -25,7 +25,7 @@ namespace DocNetPress.Development.Generator
         private readonly List<IPageElement> _PageElements = new List<IPageElement>();
 
         /// <summary>
-        /// List containing all <see cref="DocNetPress.Development.Generator.IPostElement"/>s responsible for property pages
+        /// List containing all <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>s responsible for property pages
         /// </summary>
         /// <remarks>
         /// The order of the elements in this list also gives the final order of the elements in the WordPress post
@@ -81,7 +81,7 @@ namespace DocNetPress.Development.Generator
         }
 
         /// <summary>
-        /// Initializes an empty <see cref="DocNetPress.Generator.PostGenerator"/>-Instance
+        /// Initializes an empty <see cref="DocNetPress.Development.Generator.PostGenerator"/>-Instance
         /// </summary>
         public PostGenerator()
         {
@@ -89,18 +89,18 @@ namespace DocNetPress.Development.Generator
         }
 
         /// <summary>
-        /// Initializes a new <see cref="DocNetPress.Generator.PostGenerator"/>-Instance and sets the path to the documentation file
+        /// Initializes a new <see cref="DocNetPress.Development.Generator.PostGenerator"/>-Instance and sets the path to the documentation file
         /// </summary>
-        /// <param name="documentationFileName">The path to the documentation file read by the <see cref="DocNetPress.Generator.PostGenerator"/></param>
+        /// <param name="documentationFileName">The path to the documentation file read by the <see cref="DocNetPress.Development.Generator.PostGenerator"/></param>
         public PostGenerator(String documentationFileName) : this()
         {
             this.DocumentationFile = documentationFileName;
         }
 
         /// <summary>
-        /// Initializes a new <see cref="DocNetPress.Generator.PostGenerator"/>-Instance and sets the path to the documentation file and the post type
+        /// Initializes a new <see cref="DocNetPress.Development.Generator.PostGenerator"/>-Instance and sets the path to the documentation file and the post type
         /// </summary>
-        /// <param name="documentationFileName">The path to the documentation file read by the <see cref="DocNetPress.Generator.PostGenerator"/></param>
+        /// <param name="documentationFileName">The path to the documentation file read by the <see cref="DocNetPress.Development.Generator.PostGenerator"/></param>
         /// <param name="postType">Whether the generator shall generate WordPress pages, posts or an entirely custom taxonomy</param>
         public PostGenerator(String documentationFileName, PostType postType)
             : this(documentationFileName)
@@ -109,10 +109,10 @@ namespace DocNetPress.Development.Generator
         }
 
         /// <summary>
-        /// Initializes a new <see cref="DocNetPress.Generator.PostGenerator"/>-Instance and sets the path to the documentation file, the post type and
+        /// Initializes a new <see cref="DocNetPress.Development.Generator.PostGenerator"/>-Instance and sets the path to the documentation file, the post type and
         /// the custom taxonomy name
         /// </summary>
-        /// <param name="documentationFileName">The path to the documentation file read by the <see cref="DocNetPress.Generator.PostGenerator"/></param>
+        /// <param name="documentationFileName">The path to the documentation file read by the <see cref="DocNetPress.Development.Generator.PostGenerator"/></param>
         /// <param name="postType">Whether the generator shall generate WordPress pages, posts or an entirely custom taxonomy</param>
         /// <param name="customPostTypeName">The name of the taxonomy to insert the posts into</param>
         public PostGenerator(String documentationFileName, PostType postType, String customPostTypeName)
@@ -122,10 +122,10 @@ namespace DocNetPress.Development.Generator
         }
 
         /// <summary>
-        /// Extracts the XML file and generates <see cref="DocNetPress.XmlRpc.Posts.Post"/>-Instances from the documentation ready to push
+        /// Extracts the XML file and generates <see cref="DocNetPress.Development.XmlRpc.Posts.Post"/>-Instances from the documentation ready to push
         /// to a WordPress installation
         /// </summary>
-        /// <returns>The generates <see cref="DocNetPress.XmlRpc.Posts.Post"/>s containing a well-formatted documentation</returns>
+        /// <returns>The generates <see cref="DocNetPress.Development.XmlRpc.Posts.Post"/>s containing a well-formatted documentation</returns>
         public PostInsert[] Generate()
         {
             throw new NotImplementedException();
@@ -143,7 +143,7 @@ namespace DocNetPress.Development.Generator
         /// <summary>
         /// Adds a range of <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> to the list of generators
         /// </summary>
-        /// <param name="element">The <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>s to add</param>
+        /// <param name="elements">The <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>s to add</param>
         public void AddPageElement(IEnumerable<IPageElement> elements)
         {
             this.PageElements.AddRange(elements);
@@ -152,6 +152,7 @@ namespace DocNetPress.Development.Generator
         /// <summary>
         /// Adds an <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> to the list of generators at a given index
         /// </summary>
+        /// <param name="index">The index to insert the <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> at</param>
         /// <param name="element">The <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> to add</param>
         public void AddPageElement(int index, IPageElement element)
         {
@@ -161,7 +162,8 @@ namespace DocNetPress.Development.Generator
         /// <summary>
         /// Adds a range of <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> to the list of generators at a given index
         /// </summary>
-        /// <param name="element">The <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>s to add</param>
+        /// <param name="index">The index to insert the <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>s at</param>
+        /// <param name="elements">The <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>s to add</param>
         public void AddPageElement(int index, IEnumerable<IPageElement> elements)
         {
             this.PageElements.InsertRange(index, elements);

@@ -190,7 +190,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         /// <summary>
         /// Outputs the documentation summary of the given property
         /// </summary>
-        /// <param name="methodDetails">A <see cref="System.Reflection.PropertyInfo"/> for further information about the property to document</param>
+        /// <param name="propertyDetails">A <see cref="System.Reflection.PropertyInfo"/> for further information about the property to document</param>
         /// <param name="documentationNode">An <see cref="System.Xml.XmlElement"/> instance for access to the XML documentation node</param>
         /// <param name="language">
         /// The <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/> determining the programming language any generated
@@ -206,7 +206,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         /// <summary>
         /// Outputs the documentation summary of the given event
         /// </summary>
-        /// <param name="methodDetails">A <see cref="System.Reflection.EventInfo"/> for further information about the event to document</param>
+        /// <param name="eventDetails">A <see cref="System.Reflection.EventInfo"/> for further information about the event to document</param>
         /// <param name="documentationNode">An <see cref="System.Xml.XmlElement"/> instance for access to the XML documentation node</param>
         /// <param name="language">
         /// The <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/> determining the programming language any generated
@@ -222,7 +222,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         /// <summary>
         /// Outputs the documentation summary of the given namespace
         /// </summary>
-        /// <param name="methodDetails">A <see cref="System.Reflection.EventInfo"/> for further information about the namespace to document</param>
+        /// <param name="nameSpace">The full path of the namespace to document</param>
         /// <param name="documentationNode">An <see cref="System.Xml.XmlElement"/> instance for access to the XML documentation node</param>
         /// <param name="language">
         /// The <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/> determining the programming language any generated
@@ -238,7 +238,8 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         /// <summary>
         /// Outputs the documentation summary of the given unresolved documentation element
         /// </summary>
-        /// <param name="methodDetails">A <see cref="System.Reflection.EventInfo"/> for further information about the unresolved element to document</param>
+        /// <param name="assemblyPath">The path to the assembly that should actually contain the member to document</param>
+        /// <param name="fullMemberName">The full path to the member to document</param>
         /// <param name="documentationNode">An <see cref="System.Xml.XmlElement"/> instance for access to the XML documentation node</param>
         /// <param name="language">
         /// The <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/> determining the programming language any generated

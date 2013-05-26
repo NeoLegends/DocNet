@@ -61,6 +61,15 @@ namespace DocNetPress.Development.Generator.Extensions {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die See Also ähnelt.
+        /// </summary>
+        internal static string SeeAlsoHeadline {
+            get {
+                return ResourceManager.GetString("SeeAlsoHeadline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Summary ähnelt.
         /// </summary>
         internal static string SummaryHeadline {

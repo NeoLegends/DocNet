@@ -57,7 +57,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// Generates method documentation based on the given <see cref="System.Reflection.MethodInfo"/>, the current documentation node, the output 
         /// language and optionally a given culture to generate the output in
         /// </summary>
-        /// <param name="typeDetails">The <see cref="System.Type"/> for further information about the method to be documented</param>
+        /// <param name="methodDetails">The <see cref="System.Type"/> for further information about the method to be documented</param>
         /// <param name="documentationNode">The <see cref="System.Xml.XmlElement"/> containing all user-written documentation text</param>
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>

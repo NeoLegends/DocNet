@@ -120,18 +120,20 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <param name="typeDetails">The <see cref="System.Type"/> to generate the documentation from</param>
         /// <param name="documentationNode">The inner text of the .NET documentation node containing all custom documentation text</param>
         /// <param name="culture">The culture to generate the output in</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
         public string GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateTypeSignature(typeDetails), language);
+            return this.WriteSyntaxBox(this.GenerateTypeSignature(typeDetails, language), language);
         }
 
         /// <summary>
         /// Internal version of <see cref="M:DocNetPress.Development.Generator.Extensions.SummaryElement.SummaryElement.GetTypeDocumentation"/>
         /// </summary>
         /// <param name="typeDetails">The <see cref="System.Type"/> to generate the documentation from</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
-        private String GenerateTypeSignature(Type typeDetails)
+        private String GenerateTypeSignature(Type typeDetails, OutputLanguage language)
         {
             StringBuilder result = new StringBuilder(150);
 
@@ -181,20 +183,22 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <param name="methodDetails">The <see cref="System.Type"/> for further information about the method to be documented</param>
         /// <param name="documentationNode">The documentation code containing all user-written documentation text</param>
         /// <param name="culture">The culture to generate the documentation in</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
         public string GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateMethodSignature(methodDetails), language);
+            return this.WriteSyntaxBox(this.GenerateMethodSignature(methodDetails, language), language);
         }
 
         /// <summary>
         /// Generates the full method signature from the given <see cref="System.Reflection.MethodInfo"/>
         /// </summary>
         /// <param name="methodDetails">The <see cref="System.Reflection.MethodInfo"/> giving further information about the method</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>A nicely looking method signature</returns>
-        private String GenerateMethodSignature(MethodInfo methodDetails)
+        private String GenerateMethodSignature(MethodInfo methodDetails, OutputLanguage language)
         {
             StringBuilder result = new StringBuilder(150);
 
@@ -245,20 +249,22 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <param name="fieldDetails">The <see cref="System.Reflection.FieldInfo"/> providing further information about the field to document</param>
         /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
         /// <param name="culture">The culture to generate the documentation in</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
         public string GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateFieldSignature(fieldDetails), language);
+            return this.WriteSyntaxBox(this.GenerateFieldSignature(fieldDetails, language), language);
         }
 
         /// <summary>
         /// Internal version of <see cref="M:DocNetPress.Development.Generator.Extensions.SummaryElement.SummaryElement.GetFieldDocumentation"/>
         /// </summary>
         /// <param name="fieldDetails">The <see cref="System.Reflection.FieldInfo"/> to generate the documentation from</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
-        private String GenerateFieldSignature(FieldInfo fieldDetails)
+        private String GenerateFieldSignature(FieldInfo fieldDetails, OutputLanguage language)
         {
             StringBuilder result = new StringBuilder(100);
 
@@ -301,20 +307,22 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <param name="propertyDetails">Provides further information about the property to be documentated</param>
         /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
         /// <param name="culture">The culture to generate the documentation in</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
         public string GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GeneratePropertySignature(propertyDetails), language);
+            return this.WriteSyntaxBox(this.GeneratePropertySignature(propertyDetails, language), language);
         }
 
         /// <summary>
         /// Internal version of <see cref="M:DocNetPress.Development.Generator.Extensions.SummaryElement.SummaryElement.GetPropertyDocumentation"/>
         /// </summary>
         /// <param name="propertyDetails">The <see cref="System.Reflection.PropertyInfo"/> to generate the documentation from</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
-        private String GeneratePropertySignature(PropertyInfo propertyDetails)
+        private String GeneratePropertySignature(PropertyInfo propertyDetails, OutputLanguage language)
         {
             StringBuilder result = new StringBuilder(100);
 
@@ -383,21 +391,26 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// </returns>
         public string GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateEventSignature(eventDetails), language);
+            return this.WriteSyntaxBox(this.GenerateEventSignature(eventDetails, language), language);
         }
 
         /// <summary>
         /// Internal version of <see cref="M:DocNetPress.Development.Generator.Extensions.SummaryElement.SummaryElement.GetEventDocumentation"/>
         /// </summary>
         /// <param name="eventDetails">The <see cref="System.Reflection.EventInfo"/> to generate the documentation from</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
-        private String GenerateEventSignature(EventInfo eventDetails)
+        private String GenerateEventSignature(EventInfo eventDetails, OutputLanguage language)
         {
             StringBuilder result = new StringBuilder(100);
 
+            // Attributes
             result.AppendLine(this.GenerateAttributeSignature(eventDetails));
 
-
+            // Event signature
+            result.Append("public event ");
+            result.Append(eventDetails.EventHandlerType.Name + " ");
+            result.Append(eventDetails.Name + ";");
 
             return result.ToString();
         }
@@ -433,6 +446,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// Generates the standard syntax box from the given content
         /// </summary>
         /// <param name="content">The content to write into the syntax box</param>
+        /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>The finished HTML-Code</returns>
         private String WriteSyntaxBox(String content, OutputLanguage language)
         {

@@ -295,7 +295,46 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>The methods data type, name and a whitespace</returns>
         private String GetMethodDataTypeAndName(MethodInfo methodDetails)
         {
-            return (methodDetails.ReturnType.Name == "Void" ? "void " : methodDetails.ReturnType.Name) + " " + methodDetails.Name;
+            return this.GetSpecialAliases(methodDetails.ReturnType) + " " + methodDetails.Name;
+        }
+
+        /// <summary>
+        /// Checks whether the type is one of the primitive types and returns the C#-Alias
+        /// </summary>
+        /// <param name="type">The <see cref="System.Type"/> to get the C#-name of</param>
+        /// <returns>The name of the <see cref="System.Type"/> as it is used in C#</returns>
+        private String GetSpecialAliases(Type type)
+        {
+            if (type == typeof(bool))
+                return "bool";
+            else if (type == typeof(int))
+                return "int";
+            else if (type == typeof(uint))
+                return "uint";
+            else if (type == typeof(long))
+                return "long";
+            else if (type == typeof(ulong))
+                return "ulong";
+            else if (type == typeof(byte))
+                return "byte";
+            else if (type == typeof(sbyte))
+                return "sbyte";
+            else if (type == typeof(short))
+                return "short";
+            else if (type == typeof(ushort))
+                return "ushort";
+            else if (type == typeof(double))
+                return "double";
+            else if (type == typeof(float))
+                return "float";
+            else if (type == typeof(decimal))
+                return "decimal";
+            else if (type == typeof(char))
+                return "char";
+            else if (type == typeof(void))
+                return "void";
+            else
+                return type.Name;
         }
 
         /// <summary>
@@ -486,9 +525,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         {
             StringBuilder result = new StringBuilder(25);
 
-            if (accessor.IsPublic)
-                result.Append("public ");
-            else if (accessor.IsPrivate)
+            if (accessor.IsPrivate)
                 result.Append("private ");
             else if (accessor.IsFamilyOrAssembly)
                 result.Append("internal ");

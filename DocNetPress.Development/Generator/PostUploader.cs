@@ -65,14 +65,14 @@ namespace DocNetPress.Development.Generator
             this.WordPressXmlRpcApiUrl = wordPressXmlRpcApiUrl;
         }
 
-        public static String ResolveMemberNameToUrl(String fullMemberName)
+        public String ResolveMemberNameToUrl(String fullMemberName)
         {
-            throw new NotImplementedException();
+            
         }
 
-        public static Uri ResolveMemberNameToUri(String fullMemberName)
+        public Uri ResolveMemberNameToUri(String fullMemberName)
         {
-            return new Uri(PostUploader.ResolveMemberNameToUrl(fullMemberName));
+            return new Uri(this.ResolveMemberNameToUrl(fullMemberName));
         }
     }
 }

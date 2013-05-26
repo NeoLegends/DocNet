@@ -81,6 +81,22 @@ namespace DocNetPress.Development.Generator
         }
 
         /// <summary>
+        /// Backing field for Uploader
+        /// </summary>
+        private readonly PostUploader _Uploader = new PostUploader();
+
+        /// <summary>
+        /// A <see cref="DocNetPress.Development.Generator.PostUploader"/> instance for uploading all generated posts
+        /// </summary>
+        public PostUploader Uploader
+        {
+            get
+            {
+                return _Uploader;
+            }
+        }
+
+        /// <summary>
         /// Initializes an empty <see cref="DocNetPress.Development.Generator.PostGenerator"/>-Instance
         /// </summary>
         public PostGenerator()

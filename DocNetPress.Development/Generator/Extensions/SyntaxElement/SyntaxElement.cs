@@ -16,28 +16,6 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
     public class SyntaxElement : IPageElement
     {
         /// <summary>
-        /// Backing field for xmlDocument
-        /// </summary>
-        private XmlDocument _xmlDocument = new XmlDocument();
-
-        /// <summary>
-        /// An XmlDocument-Instance for easier dealing with XML
-        /// </summary>
-        private XmlDocument xmlDocument
-        {
-            get
-            {
-                if (_xmlDocument == null)
-                    _xmlDocument = new XmlDocument();
-                return _xmlDocument;
-            }
-            set
-            {
-                _xmlDocument = value;
-            }
-        }
-
-        /// <summary>
         /// Backing field for OutputField
         /// </summary>
         private OutputField _OutputField = OutputField.CrayonSyntaxHighlighter;
@@ -78,7 +56,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         }
 
         /// <summary>
-        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
         public string Name
         {
@@ -89,7 +67,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         }
 
         /// <summary>
-        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
         public bool SupportsCSharp
         {
@@ -100,7 +78,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         }
 
         /// <summary>
-        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
         public bool SupportsVBNET
         {
@@ -111,7 +89,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         }
 
         /// <summary>
-        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
         public bool SupportsFSharp
         {
@@ -122,7 +100,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         }
 
         /// <summary>
-        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
         public bool SupportsJScript
         {
@@ -143,7 +121,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <param name="documentationNode">The inner text of the .NET documentation node containing all custom documentation text</param>
         /// <param name="culture">The culture to generate the output in</param>
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
-        public string GetTypeDocumentation(Type typeDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.WriteSyntaxBox(this.GenerateTypeSignature(typeDetails), language);
         }
@@ -206,7 +184,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
-        public string GetMethodDocumentation(MethodInfo methodDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.WriteSyntaxBox(this.GenerateMethodSignature(methodDetails), language);
         }
@@ -270,7 +248,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
-        public string GetFieldDocumentation(FieldInfo fieldDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.WriteSyntaxBox(this.GenerateFieldSignature(fieldDetails), language);
         }
@@ -326,7 +304,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
-        public string GetPropertyDocumentation(PropertyInfo propertyDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.WriteSyntaxBox(this.GeneratePropertySignature(propertyDetails), language);
         }
@@ -403,7 +381,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
-        public string GetEventDocumentation(EventInfo eventDetails, string documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.WriteSyntaxBox(this.GenerateEventSignature(eventDetails), language);
         }
@@ -426,12 +404,25 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
 
         #endregion
 
+        #region Namespace Documentation
+
+        /// <summary>
+        /// The <see cref="DocNetPress.Development.Generator.Extensions.SyntaxElement.SyntaxElement"/> does not support namespace syntax as there is no
+        /// special syntax for namespaces
+        /// </summary>
+        public string GetNamespaceDocumentation(string nameSpace, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        {
+            return null;
+        }
+
+        #endregion
+
         #region Error Documentation
 
         /// <summary>
         /// The <see cref="DocNetPress.Development.Generator.Extensions.SyntaxElement.SyntaxElement"/> does not support resolving unresolved paths
         /// </summary>
-        public string GetErrorDocumentation(string assemblyPath, string fullMemberName, string documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetErrorDocumentation(string assemblyPath, string fullMemberName, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return null;
         }

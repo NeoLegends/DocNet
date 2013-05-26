@@ -18,28 +18,6 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
     public class SummaryElement : IPageElement
     {
         /// <summary>
-        /// Backing field for xmlDocument
-        /// </summary>
-        private XmlDocument _xmlDocument = new XmlDocument();
-
-        /// <summary>
-        /// An XmlDocument-Instance for easier dealing with XML
-        /// </summary>
-        private XmlDocument xmlDocument
-        {
-            get
-            {
-                if (_xmlDocument == null)
-                    _xmlDocument = new XmlDocument();
-                return _xmlDocument;
-            }
-            set
-            {
-                _xmlDocument = value;
-            }
-        }
-
-        /// <summary>
         /// Backing field for SummaryNodeName
         /// </summary>
         private String _SummaryNodeName = "summary";
@@ -80,7 +58,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         }
 
         /// <summary>
-        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
         public string Name
         {
@@ -91,7 +69,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         }
 
         /// <summary>
-        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
         public bool SupportsCSharp
         {
@@ -102,7 +80,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         }
 
         /// <summary>
-        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
         public bool SupportsVBNET
         {
@@ -113,7 +91,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         }
 
         /// <summary>
-        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
         public bool SupportsFSharp
         {
@@ -124,7 +102,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         }
 
         /// <summary>
-        /// Derived from <see cref="DocNetPress.Generator.Extensions.IPageElement"/>
+        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
         public bool SupportsJScript
         {
@@ -139,14 +117,13 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         /// </summary>
         /// <param name="nodeContent">The content of the node currently being parsed</param>
         /// <returns>Valid HTML-Code ready for insertion into the Post</returns>
-        private String GetPostContent(String nodeContent)
+        private String GetPostContent(XmlElement nodeContent)
         {
             // Load up the Xml Code and get the summary node
-            xmlDocument.LoadXml(nodeContent);
-            String summary = xmlDocument.SelectSingleNode("./" + this.SummaryNodeName).InnerText;
+            String summary = nodeContent.SelectSingleNode("./" + this.SummaryNodeName).InnerText;
 
             // If summary is null, we have no summary node available so we return null just as requested
-            if (summary != null)
+            if (!String.IsNullOrEmpty(summary) || !String.IsNullOrWhiteSpace(summary))
             {
                 // Compose the HTML-Code and return it
                 using (StringWriter sw = new StringWriter())
@@ -163,98 +140,113 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         }
 
         /// <summary>
-        /// Generates documentation based on the given <see cref="System.Type"/>, the inner text of the documentation XmlNode currently being parsed
-        /// and a given culture to generate the output in
+        /// Outputs the documentation summary of the given <see cref="System.Type"/>
         /// </summary>
-        /// <param name="typeDetails">The <see cref="System.Type"/> for further information about the kind of type to be documented</param>
-        /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
-        /// <param name="culture">The culture to generate the documentation in</param>
-        /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// is not able to parse the given input
-        /// </returns>
-        public String GetTypeDocumentation(Type type, String documentationNode, CultureInfo culture = null)
+        /// <param name="typeDetails">A <see cref="System.Type"/> instance for the given type to document</param>
+        /// <param name="documentationNode">An <see cref="System.Xml.XmlElement"/> instance for access to the XML documentation node</param>
+        /// <param name="language">
+        /// The <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/> determining the programming language any generated
+        /// code shall be outputted in
+        /// </param>
+        /// <param name="culture">A <see cref="System.Globalization.CultureInfo"/> giving the desired output culture</param>
+        /// <returns>HTML code of the type summary ready to insert into the WordPress post</returns>
+        public string GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.GetPostContent(documentationNode);
         }
 
         /// <summary>
-        /// Generates documentation based on the given <see cref="System.Reflection.MethodInfo"/>, the inner text of the documentation XmlNode currently being parsed
-        /// and a given culture to generate the output in
+        /// Outputs the documentation summary of the given method
         /// </summary>
-        /// <param name="typeDetails">The <see cref="System.Type"/> for further information about the method to be documented</param>
-        /// <param name="documentationNode">The documentation code containing all user-written documentation text</param>
-        /// <param name="culture">The culture to generate the documentation in</param>
-        /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// is not able to parse the given input
-        /// </returns>
-        public string GetMethodDocumentation(MethodInfo methodDetails, string documentationNode, CultureInfo culture = null)
+        /// <param name="methodDetails">A <see cref="System.Reflection.MethodInfo"/> for further information about the method to document</param>
+        /// <param name="documentationNode">An <see cref="System.Xml.XmlElement"/> instance for access to the XML documentation node</param>
+        /// <param name="language">
+        /// The <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/> determining the programming language any generated
+        /// code shall be outputted in
+        /// </param>
+        /// <param name="culture">A <see cref="System.Globalization.CultureInfo"/> giving the desired output culture</param>
+        /// <returns>HTML code of the method summary ready to insert into the WordPress post</returns>
+        public string GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.GetPostContent(documentationNode);
         }
 
         /// <summary>
-        /// Generates documentation based on the given <see cref="System.Reflection.FieldInfo"/>, the inner text of the documentation XmlNode currently being parsed
-        /// and optionally a given culture to generate the output in
+        /// Outputs the documentation summary of the given field
         /// </summary>
-        /// <param name="fieldDetails">The <see cref="System.Reflection.FieldInfo"/> providing further information about the field to document</param>
-        /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
-        /// <param name="culture">The culture to generate the documentation in</param>
-        /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// is not able to parse the given input
-        /// </returns>
-        public string GetFieldDocumentation(FieldInfo fieldDetails, string documentationNode, CultureInfo culture = null)
+        /// <param name="methodDetails">A <see cref="System.Reflection.FieldInfo"/> for further information about the field to document</param>
+        /// <param name="documentationNode">An <see cref="System.Xml.XmlElement"/> instance for access to the XML documentation node</param>
+        /// <param name="language">
+        /// The <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/> determining the programming language any generated
+        /// code shall be outputted in
+        /// </param>
+        /// <param name="culture">A <see cref="System.Globalization.CultureInfo"/> giving the desired output culture</param>
+        /// <returns>HTML code of the method summary ready to insert into the WordPress post</returns>
+        public string GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.GetPostContent(documentationNode);
         }
 
         /// <summary>
-        /// Generates documentation based on the given <see cref="System.Reflection.PropertyInfo"/>, the inner text of the documentation XmlNode currently being parsed
-        /// and optionally a given culture to generate the output in
+        /// Outputs the documentation summary of the given property
         /// </summary>
-        /// <param name="propertyDetails">Provides further information about the property to be documentated</param>
-        /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
-        /// <param name="culture">The culture to generate the documentation in</param>
-        /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// is not able to parse the given input
-        /// </returns>
-        public string GetPropertyDocumentation(PropertyInfo propertyDetails, string documentationNode, CultureInfo culture = null)
+        /// <param name="methodDetails">A <see cref="System.Reflection.PropertyInfo"/> for further information about the property to document</param>
+        /// <param name="documentationNode">An <see cref="System.Xml.XmlElement"/> instance for access to the XML documentation node</param>
+        /// <param name="language">
+        /// The <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/> determining the programming language any generated
+        /// code shall be outputted in
+        /// </param>
+        /// <param name="culture">A <see cref="System.Globalization.CultureInfo"/> giving the desired output culture</param>
+        /// <returns>HTML code of the method summary ready to insert into the WordPress post</returns>
+        public string GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.GetPostContent(documentationNode);
         }
 
         /// <summary>
-        /// Generates documentation based on the given <see cref="System.Reflection.EventInfo"/>, the inner text of the documentation XmlNode currently being parsed
-        /// and optionally a given culture to generate the output in
+        /// Outputs the documentation summary of the given event
         /// </summary>
-        /// <param name="eventDetails"><see cref="System.Reflection.EventInfo"/> containing further data about the event to document</param>
-        /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
-        /// <param name="culture">The culture to generate the documentation in</param>
-        /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// is not able to parse the given input
-        /// </returns>
-        public string GetEventDocumentation(EventInfo eventDetails, string documentationNode, CultureInfo culture = null)
+        /// <param name="methodDetails">A <see cref="System.Reflection.EventInfo"/> for further information about the event to document</param>
+        /// <param name="documentationNode">An <see cref="System.Xml.XmlElement"/> instance for access to the XML documentation node</param>
+        /// <param name="language">
+        /// The <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/> determining the programming language any generated
+        /// code shall be outputted in
+        /// </param>
+        /// <param name="culture">A <see cref="System.Globalization.CultureInfo"/> giving the desired output culture</param>
+        /// <returns>HTML code of the method summary ready to insert into the WordPress post</returns>
+        public string GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.GetPostContent(documentationNode);
         }
 
         /// <summary>
-        /// This method is fired when there's a reference inside the XML documentation code the compiler couldn't resolve at compile time, so it's not determined what
-        /// the documentated element actually is. (It can be a type, field, property, event, etc) I leave it up to you to deal with those cases
+        /// Outputs the documentation summary of the given namespace
         /// </summary>
-        /// <param name="assemblyPath">The path to the assembly the documentation code belongs to</param>
-        /// <param name="fullMemberName">The full name of the member that failed to document</param>
-        /// <param name="documentationNode">The documentation node containing all user-written documentation text</param>
-        /// <param name="culture">The culture to generate the documentation in</param>
-        /// <returns>
-        /// Generated HTML-Code from the given documentation node or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// is not able to parse the given input
-        /// </returns>
-        public string GetErrorDocumentation(string assemblyPath, string memberAttributeText, string documentationNode, CultureInfo culture = null)
+        /// <param name="methodDetails">A <see cref="System.Reflection.EventInfo"/> for further information about the namespace to document</param>
+        /// <param name="documentationNode">An <see cref="System.Xml.XmlElement"/> instance for access to the XML documentation node</param>
+        /// <param name="language">
+        /// The <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/> determining the programming language any generated
+        /// code shall be outputted in
+        /// </param>
+        /// <param name="culture">A <see cref="System.Globalization.CultureInfo"/> giving the desired output culture</param>
+        /// <returns>HTML code of the method summary ready to insert into the WordPress post</returns>
+        public string GetNamespaceDocumentation(string nameSpace, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        {
+            return this.GetPostContent(documentationNode);
+        }
+
+        /// <summary>
+        /// Outputs the documentation summary of the given unresolved documentation element
+        /// </summary>
+        /// <param name="methodDetails">A <see cref="System.Reflection.EventInfo"/> for further information about the unresolved element to document</param>
+        /// <param name="documentationNode">An <see cref="System.Xml.XmlElement"/> instance for access to the XML documentation node</param>
+        /// <param name="language">
+        /// The <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/> determining the programming language any generated
+        /// code shall be outputted in
+        /// </param>
+        /// <param name="culture">A <see cref="System.Globalization.CultureInfo"/> giving the desired output culture</param>
+        /// <returns>HTML code of the method summary ready to insert into the WordPress post</returns>
+        public string GetErrorDocumentation(string assemblyPath, string fullMemberName, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
             return this.GetPostContent(documentationNode);
         }

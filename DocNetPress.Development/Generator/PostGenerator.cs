@@ -64,10 +64,10 @@ namespace DocNetPress.Development.Generator
         public String CustomPostTypeName { get; set; }
 
         /// <summary>
-        /// The <see cref="DocNetPress.Generator.Extensions.IPageElement"/> at the specific index
+        /// The <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> at the specific index
         /// </summary>
-        /// <param name="index">The index of the <see cref="DocNetPress.Generator.Extensions.IPageElement"/></param>
-        /// <returns>The <see cref="DocNetPress.Generator.Extensions.IPageElement"/> at the given index</returns>
+        /// <param name="index">The index of the <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/></param>
+        /// <returns>The <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> at the given index</returns>
         public IPageElement this[int index]
         {
             get
@@ -132,43 +132,43 @@ namespace DocNetPress.Development.Generator
         }
 
         /// <summary>
-        /// Adds an <see cref="DocNetPress.Generator.Extensions.IPageElement"/> to the list of generators
+        /// Adds an <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> to the list of generators
         /// </summary>
-        /// <param name="element">The <see cref="DocNetPress.Generator.Extensions.IPageElement"/> to add</param>
+        /// <param name="element">The <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> to add</param>
         public void AddPageElement(IPageElement element)
         {
             this.PageElements.Add(element);
         }
 
         /// <summary>
-        /// Adds a range of <see cref="DocNetPress.Generator.Extensions.IPageElement"/> to the list of generators
+        /// Adds a range of <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> to the list of generators
         /// </summary>
-        /// <param name="element">The <see cref="DocNetPress.Generator.Extensions.IPageElement"/>s to add</param>
+        /// <param name="element">The <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>s to add</param>
         public void AddPageElement(IEnumerable<IPageElement> elements)
         {
             this.PageElements.AddRange(elements);
         }
 
         /// <summary>
-        /// Adds an <see cref="DocNetPress.Generator.Extensions.IPageElement"/> to the list of generators at a given index
+        /// Adds an <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> to the list of generators at a given index
         /// </summary>
-        /// <param name="element">The <see cref="DocNetPress.Generator.Extensions.IPageElement"/> to add</param>
+        /// <param name="element">The <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> to add</param>
         public void AddPageElement(int index, IPageElement element)
         {
             this.PageElements.Insert(index, element);
         }
 
         /// <summary>
-        /// Adds a range of <see cref="DocNetPress.Generator.Extensions.IPageElement"/> to the list of generators at a given index
+        /// Adds a range of <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> to the list of generators at a given index
         /// </summary>
-        /// <param name="element">The <see cref="DocNetPress.Generator.Extensions.IPageElement"/>s to add</param>
+        /// <param name="element">The <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>s to add</param>
         public void AddPageElement(int index, IEnumerable<IPageElement> elements)
         {
             this.PageElements.InsertRange(index, elements);
         }
 
         /// <summary>
-        /// Removes all <see cref="DocNetPress.Generator.Extensions.IPageElement"/>s
+        /// Removes all <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>s
         /// </summary>
         public void ClearPageElements()
         {

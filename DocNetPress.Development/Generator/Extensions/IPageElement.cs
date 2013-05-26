@@ -12,6 +12,10 @@ namespace DocNetPress.Development.Generator.Extensions
     /// <summary>
     /// Allows an object to be used as type page element generator for DocNetPress
     /// </summary>
+    /// <remarks>
+    /// If you can't return any documentation code / text for the given input, simply return null. Also make sure you don't change nodes
+    /// with the cref attribute, they will be resolved into links to the other documentation pages after the page has been put together.
+    /// </remarks>
     public interface IPageElement
     {
         /// <summary>
@@ -53,8 +57,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// is not able to parse the given input
+        /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
         String GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
 
@@ -67,8 +70,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// is not able to parse the given input
+        /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
         String GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
 
@@ -81,8 +83,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// is not able to parse the given input
+        /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
         String GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
 
@@ -95,8 +96,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// is not able to parse the given input
+        /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
         String GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
 
@@ -109,8 +109,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// is not able to parse the given input
+        /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
         String GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
 
@@ -123,8 +122,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Generated HTML-Code from the given documentation node or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// is not able to parse the given input
+        /// Generated HTML-Code from the given documentation node
         /// </returns>
         String GetNamespaceDocumentation(String nameSpace, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
 
@@ -138,8 +136,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Generated HTML-Code from the given documentation node or null if your <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// is not able to parse the given input
+        /// Generated HTML-Code from the given documentation node
         /// </returns>
         String GetErrorDocumentation(String assemblyPath, String fullMemberName, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
     }

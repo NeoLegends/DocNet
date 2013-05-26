@@ -16,25 +16,25 @@ namespace DocNetPress.Development.XmlRpc.Taxonomies
         /// The term's name
         /// </summary>
         [XmlRpcMember("name")]
-        String Name;
+        public String Name;
 
         /// <summary>
         /// The term's slug
         /// </summary>
         [XmlRpcMember("slug")]
-        String Slug;
+        public String Slug;
 
         /// <summary>
         /// The term's taxonomy
         /// </summary>
         [XmlRpcMember("taxonomy")]
-        String Taxonomy;
+        public String Taxonomy;
 
         /// <summary>
         /// The term's description
         /// </summary>
         [XmlRpcMember("description")]
-        String Description;
+        public String Description;
 
         /// <summary>
         /// Creates a new instance

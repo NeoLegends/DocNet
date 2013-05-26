@@ -18,13 +18,13 @@ namespace DocNetPress.Development.XmlRpc.Taxonomies
         /// The taxonomy's name
         /// </summary>
         [XmlRpcMember("name")]
-        String Name;
+        public String Name;
 
         /// <summary>
         /// The taxonomy's label
         /// </summary>
         [XmlRpcMember("label")]
-        String Label;
+        public String Label;
 
         /// <summary>
         /// Whether the taxonomy is hierarchially sorted or not

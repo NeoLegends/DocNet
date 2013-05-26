@@ -178,7 +178,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// Generates documentation based on the given <see cref="System.Reflection.MethodInfo"/>, the inner text of the documentation XmlNode currently being parsed
         /// and a given culture to generate the output in
         /// </summary>
-        /// <param name="typeDetails">The <see cref="System.Type"/> for further information about the method to be documented</param>
+        /// <param name="methodDetails">The <see cref="System.Type"/> for further information about the method to be documented</param>
         /// <param name="documentationNode">The documentation code containing all user-written documentation text</param>
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <returns>

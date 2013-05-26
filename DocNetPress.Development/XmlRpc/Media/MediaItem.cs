@@ -11,34 +11,34 @@ namespace DocNetPress.Development.XmlRpc.Media
     public class MediaItem
     {
         [XmlRpcMember("title")]
-        String Title;
+        public String Title;
 
         [XmlRpcMember("link")]
-        String Link;
+        public String Link;
 
         [XmlRpcMember("caption")]
-        String Caption;
+        public String Caption;
 
         [XmlRpcMember("description")]
-        String Description;
+        public String Description;
 
         [XmlRpcMember("date_created_gmt")]
-        DateTime DateGMT;
+        public DateTime DateGMT;
 
         [XmlRpcMember("attachment_id")]
-        String AttachmentID;
+        public String AttachmentID;
 
         [XmlRpcMember("parent")]
-        int Parent;
+        public int Parent;
 
         [XmlRpcMember("thumbnail")]
-        String Thumbnail;
+        public String Thumbnail;
 
         [XmlRpcMember("metadata")]
-        MediaItemMetadata Metadata;
+        public MediaItemMetadata Metadata;
 
         [XmlRpcMember("image_meta")]
-        PostThumbnailImageMeta ImageMeta;
+        public PostThumbnailImageMeta ImageMeta;
 
         /// <summary>
         /// Creates a new instance

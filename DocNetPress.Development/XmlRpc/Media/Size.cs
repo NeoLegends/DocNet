@@ -11,12 +11,12 @@ namespace DocNetPress.Development.XmlRpc.Media
     public struct Sizes
     {
         [XmlRpcMember("thumbnail")]
-        MediaItemSize Thumbnail;
+        public MediaItemSize Thumbnail;
 
         [XmlRpcMember("medium")]
-        MediaItemSize Medium;
+        public MediaItemSize Medium;
 
         [XmlRpcMember("large")]
-        MediaItemSize Large;
+        public MediaItemSize Large;
     }
 }

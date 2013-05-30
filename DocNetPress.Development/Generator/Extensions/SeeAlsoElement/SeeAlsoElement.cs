@@ -10,22 +10,11 @@ using System.Xml;
 namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
 {
     /// <summary>
-    /// An <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> generating the 
+    /// An <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/> generating the "See also" part of the page
     /// </summary>
     [Serializable]
     public class SeeAlsoElement : IPageElement
     {
-        /// <summary>
-        /// The PageElement's name
-        /// </summary>
-        public string Name
-        {
-            get 
-            {
-                return "SeeAlsoElement";
-            }
-        }
-
         /// <summary>
         /// Backing field for HeadlineLevel
         /// </summary>
@@ -69,53 +58,9 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// <summary>
         /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
-        public bool SupportsCSharp
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
-        public bool SupportsVBNET
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
-        public bool SupportsFSharp
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
-        public bool SupportsJScript
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
         public string GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GenerateSeeAlsoElement(documentationNode);
+            return this.GenerateSeeAlsoElement(documentationNode, culture);
         }
 
         /// <summary>
@@ -123,7 +68,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// </summary>
         public string GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GenerateSeeAlsoElement(documentationNode);
+            return this.GenerateSeeAlsoElement(documentationNode, culture);
         }
 
         /// <summary>
@@ -131,7 +76,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// </summary>
         public string GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GenerateSeeAlsoElement(documentationNode);
+            return this.GenerateSeeAlsoElement(documentationNode, culture);
         }
 
         /// <summary>
@@ -139,7 +84,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// </summary>
         public string GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GenerateSeeAlsoElement(documentationNode);
+            return this.GenerateSeeAlsoElement(documentationNode, culture);
         }
 
         /// <summary>
@@ -147,7 +92,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// </summary>
         public string GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GenerateSeeAlsoElement(documentationNode);
+            return this.GenerateSeeAlsoElement(documentationNode, culture);
         }
 
         /// <summary>
@@ -155,7 +100,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// </summary>
         public string GetNamespaceDocumentation(string nameSpace, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GenerateSeeAlsoElement(documentationNode);
+            return this.GenerateSeeAlsoElement(documentationNode, culture);
         }
 
         /// <summary>
@@ -163,19 +108,25 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// </summary>
         public string GetErrorDocumentation(string assemblyPath, string fullMemberName, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GenerateSeeAlsoElement(documentationNode);
+            return this.GenerateSeeAlsoElement(documentationNode, culture);
         }
 
-        private String GenerateSeeAlsoElement(XmlElement documentationNode)
+        /// <summary>
+        /// Generstes the see also part of a page of the given <see cref="System.Xml.XmlElement"/> and the given <see cref="System.Globalization.CultureInfo"/>
+        /// </summary>
+        /// <param name="documentationNode"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
+        private String GenerateSeeAlsoElement(XmlElement documentationNode, CultureInfo culture = null)
         {
             XmlNodeList nodes = documentationNode.SelectNodes("./" + this.SeeAlsoNodeName);
             if (nodes.Count > 0)
-                return this.WriteSeeAlsoNodes(nodes);
+                return this.WriteSeeAlsoNodes(nodes, culture);
             else
                 return null;
         }
 
-        private String WriteSeeAlsoNodes(XmlNodeList nodes)
+        private String WriteSeeAlsoNodes(XmlNodeList nodes, CultureInfo culture = null)
         {
             StringBuilder result = new StringBuilder(200);
 
@@ -183,7 +134,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
             using (var xWriter = XmlWriter.Create(sw))
             {
                 xWriter.Settings.Indent = true;
-                xWriter.WriteElementString(HeadlineLevel.ToString(), Strings.SeeAlsoHeadline);
+                xWriter.WriteElementString(HeadlineLevel.ToString(), (culture != null ? Strings.ResourceManager.GetString("SeeAlsoHeadline", culture) : Strings.SeeAlsoHeadline));
 
                 xWriter.WriteStartElement("ul");
                 foreach (XmlNode node in nodes)

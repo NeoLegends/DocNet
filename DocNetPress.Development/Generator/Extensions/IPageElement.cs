@@ -24,29 +24,9 @@ namespace DocNetPress.Development.Generator.Extensions
         String Name { get; }
 
         /// <summary>
-        /// The size of the headline
+        /// The size of the headline to use
         /// </summary>
         HeadlineLevel HeadlineLevel { set; }
-
-        /// <summary>
-        /// Whether the element can output C# code or not
-        /// </summary>
-        bool SupportsCSharp { get; }
-
-        /// <summary>
-        /// Whether the element can output VB.NET code or not
-        /// </summary>
-        bool SupportsVBNET { get; }
-
-        /// <summary>
-        /// Whether the element can output F# code or not
-        /// </summary>
-        bool SupportsFSharp { get; }
-
-        /// <summary>
-        /// Whether the element can output JScript or not
-        /// </summary>
-        bool SupportsJScript { get; }
 
         /// <summary>
         /// Generates type documentation based on the given <see cref="System.Type"/>, the current documentation node, the output 
@@ -57,7 +37,8 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post
+        /// Valid HTML-Code ready to insert into a WordPress post (or null if the your generator wasn't able to output code into or your generator
+        /// can not parse the given input at all)
         /// </returns>
         String GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
 
@@ -70,7 +51,8 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post
+        /// Valid HTML-Code ready to insert into a WordPress post (or null if the your generator wasn't able to output code into or your generator
+        /// can not parse the given input at all)
         /// </returns>
         String GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
 
@@ -83,7 +65,8 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post
+        /// Valid HTML-Code ready to insert into a WordPress post (or null if the your generator wasn't able to output code into or your generator
+        /// can not parse the given input at all)
         /// </returns>
         String GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
 
@@ -96,7 +79,8 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post
+        /// Valid HTML-Code ready to insert into a WordPress post (or null if the your generator wasn't able to output code into or your generator
+        /// can not parse the given input at all)
         /// </returns>
         String GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
 
@@ -109,7 +93,8 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Valid HTML-Code ready to insert into a WordPress post
+        /// Valid HTML-Code ready to insert into a WordPress post (or null if the your generator wasn't able to output code into or your generator
+        /// can not parse the given input at all)
         /// </returns>
         String GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
 
@@ -122,7 +107,8 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Generated HTML-Code from the given documentation node
+        /// Generated HTML-Code from the given documentation node (or null if the your generator wasn't able to output code into or your generator
+        /// can not parse the given input at all)
         /// </returns>
         String GetNamespaceDocumentation(String nameSpace, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
 
@@ -136,7 +122,8 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <param name="culture">The culture to generate the documentation in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>
-        /// Generated HTML-Code from the given documentation node
+        /// Generated HTML-Code from the given documentation node (or null if the your generator wasn't able to output code into or your generator
+        /// can not parse the given input at all)
         /// </returns>
         String GetErrorDocumentation(String assemblyPath, String fullMemberName, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
     }

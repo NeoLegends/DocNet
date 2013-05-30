@@ -56,61 +56,6 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         }
 
         /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
-        public string Name
-        {
-            get 
-            {
-                return "SyntaxElement"; 
-            }
-        }
-
-        /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
-        public bool SupportsCSharp
-        {
-            get
-            { 
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
-        public bool SupportsVBNET
-        {
-            get 
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
-        public bool SupportsFSharp
-        {
-            get 
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
-        public bool SupportsJScript
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
         /// Initializes a new <see cref="DocNetPress.Development.Generator.Extensions.SyntaxElement.SyntaxElement"/>
         /// </summary>
         public SyntaxElement() { }

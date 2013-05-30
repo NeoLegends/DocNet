@@ -58,61 +58,6 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         }
 
         /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                return "SummaryElement";
-            }
-        }
-
-        /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
-        public bool SupportsCSharp
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
-        public bool SupportsVBNET
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
-        public bool SupportsFSharp
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
-        /// </summary>
-        public bool SupportsJScript
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
         /// Initializes a new <see cref="DocNetPress.Development.Generator.Extensions.SummaryElement.SummaryElement"/>
         /// </summary>
         public SummaryElement() { }
@@ -130,9 +75,9 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         /// </summary>
         /// <param name="nodeContent">The content of the node currently being parsed</param>
         /// <returns>Valid HTML-Code ready for insertion into the Post</returns>
-        private String GetPostContent(XmlElement nodeContent)
+        private String GetPostContent(XmlElement nodeContent, CultureInfo culture = null)
         {
-            // Load up the Xml Code and get the summary node
+            // Get the summary node
             String summary = nodeContent.SelectSingleNode("./" + this.SummaryNodeName).InnerText;
 
             // If summary is null, we have no summary node available so we return null just as requested
@@ -142,7 +87,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
                 using (StringWriter sw = new StringWriter())
                 using (var xWriter = XmlWriter.Create(sw))
                 {
-                    xWriter.WriteElementString(HeadlineLevel.ToString(), Strings.SummaryHeadline);
+                    xWriter.WriteElementString(HeadlineLevel.ToString(), (culture != null ? Strings.ResourceManager.GetString("SummaryHeadline", culture) :Strings.SummaryHeadline));
                     xWriter.WriteString(Environment.NewLine + summary);
 
                     return sw.ToString();
@@ -165,7 +110,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         /// <returns>HTML code of the type summary ready to insert into the WordPress post</returns>
         public string GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GetPostContent(documentationNode);
+            return this.GetPostContent(documentationNode, culture);
         }
 
         /// <summary>
@@ -181,7 +126,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         /// <returns>HTML code of the method summary ready to insert into the WordPress post</returns>
         public string GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GetPostContent(documentationNode);
+            return this.GetPostContent(documentationNode, culture);
         }
 
         /// <summary>
@@ -197,7 +142,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         /// <returns>HTML code of the method summary ready to insert into the WordPress post</returns>
         public string GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GetPostContent(documentationNode);
+            return this.GetPostContent(documentationNode, culture);
         }
 
         /// <summary>
@@ -213,7 +158,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         /// <returns>HTML code of the method summary ready to insert into the WordPress post</returns>
         public string GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GetPostContent(documentationNode);
+            return this.GetPostContent(documentationNode, culture);
         }
 
         /// <summary>
@@ -229,7 +174,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         /// <returns>HTML code of the method summary ready to insert into the WordPress post</returns>
         public string GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GetPostContent(documentationNode);
+            return this.GetPostContent(documentationNode, culture);
         }
 
         /// <summary>
@@ -245,7 +190,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         /// <returns>HTML code of the method summary ready to insert into the WordPress post</returns>
         public string GetNamespaceDocumentation(string nameSpace, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GetPostContent(documentationNode);
+            return this.GetPostContent(documentationNode, culture);
         }
 
         /// <summary>
@@ -262,7 +207,7 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         /// <returns>HTML code of the method summary ready to insert into the WordPress post</returns>
         public string GetErrorDocumentation(string assemblyPath, string fullMemberName, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.GetPostContent(documentationNode);
+            return this.GetPostContent(documentationNode, culture);
         }
     }
 }

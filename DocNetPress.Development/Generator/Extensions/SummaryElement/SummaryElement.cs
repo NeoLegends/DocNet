@@ -81,13 +81,13 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
             String summary = nodeContent.SelectSingleNode("./" + this.SummaryNodeName).InnerText;
 
             // If summary is null, we have no summary node available so we return null just as requested
-            if (!String.IsNullOrEmpty(summary) || !String.IsNullOrWhiteSpace(summary))
+            if (!String.IsNullOrEmpty(summary) && !String.IsNullOrWhiteSpace(summary))
             {
                 // Compose the HTML-Code and return it
                 using (StringWriter sw = new StringWriter())
                 using (var xWriter = XmlWriter.Create(sw))
                 {
-                    xWriter.WriteElementString(HeadlineLevel.ToString(), (culture != null ? Strings.ResourceManager.GetString("SummaryHeadline", culture) :Strings.SummaryHeadline));
+                    xWriter.WriteElementString(HeadlineLevel.ToString(), Strings.ResourceManager.GetString("SummaryHeadline", culture));
                     xWriter.WriteString(Environment.NewLine + summary);
 
                     return sw.ToString();

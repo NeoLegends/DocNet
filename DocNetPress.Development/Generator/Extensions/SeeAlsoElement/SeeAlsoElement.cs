@@ -134,7 +134,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
             using (var xWriter = XmlWriter.Create(sw))
             {
                 xWriter.Settings.Indent = true;
-                xWriter.WriteElementString(HeadlineLevel.ToString(), (culture != null ? Strings.ResourceManager.GetString("SeeAlsoHeadline", culture) : Strings.SeeAlsoHeadline));
+                xWriter.WriteElementString(HeadlineLevel.ToString(), Strings.ResourceManager.GetString("SeeAlsoHeadline", culture));
 
                 xWriter.WriteStartElement("ul");
                 foreach (XmlNode node in nodes)

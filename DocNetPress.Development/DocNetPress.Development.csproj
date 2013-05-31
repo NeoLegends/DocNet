@@ -50,9 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Generator\Extensions\ElementGenerator.cs" />
     <Compile Include="Generator\Extensions\HeadlineLevel.cs" />
     <Compile Include="Generator\Extensions\OutputLanguage.cs" />
-    <Compile Include="Generator\Extensions\PageElementGenerator.cs" />
     <Compile Include="Generator\Extensions\SeeAlsoElement\SeeAlsoElement.cs" />
     <Compile Include="Generator\Extensions\Strings.Designer.cs">
       <AutoGen>True</AutoGen>

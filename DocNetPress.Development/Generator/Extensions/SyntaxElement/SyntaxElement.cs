@@ -82,7 +82,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
         public string GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateTypeSignature(typeDetails, language), language);
+            return this.WriteSyntaxBox(this.GenerateTypeSignature(typeDetails, language), language, culture);
         }
 
         /// <summary>
@@ -95,73 +95,11 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         {
             StringBuilder result = new StringBuilder(150);
 
-            result.AppendLine(this.GetAttributeSignature(typeDetails));
-            result.Append(this.GetTypeAccessModificatorsAndTypes(typeDetails));
-            result.Append(typeDetails.Name + " ");
-            result.Append(this.GetTypeGenericSignature(typeDetails));
-            result.Append(this.GetTypeInheritanceSignature(typeDetails));
-
-            return result.ToString();
-        }
-
-        /// <summary>
-        /// Generates the access modificator signature of the given <see cref="System.Type"/> and adds "class", "interface", "enum", etc
-        /// </summary>
-        /// <param name="typeDetails">The <see cref="System.Type"/> to generate the access modificator signature from</param>
-        /// <returns>The access modificator signature of the given <see cref="System.Type"/></returns>
-        private String GetTypeAccessModificatorsAndTypes(Type typeDetails)
-        {
-            StringBuilder result = new StringBuilder(35);
-
-            if (typeDetails.IsClass)
-                result.Append("public " + (typeDetails.IsAbstract ? "abstract " : (typeDetails.IsSealed ? "sealed " : null)) + "class ");
-            else if (typeDetails.IsInterface)
-                result.Append("public interface ");
-            else if (typeDetails.IsEnum)
-                result.Append("public enum ");
-            else if (typeDetails.IsValueType)
-                result.Append("public struct ");
-
-            return result.ToString();
-        }
-
-        /// <summary>
-        /// Generates the generic signature of the given <see cref="System.Type"/>
-        /// </summary>
-        /// <param name="typeDetails">The <see cref="System.Type"/> to generate the generic signature from</param>
-        /// <returns>The generic signature of the given <see cref="System.Type"/></returns>
-        private String GetTypeGenericSignature(Type typeDetails)
-        {
-            if (typeDetails.IsGenericType)
-            {
-                StringBuilder result = new StringBuilder(50);
-
-                result.Append("<");
-                String genericParameterSignature = String.Join(", ", typeDetails.GetGenericArguments().Select(t => t.Name));
-                result.Append(genericParameterSignature);
-                result.Append(">");
-
-                return result.ToString();
-            }
-            else
-                return null;
-        }
-
-        /// <summary>
-        /// Generates the inheritance signature of the given <see cref="System.Type"/>
-        /// </summary>
-        /// <param name="typeDetails">The <see cref="System.Type"/> to generate the inhericante signature from</param>
-        /// <returns>The inheritance signature of the given <see cref="System.Type"/></returns>
-        private String GetTypeInheritanceSignature(Type typeDetails)
-        {
-            StringBuilder result = new StringBuilder(25);
-
-            if (typeDetails.BaseType != null || typeDetails.GetInterfaces().Length > 0)
-            {
-                result.Append(": ");
-                result.Append(typeDetails.BaseType != null ? typeDetails.BaseType.Name + ", " : null);
-                result.Append(String.Join(", ", typeDetails.GetInterfaces().Select(t => t.Name)));
-            }
+            result.AppendLine(ElementGenerator.GetAttributeSignature(typeDetails, language));
+            result.Append(ElementGenerator.GetTypeAccessModificatorsAndTypes(typeDetails, language));
+            result.Append(ElementGenerator.GetSpecialTypeAliases(typeDetails, language) + " ");
+            result.Append(ElementGenerator.GetGenericSignature(typeDetails, language));
+            result.Append(ElementGenerator.GetTypeInheritanceSignature(typeDetails, language));
 
             return result.ToString();
         }
@@ -183,7 +121,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// </returns>
         public string GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateMethodSignature(methodDetails, language), language);
+            return this.WriteSyntaxBox(this.GenerateMethodSignature(methodDetails, language), language, culture);
         }
 
         /// <summary>
@@ -196,9 +134,9 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         {
             StringBuilder result = new StringBuilder(150);
 
-            result.AppendLine(this.GetAttributeSignature(methodDetails));
+            result.AppendLine(this.GetAttributeSignature(methodDetails, language));
             result.Append(this.GetMethodAccessModificatorSignature(methodDetails));
-            result.Append(this.GetMethodDataTypeAndName(methodDetails));
+            result.Append(this.GetMethodDataTypeAndName(methodDetails, language));
             result.Append(this.GenerateMethodGenericParameterSignature(methodDetails));
             result.Append(this.GetMethodParameterSignature(methodDetails));
 
@@ -238,48 +176,9 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// </summary>
         /// <param name="methodDetails">The <see cref="System.Reflection.MethodInfo"/> to concatenate type and name from</param>
         /// <returns>The methods data type, name and a whitespace</returns>
-        private String GetMethodDataTypeAndName(MethodInfo methodDetails)
+        private String GetMethodDataTypeAndName(MethodInfo methodDetails, OutputLanguage language)
         {
-            return this.GetSpecialAliases(methodDetails.ReturnType) + " " + methodDetails.Name;
-        }
-
-        /// <summary>
-        /// Checks whether the type is one of the primitive types and returns the C#-Alias
-        /// </summary>
-        /// <param name="type">The <see cref="System.Type"/> to get the C#-name of</param>
-        /// <returns>The name of the <see cref="System.Type"/> as it is used in C#</returns>
-        private String GetSpecialAliases(Type type)
-        {
-            if (type == typeof(bool))
-                return "bool";
-            else if (type == typeof(int))
-                return "int";
-            else if (type == typeof(uint))
-                return "uint";
-            else if (type == typeof(long))
-                return "long";
-            else if (type == typeof(ulong))
-                return "ulong";
-            else if (type == typeof(byte))
-                return "byte";
-            else if (type == typeof(sbyte))
-                return "sbyte";
-            else if (type == typeof(short))
-                return "short";
-            else if (type == typeof(ushort))
-                return "ushort";
-            else if (type == typeof(double))
-                return "double";
-            else if (type == typeof(float))
-                return "float";
-            else if (type == typeof(decimal))
-                return "decimal";
-            else if (type == typeof(char))
-                return "char";
-            else if (type == typeof(void))
-                return "void";
-            else
-                return type.Name;
+            return this.GetSpecialTypeAliases(methodDetails.ReturnType, language) + " " + methodDetails.Name;
         }
 
         /// <summary>
@@ -338,7 +237,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// </returns>
         public string GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateFieldSignature(fieldDetails, language), language);
+            return this.WriteSyntaxBox(this.GenerateFieldSignature(fieldDetails, language), language, culture);
         }
 
         /// <summary>
@@ -351,7 +250,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         {
             StringBuilder result = new StringBuilder(100);
 
-            result.AppendLine(this.GetAttributeSignature(fieldDetails));
+            result.AppendLine(this.GetAttributeSignature(fieldDetails, language));
             result.Append(this.GetFieldAccessModificatorSignature(fieldDetails));
             result.Append(this.GetFieldTypeAndName(fieldDetails));
 
@@ -413,7 +312,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// </returns>
         public string GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GeneratePropertySignature(propertyDetails, language), language);
+            return this.WriteSyntaxBox(this.GeneratePropertySignature(propertyDetails, language), language, culture);
         }
 
         /// <summary>
@@ -426,7 +325,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         {
             StringBuilder result = new StringBuilder(100);
 
-            result.AppendLine(this.GetAttributeSignature(propertyDetails));
+            result.AppendLine(this.GetAttributeSignature(propertyDetails, language));
             result.Append(this.GetPropertyTypeAndName(propertyDetails));
             result.Append(this.GetPropertyGetterSetterSignature(propertyDetails));
 
@@ -505,7 +404,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// </returns>
         public string GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateEventSignature(eventDetails, language), language);
+            return this.WriteSyntaxBox(this.GenerateEventSignature(eventDetails, language), language, culture);
         }
 
         /// <summary>
@@ -519,7 +418,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             StringBuilder result = new StringBuilder(100);
 
             // Attributes
-            result.AppendLine(this.GetAttributeSignature(eventDetails));
+            result.AppendLine(this.GetAttributeSignature(eventDetails, language));
 
             // Event signature
             result.Append("public event ");
@@ -557,19 +456,49 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         #endregion
 
         /// <summary>
+        /// Generates the whole attribute signature from the given <see cref="System.Reflection.MemberInfo"/>
+        /// </summary>
+        /// <param name="memberInfo">The <see cref="System.Reflection.MemberInfo"/> to extract the attribute signature from</param>
+        /// <returns>The finished attribute signature</returns>
+        private String GetAttributeSignature(MemberInfo memberInfo, OutputLanguage language)
+        {
+            StringBuilder result = new StringBuilder(150);
+
+            // Attributes
+            foreach (CustomAttributeData attribute in memberInfo.GetCustomAttributesData())
+            {
+                if (language == OutputLanguage.CSharp)
+                    result.Append("[");
+                else if (language == OutputLanguage.VBNET)
+                    result.Append("<");
+
+                result.Append(attribute.Constructor.DeclaringType.Name);
+                result.Append("(");
+
+                // Parameters
+                ParameterInfo[] attributeConstructorParameters = attribute.Constructor.GetParameters();
+                String attributeParameterSignature = String.Join(", ", attributeConstructorParameters.Select(pInfo => pInfo.ParameterType.Name + " " + pInfo.Name));
+                result.Append(attributeParameterSignature);
+
+                result.Append(")]");
+            }
+
+            return result.ToString();
+        }
+
+        /// <summary>
         /// Generates the standard syntax box from the given content
         /// </summary>
         /// <param name="content">The content to write into the syntax box</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>The finished HTML-Code</returns>
-        private String WriteSyntaxBox(String content, OutputLanguage language)
+        private String WriteSyntaxBox(String content, OutputLanguage language, CultureInfo culture = null)
         {
-            // Variables
             using (StringWriter sw = new StringWriter())
             using (var xWriter = XmlWriter.Create(sw))
             {
                 // Headline
-                xWriter.WriteElementString(HeadlineLevel.ToString(), Strings.SyntaxHeadline);
+                xWriter.WriteElementString(HeadlineLevel.ToString(), Strings.ResourceManager.GetString("SyntaxHeadline", culture));
 
                 // Output
                 if (OutputField == OutputField.CrayonSyntaxHighlighter)
@@ -610,30 +539,42 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         }
 
         /// <summary>
-        /// Generates the whole attribute signature from the given <see cref="System.Reflection.MemberInfo"/>
+        /// Checks whether the type is one of the primitive types and returns the C#-Alias
         /// </summary>
-        /// <param name="memberInfo">The <see cref="System.Reflection.MemberInfo"/> to extract the attribute signature from</param>
-        /// <returns>The finished attribute signature</returns>
-        private String GetAttributeSignature(MemberInfo memberInfo)
+        /// <param name="type">The <see cref="System.Type"/> to get the C#-name of</param>
+        /// <returns>The name of the <see cref="System.Type"/> as it is used in C#</returns>
+        private String GetSpecialTypeAliases(Type type, OutputLanguage language)
         {
-            StringBuilder result = new StringBuilder(150);
-
-            // Attributes
-            foreach (CustomAttributeData attribute in memberInfo.GetCustomAttributesData())
-            {
-                result.Append("[");
-                result.Append(attribute.Constructor.DeclaringType.Name);
-                result.Append("(");
-
-                // Parameters
-                ParameterInfo[] attributeConstructorParameters = attribute.Constructor.GetParameters();
-                String attributeParameterSignature = String.Join(", ", attributeConstructorParameters.Select(pInfo => pInfo.ParameterType.Name + " " + pInfo.Name));
-                result.Append(attributeParameterSignature);
-
-                result.Append(")]");
-            }
-
-            return result.ToString();
+            if (type == typeof(bool))
+                return "bool";
+            else if (type == typeof(int))
+                return "int";
+            else if (type == typeof(uint))
+                return "uint";
+            else if (type == typeof(long))
+                return "long";
+            else if (type == typeof(ulong))
+                return "ulong";
+            else if (type == typeof(byte))
+                return "byte";
+            else if (type == typeof(sbyte))
+                return "sbyte";
+            else if (type == typeof(short))
+                return "short";
+            else if (type == typeof(ushort))
+                return "ushort";
+            else if (type == typeof(double))
+                return "double";
+            else if (type == typeof(float))
+                return "float";
+            else if (type == typeof(decimal))
+                return "decimal";
+            else if (type == typeof(char))
+                return "char";
+            else if (type == typeof(void))
+                return "void";
+            else
+                return type.Name;
         }
 
         #endregion

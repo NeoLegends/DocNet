@@ -19,11 +19,6 @@ namespace DocNetPress.Development.Generator.Extensions
     public interface IPageElement
     {
         /// <summary>
-        /// The PageElement's name
-        /// </summary>
-        String Name { get; }
-
-        /// <summary>
         /// The size of the headline to use
         /// </summary>
         HeadlineLevel HeadlineLevel { set; }

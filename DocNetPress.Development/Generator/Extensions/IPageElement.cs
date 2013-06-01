@@ -35,7 +35,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// Valid HTML-Code ready to insert into a WordPress post (or null if the your generator wasn't able to output code into or your generator
         /// can not parse the given input at all)
         /// </returns>
-        String GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
+        String GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, CultureInfo culture = null);
 
         /// <summary>
         /// Generates method documentation based on the given <see cref="System.Reflection.MethodInfo"/>, the current documentation node, the output 
@@ -49,7 +49,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// Valid HTML-Code ready to insert into a WordPress post (or null if the your generator wasn't able to output code into or your generator
         /// can not parse the given input at all)
         /// </returns>
-        String GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
+        String GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, CultureInfo culture = null);
 
         /// <summary>
         /// Generates field documentation based on the given <see cref="System.Reflection.FieldInfo"/>, the current documentation node, the output 
@@ -63,7 +63,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// Valid HTML-Code ready to insert into a WordPress post (or null if the your generator wasn't able to output code into or your generator
         /// can not parse the given input at all)
         /// </returns>
-        String GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
+        String GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, CultureInfo culture = null);
 
         /// <summary>
         /// Generates property documentation based on the given <see cref="System.Reflection.PropertyInfo"/>, the current documentation node, the output 
@@ -77,7 +77,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// Valid HTML-Code ready to insert into a WordPress post (or null if the your generator wasn't able to output code into or your generator
         /// can not parse the given input at all)
         /// </returns>
-        String GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
+        String GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, CultureInfo culture = null);
 
         /// <summary>
         /// Generates event documentation based on the given <see cref="System.Reflection.EventInfo"/>, the current documentation node, the output 
@@ -91,7 +91,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// Valid HTML-Code ready to insert into a WordPress post (or null if the your generator wasn't able to output code into or your generator
         /// can not parse the given input at all)
         /// </returns>
-        String GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
+        String GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, CultureInfo culture = null);
 
         /// <summary>
         /// Generates namespace documenation based on the namespace path, the current documentation node, the output language and optionally a given culture
@@ -105,7 +105,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// Generated HTML-Code from the given documentation node (or null if the your generator wasn't able to output code into or your generator
         /// can not parse the given input at all)
         /// </returns>
-        String GetNamespaceDocumentation(String nameSpace, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
+        String GetNamespaceDocumentation(String nameSpace, XmlElement documentationNode, CultureInfo culture = null);
 
         /// <summary>
         /// This method is fired when there's a reference inside the XML documentation code the compiler couldn't resolve at compile time, so it's not determined what
@@ -120,6 +120,6 @@ namespace DocNetPress.Development.Generator.Extensions
         /// Generated HTML-Code from the given documentation node (or null if the your generator wasn't able to output code into or your generator
         /// can not parse the given input at all)
         /// </returns>
-        String GetErrorDocumentation(String assemblyPath, String fullMemberName, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null);
+        String GetErrorDocumentation(String assemblyPath, String fullMemberName, XmlElement documentationNode, CultureInfo culture = null);
     }
 }

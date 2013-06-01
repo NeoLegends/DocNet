@@ -58,7 +58,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// <summary>
         /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
-        public string GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, CultureInfo culture = null)
         {
             return this.GenerateSeeAlsoElement(documentationNode, culture);
         }
@@ -66,7 +66,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// <summary>
         /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
-        public string GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, CultureInfo culture = null)
         {
             return this.GenerateSeeAlsoElement(documentationNode, culture);
         }
@@ -74,7 +74,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// <summary>
         /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
-        public string GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, CultureInfo culture = null)
         {
             return this.GenerateSeeAlsoElement(documentationNode, culture);
         }
@@ -82,7 +82,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// <summary>
         /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
-        public string GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, CultureInfo culture = null)
         {
             return this.GenerateSeeAlsoElement(documentationNode, culture);
         }
@@ -90,7 +90,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// <summary>
         /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
-        public string GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, CultureInfo culture = null)
         {
             return this.GenerateSeeAlsoElement(documentationNode, culture);
         }
@@ -98,7 +98,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// <summary>
         /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
-        public string GetNamespaceDocumentation(string nameSpace, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetNamespaceDocumentation(string nameSpace, XmlElement documentationNode, CultureInfo culture = null)
         {
             return this.GenerateSeeAlsoElement(documentationNode, culture);
         }
@@ -106,7 +106,7 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// <summary>
         /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
-        public string GetErrorDocumentation(string assemblyPath, string fullMemberName, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetErrorDocumentation(string assemblyPath, string fullMemberName, XmlElement documentationNode, CultureInfo culture = null)
         {
             return this.GenerateSeeAlsoElement(documentationNode, culture);
         }

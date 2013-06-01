@@ -80,9 +80,9 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <param name="culture">The culture to generate the output in</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
-        public string GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateTypeSignature(typeDetails, language), language, culture);
+            return this.WriteSyntaxBox(this.GenerateTypeSignature(typeDetails), culture);
         }
 
         /// <summary>
@@ -91,15 +91,15 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <param name="typeDetails">The <see cref="System.Type"/> to generate the documentation from</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
-        private String GenerateTypeSignature(Type typeDetails, OutputLanguage language)
+        private String GenerateTypeSignature(Type typeDetails)
         {
             StringBuilder result = new StringBuilder(150);
 
-            result.AppendLine(ElementGenerator.GetAttributeSignature(typeDetails, language));
-            result.Append(ElementGenerator.GetTypeAccessModificatorsAndTypes(typeDetails, language));
-            result.Append(ElementGenerator.GetSpecialTypeAliases(typeDetails, language) + " ");
-            result.Append(ElementGenerator.GetGenericSignature(typeDetails, language));
-            result.Append(ElementGenerator.GetTypeInheritanceSignature(typeDetails, language));
+            result.AppendLine(ElementGenerator.GetAttributeSignature(typeDetails));
+            result.Append(ElementGenerator.GetAccessModificatorsAndMemberType(typeDetails));
+            result.Append(ElementGenerator.GetFriendlyName(typeDetails) + " ");
+            result.Append(ElementGenerator.GetGenericSignature(typeDetails));
+            result.Append(ElementGenerator.GetTypeInheritanceSignature(typeDetails));
 
             return result.ToString();
         }
@@ -119,9 +119,9 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
-        public string GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetMethodDocumentation(MethodInfo methodDetails, XmlElement documentationNode, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateMethodSignature(methodDetails, language), language, culture);
+            return this.WriteSyntaxBox(this.GenerateMethodSignature(methodDetails), culture);
         }
 
         /// <summary>
@@ -130,13 +130,13 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <param name="methodDetails">The <see cref="System.Reflection.MethodInfo"/> giving further information about the method</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>A nicely looking method signature</returns>
-        private String GenerateMethodSignature(MethodInfo methodDetails, OutputLanguage language)
+        private String GenerateMethodSignature(MethodInfo methodDetails)
         {
             StringBuilder result = new StringBuilder(150);
 
-            result.AppendLine(this.GetAttributeSignature(methodDetails, language));
+            result.AppendLine(ElementGenerator.GetAttributeSignature(methodDetails));
             result.Append(this.GetMethodAccessModificatorSignature(methodDetails));
-            result.Append(this.GetMethodDataTypeAndName(methodDetails, language));
+            result.Append(this.GetMethodDataTypeAndName(methodDetails));
             result.Append(this.GenerateMethodGenericParameterSignature(methodDetails));
             result.Append(this.GetMethodParameterSignature(methodDetails));
 
@@ -176,9 +176,9 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// </summary>
         /// <param name="methodDetails">The <see cref="System.Reflection.MethodInfo"/> to concatenate type and name from</param>
         /// <returns>The methods data type, name and a whitespace</returns>
-        private String GetMethodDataTypeAndName(MethodInfo methodDetails, OutputLanguage language)
+        private String GetMethodDataTypeAndName(MethodInfo methodDetails)
         {
-            return this.GetSpecialTypeAliases(methodDetails.ReturnType, language) + " " + methodDetails.Name;
+            return ElementGenerator.GetFriendlyName(methodDetails.ReturnType) + " " + methodDetails.Name;
         }
 
         /// <summary>
@@ -235,9 +235,9 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
-        public string GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetFieldDocumentation(FieldInfo fieldDetails, XmlElement documentationNode, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateFieldSignature(fieldDetails, language), language, culture);
+            return this.WriteSyntaxBox(this.GenerateFieldSignature(fieldDetails), culture);
         }
 
         /// <summary>
@@ -246,11 +246,11 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <param name="fieldDetails">The <see cref="System.Reflection.FieldInfo"/> to generate the documentation from</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
-        private String GenerateFieldSignature(FieldInfo fieldDetails, OutputLanguage language)
+        private String GenerateFieldSignature(FieldInfo fieldDetails)
         {
             StringBuilder result = new StringBuilder(100);
 
-            result.AppendLine(this.GetAttributeSignature(fieldDetails, language));
+            result.AppendLine(ElementGenerator.GetAttributeSignature(fieldDetails));
             result.Append(this.GetFieldAccessModificatorSignature(fieldDetails));
             result.Append(this.GetFieldTypeAndName(fieldDetails));
 
@@ -310,9 +310,9 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
-        public string GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetPropertyDocumentation(PropertyInfo propertyDetails, XmlElement documentationNode, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GeneratePropertySignature(propertyDetails, language), language, culture);
+            return this.WriteSyntaxBox(this.GeneratePropertySignature(propertyDetails), culture);
         }
 
         /// <summary>
@@ -321,11 +321,11 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <param name="propertyDetails">The <see cref="System.Reflection.PropertyInfo"/> to generate the documentation from</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
-        private String GeneratePropertySignature(PropertyInfo propertyDetails, OutputLanguage language)
+        private String GeneratePropertySignature(PropertyInfo propertyDetails)
         {
             StringBuilder result = new StringBuilder(100);
 
-            result.AppendLine(this.GetAttributeSignature(propertyDetails, language));
+            result.AppendLine(ElementGenerator.GetAttributeSignature(propertyDetails));
             result.Append(this.GetPropertyTypeAndName(propertyDetails));
             result.Append(this.GetPropertyGetterSetterSignature(propertyDetails));
 
@@ -402,9 +402,9 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <returns>
         /// Valid HTML-Code ready to insert into a WordPress post
         /// </returns>
-        public string GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetEventDocumentation(EventInfo eventDetails, XmlElement documentationNode, CultureInfo culture = null)
         {
-            return this.WriteSyntaxBox(this.GenerateEventSignature(eventDetails, language), language, culture);
+            return this.WriteSyntaxBox(this.GenerateEventSignature(eventDetails), culture);
         }
 
         /// <summary>
@@ -413,12 +413,12 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <param name="eventDetails">The <see cref="System.Reflection.EventInfo"/> to generate the documentation from</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>The finished HTML code ready to insert into a WordPress post</returns>
-        private String GenerateEventSignature(EventInfo eventDetails, OutputLanguage language)
+        private String GenerateEventSignature(EventInfo eventDetails)
         {
             StringBuilder result = new StringBuilder(100);
 
             // Attributes
-            result.AppendLine(this.GetAttributeSignature(eventDetails, language));
+            result.AppendLine(ElementGenerator.GetAttributeSignature(eventDetails));
 
             // Event signature
             result.Append("public event ");
@@ -436,7 +436,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// The <see cref="DocNetPress.Development.Generator.Extensions.SyntaxElement.SyntaxElement"/> does not support namespace syntax as there is no
         /// special syntax for namespaces
         /// </summary>
-        public string GetNamespaceDocumentation(string nameSpace, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetNamespaceDocumentation(string nameSpace, XmlElement documentationNode, CultureInfo culture = null)
         {
             return null;
         }
@@ -448,7 +448,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         /// <summary>
         /// The <see cref="DocNetPress.Development.Generator.Extensions.SyntaxElement.SyntaxElement"/> does not support resolving unresolved paths
         /// </summary>
-        public string GetErrorDocumentation(string assemblyPath, string fullMemberName, XmlElement documentationNode, OutputLanguage language, CultureInfo culture = null)
+        public string GetErrorDocumentation(string assemblyPath, string fullMemberName, XmlElement documentationNode, CultureInfo culture = null)
         {
             return null;
         }
@@ -456,43 +456,12 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         #endregion
 
         /// <summary>
-        /// Generates the whole attribute signature from the given <see cref="System.Reflection.MemberInfo"/>
-        /// </summary>
-        /// <param name="memberInfo">The <see cref="System.Reflection.MemberInfo"/> to extract the attribute signature from</param>
-        /// <returns>The finished attribute signature</returns>
-        private String GetAttributeSignature(MemberInfo memberInfo, OutputLanguage language)
-        {
-            StringBuilder result = new StringBuilder(150);
-
-            // Attributes
-            foreach (CustomAttributeData attribute in memberInfo.GetCustomAttributesData())
-            {
-                if (language == OutputLanguage.CSharp)
-                    result.Append("[");
-                else if (language == OutputLanguage.VBNET)
-                    result.Append("<");
-
-                result.Append(attribute.Constructor.DeclaringType.Name);
-                result.Append("(");
-
-                // Parameters
-                ParameterInfo[] attributeConstructorParameters = attribute.Constructor.GetParameters();
-                String attributeParameterSignature = String.Join(", ", attributeConstructorParameters.Select(pInfo => pInfo.ParameterType.Name + " " + pInfo.Name));
-                result.Append(attributeParameterSignature);
-
-                result.Append(")]");
-            }
-
-            return result.ToString();
-        }
-
-        /// <summary>
         /// Generates the standard syntax box from the given content
         /// </summary>
         /// <param name="content">The content to write into the syntax box</param>
         /// <param name="language">In which language the generator is supposed to output the eventually generated code in</param>
         /// <returns>The finished HTML-Code</returns>
-        private String WriteSyntaxBox(String content, OutputLanguage language, CultureInfo culture = null)
+        private String WriteSyntaxBox(String content, CultureInfo culture = null)
         {
             using (StringWriter sw = new StringWriter())
             using (var xWriter = XmlWriter.Create(sw))
@@ -504,7 +473,7 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
                 if (OutputField == OutputField.CrayonSyntaxHighlighter)
                 {
                     xWriter.WriteStartElement("pre");
-                    xWriter.WriteAttributeString("class", "lang:" + this.GetOutputLanguageString(language) + " decode=true");
+                    xWriter.WriteAttributeString("class", "lang:c# decode=true");
                     xWriter.WriteString(content);
                     xWriter.WriteEndElement();
                 }
@@ -517,64 +486,6 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
                 xWriter.WriteEndDocument();
                 return sw.ToString();
             }
-        }
-
-        /// <summary>
-        /// Generates the Crayon language string corresponding to the given <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/>
-        /// </summary>
-        /// <param name="language">The <see cref="DocNetPress.Development.Generator.Extensions.OutputLanguage"/> giving the desired output language</param>
-        /// <returns>The Crayon conform language string</returns>
-        private String GetOutputLanguageString(OutputLanguage language)
-        {
-            if (language == OutputLanguage.CSharp)
-                return "c#";
-            else if (language == OutputLanguage.FSharp)
-                return "default";
-            else if (language == OutputLanguage.JScript)
-                return "js";
-            else if (language == OutputLanguage.VBNET)
-                return "vb";
-            else
-                return null;
-        }
-
-        /// <summary>
-        /// Checks whether the type is one of the primitive types and returns the C#-Alias
-        /// </summary>
-        /// <param name="type">The <see cref="System.Type"/> to get the C#-name of</param>
-        /// <returns>The name of the <see cref="System.Type"/> as it is used in C#</returns>
-        private String GetSpecialTypeAliases(Type type, OutputLanguage language)
-        {
-            if (type == typeof(bool))
-                return "bool";
-            else if (type == typeof(int))
-                return "int";
-            else if (type == typeof(uint))
-                return "uint";
-            else if (type == typeof(long))
-                return "long";
-            else if (type == typeof(ulong))
-                return "ulong";
-            else if (type == typeof(byte))
-                return "byte";
-            else if (type == typeof(sbyte))
-                return "sbyte";
-            else if (type == typeof(short))
-                return "short";
-            else if (type == typeof(ushort))
-                return "ushort";
-            else if (type == typeof(double))
-                return "double";
-            else if (type == typeof(float))
-                return "float";
-            else if (type == typeof(decimal))
-                return "decimal";
-            else if (type == typeof(char))
-                return "char";
-            else if (type == typeof(void))
-                return "void";
-            else
-                return type.Name;
         }
 
         #endregion

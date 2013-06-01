@@ -36,26 +36,6 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         }
 
         /// <summary>
-        /// backing field for SeeAlsoNodeName
-        /// </summary>
-        private String _SeeAlsoNodeName = "seealso";
-
-        /// <summary>
-        /// The (local) name of the node taken as "see also" element
-        /// </summary>
-        public String SeeAlsoNodeName
-        {
-            get
-            {
-                return _SeeAlsoNodeName;
-            }
-            set
-            {
-                _SeeAlsoNodeName = value;
-            }
-        }
-
-        /// <summary>
         /// Derived from <see cref="DocNetPress.Development.Generator.Extensions.IPageElement"/>
         /// </summary>
         public string GetTypeDocumentation(Type typeDetails, XmlElement documentationNode, CultureInfo culture = null)
@@ -119,13 +99,19 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
         /// <returns></returns>
         private String GenerateSeeAlsoElement(XmlElement documentationNode, CultureInfo culture = null)
         {
-            XmlNodeList nodes = documentationNode.SelectNodes("./" + this.SeeAlsoNodeName);
+            XmlNodeList nodes = documentationNode.SelectNodes("./seealso");
             if (nodes.Count > 0)
                 return this.WriteSeeAlsoNodes(nodes, culture);
             else
                 return null;
         }
 
+        /// <summary>
+        /// Writes the see also nodes into the post
+        /// </summary>
+        /// <param name="nodes">The "seealso"-XmlNodes</param>
+        /// <param name="culture">The culture to generate the output in</param>
+        /// <returns>The post content</returns>
         private String WriteSeeAlsoNodes(XmlNodeList nodes, CultureInfo culture = null)
         {
             StringBuilder result = new StringBuilder(200);
@@ -133,18 +119,14 @@ namespace DocNetPress.Development.Generator.Extensions.SeeAlsoElement
             using (StringWriter sw = new StringWriter())
             using (var xWriter = XmlWriter.Create(sw))
             {
-                xWriter.Settings.Indent = true;
                 xWriter.WriteElementString(HeadlineLevel.ToString(), Strings.ResourceManager.GetString("SeeAlsoHeadline", culture));
 
                 xWriter.WriteStartElement("ul");
                 foreach (XmlNode node in nodes)
                 {
                     xWriter.WriteStartElement("li");
-                    xWriter.WriteStartElement(node.Name);
-                    xWriter.WriteAttributeString("cref", node.Attributes["cref"].Value);
+                    node.WriteTo(xWriter);
                     xWriter.WriteEndElement();
-                    xWriter.WriteEndElement();
-                    xWriter.WriteString(Environment.NewLine);
                 }
                 xWriter.WriteEndElement();
 

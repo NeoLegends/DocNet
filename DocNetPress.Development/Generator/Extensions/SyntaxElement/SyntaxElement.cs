@@ -277,10 +277,10 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
 
             if (fieldDetails.IsStatic && !fieldDetails.IsLiteral)
                 result.Append("static ");
-            if (fieldDetails.IsLiteral)
-                result.Append("const ");
-            else if (fieldDetails.IsInitOnly)
+            else if (fieldDetails.IsInitOnly && !fieldDetails.IsLiteral)
                 result.Append("readonly ");
+            else if (fieldDetails.IsLiteral)
+                result.Append("const ");
 
             return result.ToString();
         }
@@ -466,10 +466,8 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
             using (StringWriter sw = new StringWriter())
             using (var xWriter = XmlWriter.Create(sw))
             {
-                // Headline
                 xWriter.WriteElementString(HeadlineLevel.ToString(), Strings.ResourceManager.GetString("SyntaxHeadline", culture));
 
-                // Output
                 if (OutputField == OutputField.CrayonSyntaxHighlighter)
                 {
                     xWriter.WriteStartElement("pre");
@@ -482,7 +480,6 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
                     xWriter.WriteElementString("blockquote", content);
                 }
 
-                // Finished writing, return generated Code 
                 xWriter.WriteEndDocument();
                 return sw.ToString();
             }

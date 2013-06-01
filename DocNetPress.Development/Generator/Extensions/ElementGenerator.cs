@@ -14,25 +14,25 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <summary>
         /// Contains all C#-Specific language data type aliases
         /// </summary>
-        private static readonly Dictionary<Type, String> aliases = new Dictionary<Type, String>()
-            {
-                { typeof (byte), "byte" },
-                { typeof (sbyte), "sbyte" },
-                { typeof (short), "short" },
-                { typeof (ushort), "ushort" },
-                { typeof (int), "int" },
-                { typeof (uint), "uint" },
-                { typeof (long), "long" },
-                { typeof (ulong), "ulong" },
-                { typeof (float), "float" },
-                { typeof (double), "double" },
-                { typeof (decimal), "decimal" },
-                { typeof (object), "object" },
-                { typeof (bool), "bool" },
-                { typeof (char), "char" },
-                { typeof (string), "string" },
-                { typeof (void), "void" }
-            };
+        private static readonly Dictionary<Type, String> aliases = new Dictionary<Type, String>(16)
+        {
+            { typeof (byte), "byte" },
+            { typeof (sbyte), "sbyte" },
+            { typeof (short), "short" },
+            { typeof (ushort), "ushort" },
+            { typeof (int), "int" },
+            { typeof (uint), "uint" },
+            { typeof (long), "long" },
+            { typeof (ulong), "ulong" },
+            { typeof (float), "float" },
+            { typeof (double), "double" },
+            { typeof (decimal), "decimal" },
+            { typeof (object), "object" },
+            { typeof (bool), "bool" },
+            { typeof (char), "char" },
+            { typeof (string), "string" },
+            { typeof (void), "void" }
+        };
 
         /// <summary>
         /// Generates the access modificator signature of the given <see cref="System.Type"/> and adds "class", "interface", "enum", etc
@@ -87,9 +87,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// </summary>
         private static String GetGenericSignatureInternal(Type[] genericParameters)
         {
-            String result = String.Empty;
-
-            result += "<";
+            String result = "<";
             result += String.Join(", ", genericParameters.Select(t => t.Name));
             result += ">";
 
@@ -107,8 +105,7 @@ namespace DocNetPress.Development.Generator.Extensions
 
             if (typeDetails.BaseType != null || interfaces.Length > 0)
             {
-                String result = String.Empty;
-                result += ": ";
+                String result = ": ";
                 result += typeDetails.BaseType != null ? typeDetails.BaseType.Name + ", " : null;
                 result += String.Join(", ", interfaces.Select(t => t.Name));
                 return result;
@@ -138,17 +135,15 @@ namespace DocNetPress.Development.Generator.Extensions
 
             foreach (CustomAttributeData attribute in memberInfo.GetCustomAttributesData())
             {
-                // Attribute name
                 result.Append("[");
                 result.Append(attribute.Constructor.DeclaringType.Name);
                 result.Append("(");
 
-                // Parameters
                 ParameterInfo[] attributeConstructorParameters = attribute.Constructor.GetParameters();
                 String attributeParameterSignature = String.Join(", ", attributeConstructorParameters.Select(pInfo => pInfo.ParameterType.Name + " " + pInfo.Name));
                 result.Append(attributeParameterSignature);
 
-                result.Append(")]");
+                result.Append(")]" + Environment.NewLine);
             }
 
             return result.ToString();

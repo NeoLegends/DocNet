@@ -18,26 +18,6 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
     public class SummaryElement : IPageElement
     {
         /// <summary>
-        /// Backing field for SummaryNodeName
-        /// </summary>
-        private String _SummaryNodeName = "summary";
-
-        /// <summary>
-        /// The name of the node (default is "summary") being taken as data source for the summary page element
-        /// </summary>
-        public String SummaryNodeName
-        {
-            get
-            {
-                return _SummaryNodeName;
-            }
-            set
-            {
-                _SummaryNodeName = value;
-            }
-        }
-
-        /// <summary>
         /// Backing field for HeadlineLevel
         /// </summary>
         private HeadlineLevel _HeadlineLevel = HeadlineLevel.h2;
@@ -68,33 +48,6 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         public SummaryElement(HeadlineLevel headlineLevel)
         {
             this.HeadlineLevel = headlineLevel;
-        }
-
-        /// <summary>
-        /// Generates the summary page of a given documentation node content
-        /// </summary>
-        /// <param name="nodeContent">The content of the node currently being parsed</param>
-        /// <returns>Valid HTML-Code ready for insertion into the Post</returns>
-        private String GetPostContent(XmlElement nodeContent, CultureInfo culture = null)
-        {
-            // Get the summary node
-            String summary = nodeContent.SelectSingleNode("./" + this.SummaryNodeName).InnerText;
-
-            // If summary is null, we have no summary node available so we return null just as requested
-            if (!String.IsNullOrEmpty(summary) && !String.IsNullOrWhiteSpace(summary))
-            {
-                // Compose the HTML-Code and return it
-                using (StringWriter sw = new StringWriter())
-                using (var xWriter = XmlWriter.Create(sw))
-                {
-                    xWriter.WriteElementString(HeadlineLevel.ToString(), Strings.ResourceManager.GetString("SummaryHeadline", culture));
-                    xWriter.WriteString(Environment.NewLine + summary);
-
-                    return sw.ToString();
-                }
-            }
-            else
-                return null;
         }
 
         /// <summary>
@@ -208,6 +161,30 @@ namespace DocNetPress.Development.Generator.Extensions.SummaryElement
         public string GetErrorDocumentation(string assemblyPath, string fullMemberName, XmlElement documentationNode, CultureInfo culture = null)
         {
             return this.GetPostContent(documentationNode, culture);
+        }
+
+        /// <summary>
+        /// Generates the summary page of a given documentation node content
+        /// </summary>
+        /// <param name="nodeContent">The content of the node currently being parsed</param>
+        /// <returns>Valid HTML-Code ready for insertion into the Post</returns>
+        private String GetPostContent(XmlElement nodeContent, CultureInfo culture = null)
+        {
+            String summaryText = nodeContent.SelectSingleNode("./summary").InnerText;
+
+            if (!String.IsNullOrEmpty(summaryText) && !String.IsNullOrWhiteSpace(summaryText))
+            {
+                using (StringWriter sw = new StringWriter())
+                using (var xWriter = XmlWriter.Create(sw))
+                {
+                    xWriter.WriteElementString(HeadlineLevel.ToString(), Strings.ResourceManager.GetString("SummaryHeadline", culture));
+                    xWriter.WriteElementString("p", summaryText);
+
+                    return sw.ToString();
+                }
+            }
+            else
+                return null;
         }
     }
 }

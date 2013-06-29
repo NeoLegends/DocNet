@@ -417,10 +417,8 @@ namespace DocNetPress.Development.Generator.Extensions.SyntaxElement
         {
             StringBuilder result = new StringBuilder(100);
 
-            // Attributes
             result.AppendLine(ElementGenerator.GetAttributeSignature(eventDetails));
 
-            // Event signature
             result.Append("public event ");
             result.Append(eventDetails.EventHandlerType.Name + " ");
             result.Append(eventDetails.Name + ";");

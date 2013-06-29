@@ -14,7 +14,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// <summary>
         /// Contains all C#-Specific language data type aliases
         /// </summary>
-        private static readonly Dictionary<Type, String> aliases = new Dictionary<Type, String>(16)
+        private static readonly Dictionary<Type, String> friendlyNames = new Dictionary<Type, String>(16)
         {
             { typeof (byte), "byte" },
             { typeof (sbyte), "sbyte" },
@@ -35,6 +35,17 @@ namespace DocNetPress.Development.Generator.Extensions
         };
 
         /// <summary>
+        /// Checks whether the type is one of the primitive types and returns the C#-Alias or the class name itself, if it's
+        /// not one of the .NET primitive types
+        /// </summary>
+        /// <param name="type">The <see cref="System.Type"/> to get the C#-name of</param>
+        /// <returns>The name of the <see cref="System.Type"/> as it is used in C#</returns>
+        public static String GetFriendlyName(Type type)
+        {
+            return friendlyNames.ContainsKey(type) ? friendlyNames[type] : type.Name;
+        }
+
+        /// <summary>
         /// Generates the access modificator signature of the given <see cref="System.Type"/> and adds "class", "interface", "enum", etc
         /// </summary>
         /// <param name="typeDetails">The <see cref="System.Type"/> to generate the access modificator signature from</param>
@@ -44,13 +55,13 @@ namespace DocNetPress.Development.Generator.Extensions
             StringBuilder result = new StringBuilder(35);
 
             if (typeDetails.IsClass)
-                result.Append("public " + (typeDetails.IsAbstract ? "abstract " : (typeDetails.IsSealed ? "sealed " : null)) + "class ");
+                result.Append("public " + (typeDetails.IsAbstract ? "abstract " : (typeDetails.IsSealed ? "sealed " : null)) + "class");
             else if (typeDetails.IsInterface)
-                result.Append("public interface ");
+                result.Append("public interface");
             else if (typeDetails.IsEnum)
-                result.Append("public enum ");
+                result.Append("public enum");
             else if (typeDetails.IsValueType)
-                result.Append("public struct ");
+                result.Append("public struct");
 
             return result.ToString();
         }
@@ -87,11 +98,7 @@ namespace DocNetPress.Development.Generator.Extensions
         /// </summary>
         private static String GetGenericSignatureInternal(Type[] genericParameters)
         {
-            String result = "<";
-            result += String.Join(", ", genericParameters.Select(t => t.Name));
-            result += ">";
-
-            return result;
+            return "<" + String.Join(", ", genericParameters.Select(t => t.Name)) + ">";
         }
 
         /// <summary>
@@ -104,24 +111,15 @@ namespace DocNetPress.Development.Generator.Extensions
             Type[] interfaces = typeDetails.GetInterfaces();
 
             if (typeDetails.BaseType != null || interfaces.Length > 0)
-            {
-                String result = ": ";
-                result += typeDetails.BaseType != null ? typeDetails.BaseType.Name + ", " : null;
-                result += String.Join(", ", interfaces.Select(t => t.Name));
-                return result;
-            }
+                return  ": " + 
+                        (typeDetails.BaseType != null ? 
+                                        typeDetails.BaseType.Name + (interfaces.Length > 0 ? 
+                                                                        ", " : 
+                                                                        null) : 
+                                        null) + 
+                        String.Join(", ", interfaces.Select(t => t.Name));
             else
                 return null;
-        }
-
-        /// <summary>
-        /// Checks whether the type is one of the primitive types and returns the C#-Alias
-        /// </summary>
-        /// <param name="type">The <see cref="System.Type"/> to get the C#-name of</param>
-        /// <returns>The name of the <see cref="System.Type"/> as it is used in C#</returns>
-        public static String GetFriendlyName(Type type)
-        {
-            return aliases.ContainsKey(type) ? aliases[type] : type.Name;
         }
 
         /// <summary>
@@ -140,8 +138,7 @@ namespace DocNetPress.Development.Generator.Extensions
                 result.Append("(");
 
                 ParameterInfo[] attributeConstructorParameters = attribute.Constructor.GetParameters();
-                String attributeParameterSignature = String.Join(", ", attributeConstructorParameters.Select(pInfo => pInfo.ParameterType.Name + " " + pInfo.Name));
-                result.Append(attributeParameterSignature);
+                result.Append(String.Join(", ", attributeConstructorParameters.Select(pInfo => pInfo.ParameterType.Name + " " + pInfo.Name)));
 
                 result.Append(")]" + Environment.NewLine);
             }

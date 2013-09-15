@@ -50,35 +50,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Generator\Extensions\ElementGenerator.cs" />
-    <Compile Include="Generator\Extensions\HeadlineLevel.cs" />
-    <Compile Include="Generator\Extensions\SeeAlsoElement\SeeAlsoElement.cs" />
-    <Compile Include="Generator\Extensions\Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Generator\Extensions\SyntaxElement\OutputField.cs" />
-    <Compile Include="Generator\Extensions\IPageElement.cs" />
-    <Compile Include="Generator\PostGenerator.cs" />
-    <Compile Include="Generator\PostType.cs" />
-    <Compile Include="Generator\PostUploader.cs" />
-    <Compile Include="Generator\Extensions\SummaryElement\SummaryElement.cs" />
-    <Compile Include="Generator\Extensions\SyntaxElement\SyntaxElement.cs" />
+    <Compile Include="MainClass.cs" />
+    <Compile Include="WordPressHttpTransmitter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DocNetPress.Development.pfx" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Generator\Extensions\Strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Generator\Extensions\ExampleElement\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\JoeBlogs\JoeBlogs\JoeBlogs.csproj">
       <Project>{340c4ec4-b02e-42a9-a8fe-2871ed8315e0}</Project>

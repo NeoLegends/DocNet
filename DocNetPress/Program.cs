@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace DocNetPress.Development
+namespace DocNetPress
 {
-    class MainClass
+    class Program
     {
         static void Main(string[] args)
         {
-
         }
     }
 }

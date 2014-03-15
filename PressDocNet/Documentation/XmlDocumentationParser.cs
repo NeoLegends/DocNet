@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace DocNetPress.Documentation
+namespace PressDocNet.Documentation
 {
     /// <summary>
     /// Parses .NET Documentation into <see cref="DocumentedMember"/>s.
@@ -48,19 +48,8 @@ namespace DocNetPress.Documentation
             IEnumerable<MemberInfo> membersToProcess = documentedAssembly.GetMembers(includePrivate ? publicAndPrivate : publicOnly);
 
             IEnumerable<Task<DocumentedMember>> processingTasks = membersToProcess
-                .Select(member => Task.Run(() => new DocumentedMember(member, this.GetDocumentationForMember(member, xmlDocumentation))));
+                .Select(member => Task.Run(() => new DocumentedMember(member, null)));
             return await Documentation.FromMembers(documentedAssembly, xmlDocumentationPath, await Task.WhenAll(processingTasks));
-        }
-
-        /// <summary>
-        /// Gets the documentation for a single member.
-        /// </summary>
-        /// <param name="member">The member to be documented.</param>
-        /// <param name="wrapper">The documentation for all members.</param>
-        /// <returns>The documentation for a single member.</returns>
-        private XElement GetDocumentationForMember(MemberInfo member, DocumentationWrapper wrapper)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>

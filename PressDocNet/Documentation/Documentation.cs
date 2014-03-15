@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace DocNetPress.Documentation
+namespace PressDocNet.Documentation
 {
     /// <summary>
     /// Contains all the documentation for a specified assembly.

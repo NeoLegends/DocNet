@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocNetPress
+namespace PressDocNet
 {
     /// <summary>
     /// Contains extension methods to various .NET Framework types.

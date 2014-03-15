@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace DocNetPress.Documentation
 {
@@ -15,12 +17,7 @@ namespace DocNetPress.Documentation
         /// <summary>
         /// Gets the assembly's name.
         /// </summary>
-        public String AssemblyName { get; private set; }
-
-        /// <summary>
-        /// Gets the path to the assembly file.
-        /// </summary>
-        public String AssemblyPath { get; private set; }
+        public Assembly Assembly { get; private set; }
 
         /// <summary>
         /// Gets all documented members in the assembly.
@@ -46,18 +43,16 @@ namespace DocNetPress.Documentation
         /// <summary>
         /// Initializes a new <see cref="Documentation"/>.
         /// </summary>
-        /// <param name="assemblyName">The assembly's name.</param>
-        /// <param name="assemblyPath">The path to the assembly file.</param>
-        /// <param name="members">All documented members in the assembly.</param>
+        /// <param name="assembly">The documented assembly.</param>
         /// <param name="documentationPath">The path to the documentation file.</param>
-        public Documentation(String assemblyName, String assemblyPath, IEnumerable<DocumentedMember> members, String documentationPath)
+        /// <param name="members">All documented members in the assembly.</param>
+        public Documentation(Assembly assembly, String documentationPath, IEnumerable<DocumentedMember> members)
         {
-            Contract.Requires<ArgumentNullException>(assemblyPath != null && documentationPath != null && assemblyName != null && members != null);
+            Contract.Requires<ArgumentNullException>(assembly != null && documentationPath != null && members != null);
 
-            this.AssemblyName = assemblyName;
-            this.AssemblyPath = assemblyPath;
-            this.Members = members;
+            this.Assembly = assembly;
             this.DocumentationPath = documentationPath;
+            this.Members = members;
         }
 
         /// <summary>
@@ -70,9 +65,9 @@ namespace DocNetPress.Documentation
         }
 
         /// <summary>
-        /// Gets the <see cref="IEnumerator"/>.
+        /// Gets the <see cref="System.Collections.IEnumerator"/>.
         /// </summary>
-        /// <returns>An <see cref="IEnumerator"/>.</returns>
+        /// <returns>An <see cref="System.Collections.IEnumerator"/>.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.Members.GetEnumerator();
@@ -84,8 +79,7 @@ namespace DocNetPress.Documentation
         [ContractInvariantMethod]
         private void ObjectInvariant()
         {
-            Contract.Invariant(this.AssemblyName != null);
-            Contract.Invariant(this.AssemblyPath != null);
+            Contract.Invariant(this.Assembly != null);
             Contract.Invariant(this.Members != null);
             Contract.Invariant(this.DocumentationPath != null);
         }

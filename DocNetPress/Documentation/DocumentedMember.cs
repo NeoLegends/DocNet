@@ -30,6 +30,7 @@ namespace DocNetPress.Documentation
         /// <param name="member">The <see cref="MemberInfo"/> that is being documented.</param>
         /// <param name="xml">The documentation Xml.</param>
         public DocumentedMember(MemberInfo member, XElement xml)
+            : this()
         {
             Contract.Requires<ArgumentNullException>(member != null && xml != null);
 

@@ -120,6 +120,7 @@
     <Compile Include="Documentation\DocumentedMember.cs" />
     <Compile Include="Documentation\XmlDocumentationParser.cs" />
     <Compile Include="Documentation\IDocumentationParser.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

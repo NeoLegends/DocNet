@@ -17,31 +17,31 @@ namespace PressDocNet.Documentation
         /// <summary>
         /// Gets the assembly's name.
         /// </summary>
-        public Assembly Assembly { get; private set; }
+        public Assembly Assembly { get; set; }
 
         /// <summary>
         /// Gets the path to the documentation file.
         /// </summary>
-        public String DocumentationPath { get; private set; }
+        public String DocumentationPath { get; set; }
 
         /// <summary>
-        /// Gets all documented namespaces in the assembly.
+        /// Gets all documented <see cref="Type"/>s in the assembly.
         /// </summary>
-        public IEnumerable<Namespace> Namespaces { get; private set; }
+        public IEnumerable<DocumentedType> Types { get; set; }
 
         /// <summary>
         /// Initializes a new <see cref="Documentation"/>.
         /// </summary>
         /// <param name="assembly">The documented assembly.</param>
         /// <param name="documentationPath">The path to the documentation file.</param>
-        /// <param name="namespaces">All namespaces in the assembly.</param>
-        public Documentation(Assembly assembly, String documentationPath, IEnumerable<Namespace> namespaces)
+        /// <param name="types">All namespaces in the assembly.</param>
+        public Documentation(Assembly assembly, String documentationPath, IEnumerable<DocumentedType> types)
         {
-            Contract.Requires<ArgumentNullException>(assembly != null && documentationPath != null && namespaces != null);
+            Contract.Requires<ArgumentNullException>(assembly != null && documentationPath != null && types != null);
 
             this.Assembly = assembly;
             this.DocumentationPath = documentationPath;
-            this.Namespaces = namespaces;
+            this.Types = types;
         }
 
         /// <summary>
@@ -51,21 +51,8 @@ namespace PressDocNet.Documentation
         private void ObjectInvariant()
         {
             Contract.Invariant(this.Assembly != null);
-            Contract.Invariant(this.Namespaces != null);
+            Contract.Invariant(this.Types != null);
             Contract.Invariant(this.DocumentationPath != null);
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="Documentation"/> from a list of <see cref="DocumentedMember"/>s.
-        /// </summary>
-        /// <param name="assembly">The documented assembly.</param>
-        /// <param name="documentationPath">The path to the documentation file.</param>
-        /// <param name="members">A list of <see cref="DocumentedMember"/>s to transform into a namespace-hierarchy.</param>
-        public static async Task<Documentation> FromMembers(Assembly assembly, String documentationPath, IEnumerable<DocumentedMember> members)
-        {
-            Contract.Requires<ArgumentNullException>(assembly != null && documentationPath != null && members != null);
-
-            throw new NotImplementedException();
         }
     }
 }

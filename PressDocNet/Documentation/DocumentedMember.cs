@@ -17,12 +17,17 @@ namespace PressDocNet.Documentation
         /// <summary>
         /// The documentation Xml.
         /// </summary>
-        public XElement Xml { get; protected set; }
+        public XElement Xml { get; set; }
 
         /// <summary>
         /// The member to be documented.
         /// </summary>
-        public MemberInfo Member { get; protected set; }
+        public MemberInfo Member { get; set; }
+
+        /// <summary>
+        /// Initializes a new <see cref="DocumentedMember"/>.
+        /// </summary>
+        public DocumentedMember() { }
 
         /// <summary>
         /// Initializes a new <see cref="DocumentedMember"/>.
@@ -64,13 +69,18 @@ namespace PressDocNet.Documentation
             {
                 return (T)base.Member;
             }
-            protected set
+            set
             {
                 Contract.Requires<ArgumentNullException>(value != null);
 
                 base.Member = value;
             }
         }
+
+        /// <summary>
+        /// Initializes a new <see cref="DocumentedMember{T}"/>.
+        /// </summary>
+        public DocumentedMember() { }
 
         /// <summary>
         /// Initializes a new <see cref="DocumentedMember{T}"/>.

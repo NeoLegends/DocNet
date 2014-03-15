@@ -15,33 +15,44 @@ namespace PressDocNet.Documentation
     public class DocumentedType : DocumentedMember<Type>
     {
         /// <summary>
+        /// Contains the documentation for all constructors on the <see cref="Type"/>.
+        /// </summary>
+        public IEnumerable<DocumentedMember<ConstructorInfo>> Constructors { get; set; }
+
+        /// <summary>
         /// Contains the documentation for all events on the <see cref="Type"/>.
         /// </summary>
-        public IEnumerable<DocumentedMember<EventInfo>> Events { get; protected set; }
+        public IEnumerable<DocumentedMember<EventInfo>> Events { get; set; }
 
         /// <summary>
         /// Contains the documentation for all fields on the <see cref="Type"/>.
         /// </summary>
-        public IEnumerable<DocumentedMember<FieldInfo>> Fields { get; protected set; }
+        public IEnumerable<DocumentedMember<FieldInfo>> Fields { get; set; }
 
         /// <summary>
         /// Contains the documentation for all methods on the <see cref="Type"/>.
         /// </summary>
-        public IEnumerable<DocumentedMember<MethodInfo>> Methods { get; protected set; }
+        public IEnumerable<DocumentedMember<MethodInfo>> Methods { get; set; }
 
         /// <summary>
         /// Contains the documentation for all nested types.
         /// </summary>
-        public IEnumerable<DocumentedType> NestedTypes { get; protected set; }
+        public IEnumerable<DocumentedType> NestedTypes { get; set; }
 
         /// <summary>
         /// Contains the documentation for all properties on the <see cref="Type"/>.
         /// </summary>
-        public IEnumerable<DocumentedMember<PropertyInfo>> Properties { get; protected set; }
+        public IEnumerable<DocumentedMember<PropertyInfo>> Properties { get; set; }
 
         /// <summary>
         /// Initializes a new <see cref="DocumentedType"/>.
         /// </summary>
+        public DocumentedType() { }
+
+        /// <summary>
+        /// Initializes a new <see cref="DocumentedType"/>.
+        /// </summary>
+        /// <param name="constructors">The documentation for all constructors on the <see cref="Type"/>.</param>
         /// <param name="events">The documentation for all events on the <see cref="Type"/>.</param>
         /// <param name="fields">The documentation for all fields on the <see cref="Type"/>.</param>
         /// <param name="methods">The documentation for all methods on the <see cref="Type"/>.</param>
@@ -50,8 +61,9 @@ namespace PressDocNet.Documentation
         /// <param name="member">The member that is being documented.</param>
         /// <param name="xml">The documentation Xml.</param>
         public DocumentedType(
-                    Type member, 
-                    XElement xml, 
+                    Type member,
+                    XElement xml,
+                    IEnumerable<DocumentedMember<ConstructorInfo>> constructors,
                     IEnumerable<DocumentedMember<EventInfo>> events,
                     IEnumerable<DocumentedMember<FieldInfo>> fields,
                     IEnumerable<DocumentedMember<MethodInfo>> methods,
@@ -61,8 +73,16 @@ namespace PressDocNet.Documentation
             : base(member, xml)
         {
             Contract.Requires<ArgumentNullException>(member != null && xml != null);
-            Contract.Requires<ArgumentNullException>(events != null && fields != null && methods != null && nestedTypes != null && properties != null);
+            Contract.Requires<ArgumentNullException>(
+                constructors != null &&
+                events != null && 
+                fields != null && 
+                methods != null && 
+                nestedTypes != null && 
+                properties != null
+            );
 
+            this.Constructors = constructors;
             this.Events = events;
             this.Fields = fields;
             this.Methods = methods;

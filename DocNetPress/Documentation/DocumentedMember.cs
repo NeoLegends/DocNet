@@ -20,7 +20,7 @@ namespace DocNetPress.Documentation
         public XElement Xml { get; private set; }
 
         /// <summary>
-        /// The type to be documented
+        /// The member to be documented.
         /// </summary>
         public MemberInfo Member { get; private set; }
 

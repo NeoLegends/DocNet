@@ -49,7 +49,8 @@ namespace DocNetPress.Documentation
 
             IEnumerable<Task<DocumentedMember>> processingTasks = membersToProcess
                 .Select(member => Task.Run(() => new DocumentedMember(member, this.GetDocumentationForMember(member, xmlDocumentation))));
-            return new Documentation(documentedAssembly, xmlDocumentationPath, await Task<DocumentedMember>.WhenAll(processingTasks));
+
+            throw new NotImplementedException();
         }
 
         /// <summary>

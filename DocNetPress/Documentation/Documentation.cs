@@ -54,5 +54,18 @@ namespace DocNetPress.Documentation
             Contract.Invariant(this.Namespaces != null);
             Contract.Invariant(this.DocumentationPath != null);
         }
+
+        /// <summary>
+        /// Creates a new <see cref="Documentation"/> from a list of <see cref="DocumentedMember"/>s.
+        /// </summary>
+        /// <param name="assembly">The documented assembly.</param>
+        /// <param name="documentationPath">The path to the documentation file.</param>
+        /// <param name="members">A list of <see cref="DocumentedMember"/>s to transform into a namespace-hierarchy.</param>
+        public static async Task<Documentation> FromMembers(Assembly assembly, String documentationPath, IEnumerable<DocumentedMember> members)
+        {
+            Contract.Requires<ArgumentNullException>(assembly != null && documentationPath != null && members != null);
+
+            throw new NotImplementedException();
+        }
     }
 }

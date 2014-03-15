@@ -66,6 +66,8 @@ namespace DocNetPress.Documentation
             }
             protected set
             {
+                Contract.Requires<ArgumentNullException>(value != null);
+
                 base.Member = value;
             }
         }

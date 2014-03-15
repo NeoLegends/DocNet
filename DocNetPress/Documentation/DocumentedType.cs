@@ -42,7 +42,11 @@ namespace DocNetPress.Documentation
         /// <summary>
         /// Initializes a new <see cref="DocumentedType"/>.
         /// </summary>
+        /// <param name="events">The documentation for all events on the <see cref="Type"/>.</param>
+        /// <param name="fields">The documentation for all fields on the <see cref="Type"/>.</param>
+        /// <param name="methods">The documentation for all methods on the <see cref="Type"/>.</param>
         /// <param name="nestedTypes">The documentation for all nested types.</param>
+        /// <param name="properties">Tontains the documentation for all properties on the <see cref="Type"/>.</param>
         /// <param name="member">The member that is being documented.</param>
         /// <param name="xml">The documentation Xml.</param>
         public DocumentedType(

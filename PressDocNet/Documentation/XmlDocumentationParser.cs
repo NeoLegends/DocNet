@@ -28,7 +28,7 @@ namespace PressDocNet.Documentation
         /// <param name="xmlDocumentationPath">The path to the XML file containing the documentation.</param>
         /// <param name="includePrivate"><c>true</c> if the method shall parse documentation for private members as well, otherwise <c>false</c>.</param>
         /// <returns>A <see cref="Task{T}"/> representing the asynchronous parsing process.</returns>
-        public Task<Documentation> ParseAsync(String assemblyPath, String xmlDocumentationPath, bool includePrivate)
+        public Task<Documentation> ParseAsync(String assemblyPath, String xmlDocumentationPath)
         {
             return Task.Run(() =>
             {
@@ -99,13 +99,28 @@ namespace PressDocNet.Documentation
                     );
                 }
 
-                IEnumerable<XElement> memberElements = xmlDocumentation.Descendants("member");
+                IEnumerable<XElement> memberElements = xmlDocumentation.Descendants("member").ToArray();
                 IEnumerable<XElement> constructorDocumentation = memberElements.Where(element => element.Attribute("name").Value.Contains("#ctor"));
                 IEnumerable<XElement> eventDocumentation = memberElements.Where(element => element.Attribute("name").Value.StartsWith("E:"));
-                IEnumerable<XElement> fieldDocumentation = memberElements.Where(elemement => elemement.Attribute("name").Value.StartsWith("F:"));
+                IEnumerable<XElement> fieldDocumentation = memberElements.Where(element => element.Attribute("name").Value.StartsWith("F:"));
                 IEnumerable<XElement> methodDocumentation = memberElements.Where(element => element.Attribute("name").Value.StartsWith("M:"));
                 IEnumerable<XElement> typeDocumentation = memberElements.Where(element => element.Attribute("name").Value.StartsWith("T:"));
                 IEnumerable<XElement> propertyDocumentation = memberElements.Where(element => element.Attribute("name").Value.StartsWith("P:"));
+
+                this.ConstructorDocumentation = constructorDocumentation.AsParallel().ToDictionary(element =>
+                {
+                    String name = element.Attribute("name").Value.Substring(2);
+                    String[] splittedNameAttribute = name.Split(new[] { ".#ctor" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    Type declaringType = assembly.GetType(splittedNameAttribute[0], true, false);
+                    Type[] ctorParams = splittedNameAttribute[1].Split(new[] { '(', ')', ',' }, StringSplitOptions.RemoveEmptyEntries).Select(ctorParam => Type.GetType(ctorParam)).ToArray(); // Bullshit, takes no generics into account
+                    ConstructorInfo constructor = declaringType.GetConstructors().FirstOrDefault(cInfo =>
+                    {
+                        return false;
+                    });
+
+                    return ((ConstructorInfo)null);
+                }, element => element);
 
                 throw new NotImplementedException();
             }

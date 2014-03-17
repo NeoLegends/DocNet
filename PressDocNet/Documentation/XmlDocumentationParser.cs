@@ -90,7 +90,7 @@ namespace PressDocNet.Documentation
                 {
                     throw new InvalidOperationException(
                         String.Format(
-                            "The XML documentation is not generated from the specified assembly ({0}), the names ({1} from the assembly and {2} from the XML file) do not match.",
+                            "The XML documentation is not generated from the specified assembly ({0}), the names (assembly: '{1}'; XML docs: '{2}') do not match.",
                             assembly.Location,
                             assembly.FullName,
                             assemblyName
@@ -109,15 +109,34 @@ namespace PressDocNet.Documentation
 
                 this.ConstructorDocumentation = constructorDocumentation.AsParallel().ToDictionary(element =>
                 {
-                    String name = this.GetNameAttributeValueWithoutPrefix(element);
-                    String[] splittedNameAttribute = name.Split(new[] { ".#ctor" }, StringSplitOptions.RemoveEmptyEntries);
+                    String nameWithoutPrefix = this.GetNameAttributeValueWithoutPrefix(element);
+                    Type declaringType = this.GetDeclaringType(nameWithoutPrefix, assembly);
+                    int indexOfParameterBracket = nameWithoutPrefix.IndexOf('(');
+                    Contract.Assume(indexOfParameterBracket >= 0);
+                    String[] parameters = nameWithoutPrefix
+                        .Substring(indexOfParameterBracket)
+                        .Split(new[] { '(', ')', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-                    Type declaringType = assembly.GetType(splittedNameAttribute[0], true, false);
-                    Type[] ctorParams = splittedNameAttribute[1].Split(new[] { '(', ')', ',' }, StringSplitOptions.RemoveEmptyEntries).Select(ctorParam => Type.GetType(ctorParam)).ToArray(); // Bullshit, takes no generics into account
-                    ConstructorInfo constructor = declaringType.GetConstructors().FirstOrDefault(cInfo =>
+                    return declaringType.GetConstructors().Where(cInfo =>
                     {
-                        return false;
-                    });
+                        ParameterInfo[] ctorParams = cInfo.GetParameters();
+                        if (ctorParams.Length != parameters.Length)
+                        {
+                            return false;
+                        }
+                        int index = 0;
+                        foreach (String param in parameters)
+                        {
+                            if (ctorParams[index].ParameterType.IsGenericType && !param.StartsWith("`"))
+                            {
+                                return false;
+                            }
+                            // ... BRAINFUCK
+                            index++;
+                        }
+                        return true;
+
+                    }).FirstOrDefault();
 
                     throw new NotImplementedException();
                     return ((ConstructorInfo)null);
@@ -126,7 +145,7 @@ namespace PressDocNet.Documentation
                 this.EventDocumentation = eventDocumentation.AsParallel().ToDictionary(element =>
                 {
                     String nameWithoutPrefix = this.GetNameAttributeValueWithoutPrefix(element);
-                    Type declaringType = this.GetTypeFromNameAttribute(nameWithoutPrefix, assembly);
+                    Type declaringType = this.GetDeclaringType(nameWithoutPrefix, assembly);
                     String eventName = this.GetMemberName(nameWithoutPrefix);
 
                     return declaringType.GetEvent(eventName, flags);
@@ -135,7 +154,7 @@ namespace PressDocNet.Documentation
                 this.FieldDocumentation = fieldDocumentation.AsParallel().ToDictionary(element =>
                 {
                     String nameWithoutPrefix = this.GetNameAttributeValueWithoutPrefix(element);
-                    Type declaringType = this.GetTypeFromNameAttribute(nameWithoutPrefix, assembly);
+                    Type declaringType = this.GetDeclaringType(nameWithoutPrefix, assembly);
                     String fieldName = this.GetMemberName(nameWithoutPrefix);
 
                     return declaringType.GetField(fieldName, flags);
@@ -155,11 +174,25 @@ namespace PressDocNet.Documentation
                 this.PropertyDocumentation = propertyDocumentation.AsParallel().ToDictionary(element =>
                 {
                     String nameWithoutPrefix = this.GetNameAttributeValueWithoutPrefix(element);
-                    Type declaringType = this.GetTypeFromNameAttribute(nameWithoutPrefix, assembly);
+                    Type declaringType = this.GetDeclaringType(nameWithoutPrefix, assembly);
                     String propertyName = this.GetMemberName(nameWithoutPrefix);
 
                     return declaringType.GetProperty(propertyName, flags);
                 }, element => element);
+            }
+
+            /// <summary>
+            /// Gets the <see cref="Type"/> from the specified input inside the specified <see cref="Assembly"/>.
+            /// </summary>
+            /// <param name="input">The input.</param>
+            /// <param name="assembly">The <see cref="Assembly"/> to search for the <see cref="Type"/> in.</param>
+            /// <returns>The <see cref="Type"/> with the specified name.</returns>
+            private Type GetDeclaringType(String input, Assembly assembly)
+            {
+                Contract.Requires<ArgumentNullException>(input != null && assembly != null);
+
+                int lastIndexOfDot = input.LastIndexOf('.');
+                return assembly.GetType(input.Substring(0, (lastIndexOfDot >= 0) ? lastIndexOfDot : 0), true, true);
             }
 
             /// <summary>
@@ -170,6 +203,7 @@ namespace PressDocNet.Documentation
             private String GetNameAttributeValue(XElement element)
             {
                 Contract.Requires<ArgumentNullException>(element != null);
+                Contract.Ensures(Contract.Result<String>() != null);
 
                 XAttribute attribute = element.Attribute("name");
                 return (attribute != null) ? attribute.Value : String.Empty;
@@ -183,6 +217,7 @@ namespace PressDocNet.Documentation
             private String GetNameAttributeValueWithoutPrefix(XElement element)
             {
                 Contract.Requires<ArgumentNullException>(element != null);
+                Contract.Ensures(Contract.Result<String>() != null);
 
                 String name = this.GetNameAttributeValue(element);
                 Contract.Assume(name.Length >= 2);
@@ -197,23 +232,11 @@ namespace PressDocNet.Documentation
             private String GetMemberName(String input)
             {
                 Contract.Requires<ArgumentNullException>(input != null);
+                Contract.Ensures(Contract.Result<String>() != null);
 
-                int lastIndexOfDot = input.LastIndexOf('.');
+                int indexOfBracket = input.IndexOf('(');
+                int lastIndexOfDot = input.Substring(0, (indexOfBracket >= 0) ? indexOfBracket : input.Length).LastIndexOf('.');
                 return input.Substring((lastIndexOfDot >= 0) ? lastIndexOfDot : 0);
-            }
-
-            /// <summary>
-            /// Gets the <see cref="Type"/> from the specified input inside the specified <see cref="Assembly"/>.
-            /// </summary>
-            /// <param name="input">The input.</param>
-            /// <param name="assembly">The <see cref="Assembly"/> to search for the <see cref="Type"/> in.</param>
-            /// <returns>The <see cref="Type"/> with the specified name.</returns>
-            private Type GetTypeFromNameAttribute(String input, Assembly assembly)
-            {
-                Contract.Requires<ArgumentNullException>(input != null && assembly != null);
-
-                int lastIndexOfDot = input.LastIndexOf('.');
-                return assembly.GetType(input.Substring(0, (lastIndexOfDot >= 0) ? lastIndexOfDot : 0), true, true);
             }
 
             /// <summary>

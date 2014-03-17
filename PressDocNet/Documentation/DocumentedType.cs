@@ -75,10 +75,10 @@ namespace PressDocNet.Documentation
             Contract.Requires<ArgumentNullException>(member != null && xml != null);
             Contract.Requires<ArgumentNullException>(
                 constructors != null &&
-                events != null && 
-                fields != null && 
-                methods != null && 
-                nestedTypes != null && 
+                events != null &&
+                fields != null &&
+                methods != null &&
+                nestedTypes != null &&
                 properties != null
             );
 
@@ -88,19 +88,6 @@ namespace PressDocNet.Documentation
             this.Methods = methods;
             this.NestedTypes = nestedTypes;
             this.Properties = properties;
-        }
-        
-        /// <summary>
-        /// Contains Contract.Invariant definitions.
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(this.Events != null);
-            Contract.Invariant(this.Fields != null);
-            Contract.Invariant(this.Methods != null);
-            Contract.Invariant(this.NestedTypes != null);
-            Contract.Invariant(this.Properties != null);
         }
     }
 }

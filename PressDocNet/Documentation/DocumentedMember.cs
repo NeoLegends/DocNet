@@ -41,16 +41,6 @@ namespace PressDocNet.Documentation
             this.Member = member;
             this.Xml = xml;
         }
-
-        /// <summary>
-        /// Contains Contract.Invariant definitions.
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(this.Member != null);
-            Contract.Invariant(this.Xml != null);
-        }
     }
 
     /// <summary>
@@ -91,15 +81,6 @@ namespace PressDocNet.Documentation
             : base(member, xml)
         {
             Contract.Requires<ArgumentNullException>(member != null && xml != null);
-        }
-
-        /// <summary>
-        /// Contains Contract.Invariant definitions.
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(this.Member != null);
         }
     }
 }

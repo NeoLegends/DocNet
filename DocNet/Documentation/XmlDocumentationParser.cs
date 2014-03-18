@@ -111,35 +111,9 @@ namespace DocNet.Documentation
                 {
                     String nameWithoutPrefix = this.GetNameAttributeValueWithoutPrefix(element);
                     Type declaringType = this.GetDeclaringType(nameWithoutPrefix, assembly);
-                    int indexOfParameterBracket = nameWithoutPrefix.IndexOf('(');
-                    Contract.Assume(indexOfParameterBracket >= 0);
-                    String[] parameters = nameWithoutPrefix
-                        .Substring(indexOfParameterBracket)
-                        .Split(new[] { '(', ')', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    String[] parameters = this.GetParameters(nameWithoutPrefix);
 
-                    return declaringType.GetConstructors().Where(cInfo =>
-                    {
-                        ParameterInfo[] ctorParams = cInfo.GetParameters();
-                        if (ctorParams.Length != parameters.Length)
-                        {
-                            return false;
-                        }
-                        int index = 0;
-                        foreach (String param in parameters)
-                        {
-                            if (ctorParams[index].ParameterType.IsGenericType && !param.StartsWith("`"))
-                            {
-                                return false;
-                            }
-                            // ... BRAINFUCK
-                            index++;
-                        }
-                        return true;
-
-                    }).FirstOrDefault();
-
-                    throw new NotImplementedException();
-                    return ((ConstructorInfo)null);
+                    return declaringType.GetConstructors().First(cInfo => this.ParametersMatching(cInfo.GetParameters(), parameters));
                 }, element => element);
 
                 this.EventDocumentation = eventDocumentation.AsParallel().ToDictionary(element =>
@@ -162,8 +136,11 @@ namespace DocNet.Documentation
 
                 this.MethodDocumentation = methodDocumentation.AsParallel().ToDictionary(element =>
                 {
-                    throw new NotImplementedException();
-                    return ((MethodInfo)null);
+                    String nameWithoutPrefix = this.GetNameAttributeValueWithoutPrefix(element);
+                    Type declaringType = this.GetDeclaringType(nameWithoutPrefix, assembly);
+                    String[] parameters = this.GetParameters(nameWithoutPrefix);
+
+                    return declaringType.GetMethods().First(mInfo => this.ParametersMatching(mInfo.GetParameters(), parameters));
                 }, element => element);
 
                 this.TypeDocumentation = typeDocumentation.AsParallel().ToDictionary(element =>
@@ -236,7 +213,50 @@ namespace DocNet.Documentation
 
                 int indexOfBracket = input.IndexOf('(');
                 int lastIndexOfDot = input.Substring(0, (indexOfBracket >= 0) ? indexOfBracket : input.Length).LastIndexOf('.');
-                return input.Substring((lastIndexOfDot >= 0) ? lastIndexOfDot : 0);
+                return input.Substring((lastIndexOfDot >= 0) ? lastIndexOfDot + 1 : 0);
+            }
+
+            /// <summary>
+            /// Gets the method parameters.
+            /// </summary>
+            /// <param name="input">The input.</param>
+            /// <returns>The parameters.</returns>
+            private String[] GetParameters(String input)
+            {
+                Contract.Requires<ArgumentNullException>(input != null);
+                Contract.Ensures(Contract.Result<String[]>() != null);
+
+                int indexOfBracket = input.IndexOf('(');
+                Contract.Assume(input.Length >= indexOfBracket - 2);
+                return (indexOfBracket >= 0) ?
+                    input.Substring(indexOfBracket + 1, input.Length - indexOfBracket - 2).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries) :
+                    new String[] { };
+            }
+
+            /// <summary>
+            /// Checks whether the parameters are matching.
+            /// </summary>
+            /// <param name="mInfo">The method.</param>
+            /// <param name="docParams">Parameters as they are given in the documentation.</param>
+            /// <returns><c>true</c> if the parameters are the same, otherwise <c>false</c>.</returns>
+            private bool ParametersMatching(MethodInfo mInfo, IEnumerable<String> docParams)
+            {
+                Contract.Requires<ArgumentNullException>(mInfo != null && docParams != null);
+
+                throw new NotImplementedException();
+            }
+
+            /// <summary>
+            /// Gets a <see cref="Type"/> from it's <see cref="P:Type.FullName"/>.
+            /// </summary>
+            /// <param name="fullTypeName">The <see cref="Type"/> to obtain's full type name.</param>
+            /// <returns>The <see cref="Type"/> with the specified name, or null if the <see cref="Type"/> could not be found.</returns>
+            private Type GetTypeFromAllLoadedAssemblies(String fullTypeName)
+            {
+                return AppDomain.CurrentDomain.GetAssemblies()
+                    .Where(assembly => !assembly.IsDynamic)
+                    .SelectMany(assembly => assembly.GetTypes())
+                    .FirstOrDefault(type => type.FullName == fullTypeName);
             }
 
             /// <summary>

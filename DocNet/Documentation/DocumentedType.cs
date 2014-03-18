@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace PressDocNet.Documentation
+namespace DocNet.Documentation
 {
     /// <summary>
     /// Represents the documentation for a <see cref="Type"/>.

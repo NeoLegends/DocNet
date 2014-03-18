@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace PressDocNet.Documentation
+namespace DocNet.Documentation
 {
     /// <summary>
     /// Contains the documentation for a member.

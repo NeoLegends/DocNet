@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace PressDocNet.Documentation
+namespace DocNet.Documentation
 {
     /// <summary>
     /// Parses .NET Documentation into <see cref="DocumentedMember"/>s.

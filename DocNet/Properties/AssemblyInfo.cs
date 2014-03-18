@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("PressDocNet")]
+[assembly: AssemblyTitle("DocNet")]
 [assembly: AssemblyDescription("A .NET online documentation generator and CMS injector.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Moritz Gunz")]
-[assembly: AssemblyProduct("PressDocNet")]
+[assembly: AssemblyProduct("DocNet")]
 [assembly: AssemblyCopyright("Copyright © Moritz Gunz 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

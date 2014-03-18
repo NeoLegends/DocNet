@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PressDocNet.Documentation
+namespace DocNet.Documentation
 {
     /// <summary>
     /// Represents a parser class parsing .NET XML documentation.

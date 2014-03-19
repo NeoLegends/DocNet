@@ -36,10 +36,38 @@ namespace DocNet.Documentation
                 XDocument document = XDocument.Load(xmlDocumentationPath);
                 DocumentationWrapper xmlDocumentation = new DocumentationWrapper(document, documentedAssembly);
 
+                List<DocumentedType> nestedDocumentation = xmlDocumentation.TypeDocumentation.Select(documentedType =>
+                {
+                    DocumentedType docEdType = new DocumentedType();
+                    docEdType.Member = documentedType.Key;
+                    docEdType.Xml = documentedType.Value;
+                    return docEdType;
+                }).ToList();
+                nestedDocumentation.ForEach(item => item.NestedTypes = nestedDocumentation.Where(documentedType => item.Member == documentedType.Member.DeclaringType));
 
-
-                throw new NotImplementedException();
-                return ((Documentation)null);
+                return new Documentation(documentedAssembly, xmlDocumentationPath, nestedDocumentation.Select(documentedType =>
+                    new DocumentedType(
+                        documentedType.Member,
+                        documentedType.Xml,
+                        xmlDocumentation.ConstructorDocumentation
+                            .Where(cDoc => cDoc.Key.DeclaringType == documentedType.Member)
+                            .Select(cDoc => new DocumentedMember<ConstructorInfo>(cDoc.Key, cDoc.Value)),
+                        xmlDocumentation.EventDocumentation
+                            .Where(eDoc => eDoc.Key.DeclaringType == documentedType.Member)
+                            .Select(eDoc => new DocumentedMember<EventInfo>(eDoc.Key, eDoc.Value)),
+                        xmlDocumentation.FieldDocumentation
+                            .Where(fDoc => fDoc.Key.DeclaringType == documentedType.Member)
+                            .Select(fDoc => new DocumentedMember<FieldInfo>(fDoc.Key, fDoc.Value)),
+                        xmlDocumentation.MethodDocumentation
+                            .Where(mDoc => mDoc.Key.DeclaringType == documentedType.Member)
+                            .Select(mDoc => new DocumentedMember<MethodInfo>(mDoc.Key, mDoc.Value)),
+                        nestedDocumentation
+                            .Where(tDoc => tDoc.Member.DeclaringType == documentedType.Member),
+                        xmlDocumentation.PropertyDocumentation
+                            .Where(pDoc => pDoc.Key.DeclaringType == documentedType.Member)
+                            .Select(pDoc => new DocumentedMember<PropertyInfo>(pDoc.Key, pDoc.Value))
+                    )
+                ));
             });
         }
 

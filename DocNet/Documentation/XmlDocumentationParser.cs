@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -34,6 +35,8 @@ namespace DocNet.Documentation
                 Assembly documentedAssembly = Assembly.LoadFrom(assemblyPath);
                 XDocument document = XDocument.Load(xmlDocumentationPath);
                 DocumentationWrapper xmlDocumentation = new DocumentationWrapper(document, documentedAssembly);
+
+
 
                 throw new NotImplementedException();
                 return ((Documentation)null);
@@ -111,9 +114,8 @@ namespace DocNet.Documentation
                 {
                     String nameWithoutPrefix = this.GetNameAttributeValueWithoutPrefix(element);
                     Type declaringType = this.GetDeclaringType(nameWithoutPrefix, assembly);
-                    String[] parameters = this.GetParameters(nameWithoutPrefix);
 
-                    return declaringType.GetConstructors().First(cInfo => this.ParametersMatching(cInfo.GetParameters(), parameters));
+                    return declaringType.GetConstructors().First(cInfo => this.ParametersMatching(cInfo, this.GetMemberName(nameWithoutPrefix)));
                 }, element => element);
 
                 this.EventDocumentation = eventDocumentation.AsParallel().ToDictionary(element =>
@@ -138,9 +140,8 @@ namespace DocNet.Documentation
                 {
                     String nameWithoutPrefix = this.GetNameAttributeValueWithoutPrefix(element);
                     Type declaringType = this.GetDeclaringType(nameWithoutPrefix, assembly);
-                    String[] parameters = this.GetParameters(nameWithoutPrefix);
 
-                    return declaringType.GetMethods().First(mInfo => this.ParametersMatching(mInfo.GetParameters(), parameters));
+                    return declaringType.GetMethods().First(mInfo => this.ParametersMatching(mInfo, this.GetMemberName(nameWithoutPrefix)));
                 }, element => element);
 
                 this.TypeDocumentation = typeDocumentation.AsParallel().ToDictionary(element =>
@@ -170,6 +171,19 @@ namespace DocNet.Documentation
 
                 int lastIndexOfDot = input.LastIndexOf('.');
                 return assembly.GetType(input.Substring(0, (lastIndexOfDot >= 0) ? lastIndexOfDot : 0), true, true);
+            }
+
+            /// <summary>
+            /// Gets the count of generic parameters.
+            /// </summary>
+            /// <param name="method">The method to parse the amount of generic parameters from.</param>
+            /// <returns>The method.</returns>
+            private int GetGenericParameterCount(String method)
+            {
+                Contract.Requires<ArgumentNullException>(!String.IsNullOrEmpty(method));
+
+                Regex regex = new Regex(@"`\d\){1,}");
+                return int.Parse(regex.Match(method).Value.Substring(1));
             }
 
             /// <summary>
@@ -212,8 +226,8 @@ namespace DocNet.Documentation
                 Contract.Ensures(Contract.Result<String>() != null);
 
                 int indexOfBracket = input.IndexOf('(');
-                int lastIndexOfDot = input.Substring(0, (indexOfBracket >= 0) ? indexOfBracket : input.Length).LastIndexOf('.');
-                return input.Substring((lastIndexOfDot >= 0) ? lastIndexOfDot + 1 : 0);
+                int indexOfDot = input.LastIndexOf('.', (indexOfBracket >= 0) ? indexOfBracket : input.Length - 1);
+                return input.Substring(indexOfDot + 1);
             }
 
             /// <summary>
@@ -234,29 +248,91 @@ namespace DocNet.Documentation
             }
 
             /// <summary>
-            /// Checks whether the parameters are matching.
-            /// </summary>
-            /// <param name="mInfo">The method.</param>
-            /// <param name="docParams">Parameters as they are given in the documentation.</param>
-            /// <returns><c>true</c> if the parameters are the same, otherwise <c>false</c>.</returns>
-            private bool ParametersMatching(MethodInfo mInfo, IEnumerable<String> docParams)
-            {
-                Contract.Requires<ArgumentNullException>(mInfo != null && docParams != null);
-
-                throw new NotImplementedException();
-            }
-
-            /// <summary>
             /// Gets a <see cref="Type"/> from it's <see cref="P:Type.FullName"/>.
             /// </summary>
             /// <param name="fullTypeName">The <see cref="Type"/> to obtain's full type name.</param>
             /// <returns>The <see cref="Type"/> with the specified name, or null if the <see cref="Type"/> could not be found.</returns>
             private Type GetTypeFromAllLoadedAssemblies(String fullTypeName)
             {
+                Contract.Requires<ArgumentNullException>(fullTypeName != null);
+
                 return AppDomain.CurrentDomain.GetAssemblies()
                     .Where(assembly => !assembly.IsDynamic)
                     .SelectMany(assembly => assembly.GetTypes())
                     .FirstOrDefault(type => type.FullName == fullTypeName);
+            }
+
+            /// <summary>
+            /// Checks whether the specified parameter is generic.
+            /// </summary>
+            /// <param name="parameterString">The parameter string as it is contained in the documentation.</param>
+            /// <returns><c>true</c> if the parameter is generic, otherwise <c>false</c>.</returns>
+            private bool IsGeneric(String parameterString)
+            {
+                Contract.Requires<ArgumentNullException>(!String.IsNullOrEmpty(parameterString));
+
+                return parameterString.StartsWith("`");
+            }
+
+            /// <summary>
+            /// Checks whether the parameters are matching.
+            /// </summary>
+            /// <param name="mInfo">The method.</param>
+            /// <param name="docParams">Parameters as they are given in the documentation.</param>
+            /// <returns><c>true</c> if the parameters are the same, otherwise <c>false</c>.</returns>
+            private bool ParametersMatching(MethodBase mInfo, String methodWithParameters)
+            {
+                Contract.Requires<ArgumentNullException>(mInfo != null && methodWithParameters != null);
+
+                Type[] genericParameters = mInfo.GetGenericArguments();
+                int docGenericArgumentCount = this.GetGenericParameterCount(methodWithParameters);
+                if (genericParameters.Length != docGenericArgumentCount)
+                {
+                    return false;
+                }
+
+                ParameterInfo[] parameters = mInfo.GetParameters();
+                String[] docParameters = this.GetParameters(methodWithParameters);
+                if (parameters.Length != docParameters.Length)
+                {
+                    return false;
+                }
+
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    // Check if we're dealing with generic parameters
+                    Type parameterType = parameters[i].ParameterType;
+                    bool isGenericDocParameter = this.IsGeneric(docParameters[i]);
+                    if (parameterType.IsGenericParameter && isGenericDocParameter)
+                    {
+                        // Check if we are dealing with the same type here
+                        if (parameterType != genericParameters[int.Parse(docParameters[i].Substring(1))])
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        if (parameterType != this.ResolveTypeFromDocTypeName(docParameters[i]))
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+
+            /// <summary>
+            /// Resolves a <see cref="Type"/> from the syntax as they are given in the docs.
+            /// </summary>
+            /// <param name="typeName">The type name as they are given in the documentation XML.</param>
+            /// <returns>The resolved <see cref="Type"/> or null, if none was found.</returns>
+            private Type ResolveTypeFromDocTypeName(String typeName)
+            {
+                Contract.Requires<ArgumentNullException>(!String.IsNullOrEmpty(typeName));
+
+                throw new NotImplementedException();
             }
 
             /// <summary>

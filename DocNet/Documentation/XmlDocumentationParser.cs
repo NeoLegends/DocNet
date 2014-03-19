@@ -278,7 +278,7 @@ namespace DocNet.Documentation
             /// Checks whether the parameters are matching.
             /// </summary>
             /// <param name="mInfo">The method.</param>
-            /// <param name="docParams">Parameters as they are given in the documentation.</param>
+            /// <param name="methodWithParameters">The method with the parameters as they are given in the documentation.</param>
             /// <returns><c>true</c> if the parameters are the same, otherwise <c>false</c>.</returns>
             private bool ParametersMatching(MethodBase mInfo, String methodWithParameters)
             {
@@ -292,6 +292,7 @@ namespace DocNet.Documentation
                 }
 
                 ParameterInfo[] parameters = mInfo.GetParameters();
+                Contract.Assume(parameters != null && parameters.All(param => param != null));
                 String[] docParameters = this.GetParameters(methodWithParameters);
                 if (parameters.Length != docParameters.Length)
                 {
@@ -313,6 +314,7 @@ namespace DocNet.Documentation
                     }
                     else
                     {
+                        // If parameter types are unequal, return false.
                         if (parameterType != this.ResolveTypeFromDocTypeName(docParameters[i]))
                         {
                             return false;
@@ -331,6 +333,7 @@ namespace DocNet.Documentation
             private Type ResolveTypeFromDocTypeName(String typeName)
             {
                 Contract.Requires<ArgumentNullException>(!String.IsNullOrEmpty(typeName));
+
 
                 throw new NotImplementedException();
             }

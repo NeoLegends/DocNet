@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -12,6 +13,7 @@ namespace DocNet.Documentation
     /// <summary>
     /// Contains all the documentation for a specified assembly.
     /// </summary>
+    [DataContract]
     public class Documentation
     {
         /// <summary>

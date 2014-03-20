@@ -36,6 +36,7 @@ namespace DocNet.Documentation
             Contract.Requires<ArgumentNullException>(assemblyPath != null);
             Contract.Requires<ArgumentNullException>(documentationPath != null);
             Contract.Ensures(Contract.Result<Task<Documentation>>() != null);
+            Contract.Ensures(Contract.Result<Task<Documentation>>().Result != null);
 
             return null;
         }

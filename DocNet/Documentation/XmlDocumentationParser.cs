@@ -38,10 +38,11 @@ namespace DocNet.Documentation
 
                 IEnumerable<DocumentedType> nestedDocumentation = xmlDocumentation.TypeDocumentation.Select(documentedType =>
                 {
-                    DocumentedType docEdType = new DocumentedType();
-                    docEdType.Member = documentedType.Key;
-                    docEdType.Xml = documentedType.Value;
-                    return docEdType;
+                    return new DocumentedType()
+                    {
+                        Member = documentedType.Key,
+                        Xml = documentedType.Value
+                    };
                 });
 
                 return new Documentation(documentedAssembly, xmlDocumentationPath, nestedDocumentation.Select(documentedType =>

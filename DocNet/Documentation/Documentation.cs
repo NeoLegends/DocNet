@@ -13,7 +13,6 @@ namespace DocNet.Documentation
     /// <summary>
     /// Contains all the documentation for a specified assembly.
     /// </summary>
-    [DataContract]
     public class Documentation
     {
         /// <summary>

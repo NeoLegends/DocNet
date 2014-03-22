@@ -36,6 +36,7 @@ namespace DocNet.Documentation
                 XDocument document = XDocument.Load(xmlDocumentationPath);
                 DocumentationWrapper xmlDocumentation = new DocumentationWrapper(document, documentedAssembly);
 
+                // Building up the tree in multiple rounds for type nesting
                 IEnumerable<DocumentedType> nestedDocumentation = xmlDocumentation.TypeDocumentation.Select(documentedType =>
                 {
                     return new DocumentedType()
@@ -62,7 +63,7 @@ namespace DocNet.Documentation
                         .Where(pDoc => pDoc.Key.DeclaringType == documentedType.Member)
                         .Select(pDoc => new DocumentedMember<PropertyInfo>(pDoc.Key, pDoc.Value));
                     return documentedType;
-                }).ToArray()); // We already are on a separate thread, so we can execute everything here instead of deferring it
+                }).Where(documentedType => !documentedType.Member.IsNested));
             });
         }
     }

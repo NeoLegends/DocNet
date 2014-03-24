@@ -12,7 +12,13 @@ namespace DocNet.Documentation
     /// <summary>
     /// Represents the documentation for a <see cref="Type"/>.
     /// </summary>
-    public class DocumentedType : DocumentedMember<Type>
+    public class DocumentedType : DocumentedMember<Type>,
+                                  IEnumerable<DocumentedMember<ConstructorInfo>>,
+                                  IEnumerable<DocumentedMember<EventInfo>>,
+                                  IEnumerable<DocumentedMember<FieldInfo>>,
+                                  IEnumerable<DocumentedMember<MethodInfo>>,
+                                  IEnumerable<DocumentedType>,
+                                  IEnumerable<DocumentedMember<PropertyInfo>>
     {
         /// <summary>
         /// Contains the documentation for all constructors on the <see cref="Type"/>.
@@ -88,6 +94,69 @@ namespace DocNet.Documentation
             this.Methods = methods;
             this.NestedTypes = nestedTypes;
             this.Properties = properties;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEnumerator{T}"/>.
+        /// </summary>
+        /// <returns>The <see cref="IEnumerator{T}"/>.</returns>
+        IEnumerator<DocumentedMember<ConstructorInfo>> IEnumerable<DocumentedMember<ConstructorInfo>>.GetEnumerator()
+        {
+            return (this.Constructors ?? Enumerable.Empty<DocumentedMember<ConstructorInfo>>()).GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEnumerator{T}"/>.
+        /// </summary>
+        /// <returns>The <see cref="IEnumerator{T}"/>.</returns>
+        IEnumerator<DocumentedMember<EventInfo>> IEnumerable<DocumentedMember<EventInfo>>.GetEnumerator()
+        {
+            return (this.Events ?? Enumerable.Empty<DocumentedMember<EventInfo>>()).GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEnumerator{T}"/>.
+        /// </summary>
+        /// <returns>The <see cref="IEnumerator{T}"/>.</returns>
+        IEnumerator<DocumentedMember<FieldInfo>> IEnumerable<DocumentedMember<FieldInfo>>.GetEnumerator()
+        {
+            return (this.Fields ?? Enumerable.Empty<DocumentedMember<FieldInfo>>()).GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEnumerator{T}"/>.
+        /// </summary>
+        /// <returns>The <see cref="IEnumerator{T}"/>.</returns>
+        IEnumerator<DocumentedMember<MethodInfo>> IEnumerable<DocumentedMember<MethodInfo>>.GetEnumerator()
+        {
+            return (this.Methods ?? Enumerable.Empty<DocumentedMember<MethodInfo>>()).GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEnumerator{T}"/>.
+        /// </summary>
+        /// <returns>The <see cref="IEnumerator{T}"/>.</returns>
+        public IEnumerator<DocumentedType> GetEnumerator()
+        {
+            return (this.NestedTypes ?? Enumerable.Empty<DocumentedType>()).GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEnumerator"/>.
+        /// </summary>
+        /// <returns>The <see cref="IEnumerator"/>.</returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return (this.NestedTypes ?? Enumerable.Empty<DocumentedType>()).GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEnumerator{T}"/>.
+        /// </summary>
+        /// <returns>The <see cref="IEnumerator{T}"/>.</returns>
+        IEnumerator<DocumentedMember<PropertyInfo>> IEnumerable<DocumentedMember<PropertyInfo>>.GetEnumerator()
+        {
+            return (this.Properties ?? Enumerable.Empty<DocumentedMember<PropertyInfo>>()).GetEnumerator();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace DocNet.Documentation
     /// <summary>
     /// Contains all the documentation for a specified assembly.
     /// </summary>
-    public class Documentation
+    public class Documentation : IEnumerable<DocumentedType>
     {
         /// <summary>
         /// Gets the assembly's name.
@@ -54,6 +54,24 @@ namespace DocNet.Documentation
             Contract.Invariant(this.Assembly != null);
             Contract.Invariant(this.Types != null);
             Contract.Invariant(this.DocumentationPath != null);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEnumerator{T}"/>.
+        /// </summary>
+        /// <returns>The <see cref="IEnumerator{T}"/>.</returns>
+        public IEnumerator<DocumentedType> GetEnumerator()
+        {
+            return (this.Types ?? Enumerable.Empty<DocumentedType>()).GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEnumerator"/>.
+        /// </summary>
+        /// <returns>The <see cref="IEnumerator"/>.</returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return (this.Types ?? Enumerable.Empty<DocumentedType>()).GetEnumerator();
         }
     }
 }

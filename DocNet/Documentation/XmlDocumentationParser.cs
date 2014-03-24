@@ -12,7 +12,7 @@ using System.Xml.Linq;
 namespace DocNet.Documentation
 {
     /// <summary>
-    /// Parses .NET Documentation into <see cref="DocumentedMember"/>s.
+    /// Parses .NET Documentation into a <see cref="Documentation"/>.
     /// </summary>
     /// <remarks>This class is stateless and thus thread-safe.</remarks>
     public class XmlDocumentationParser : IDocumentationParser

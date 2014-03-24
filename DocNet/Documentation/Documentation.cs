@@ -18,17 +18,17 @@ namespace DocNet.Documentation
         /// <summary>
         /// Gets the assembly's name.
         /// </summary>
-        public Assembly Assembly { get; set; }
+        public Assembly Assembly { get; private set; }
 
         /// <summary>
         /// Gets the path to the documentation file.
         /// </summary>
-        public String DocumentationPath { get; set; }
+        public String DocumentationPath { get; private set; }
 
         /// <summary>
         /// Gets all documented <see cref="Type"/>s in the assembly.
         /// </summary>
-        public IEnumerable<DocumentedType> Types { get; set; }
+        public IEnumerable<DocumentedType> Types { get; private set; }
 
         /// <summary>
         /// Initializes a new <see cref="Documentation"/>.

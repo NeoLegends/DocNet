@@ -78,16 +78,6 @@ namespace DocNet.Documentation
                 )
             : base(member, xml)
         {
-            Contract.Requires<ArgumentNullException>(member != null && xml != null);
-            Contract.Requires<ArgumentNullException>(
-                constructors != null &&
-                events != null &&
-                fields != null &&
-                methods != null &&
-                nestedTypes != null &&
-                properties != null
-            );
-
             this.Constructors = constructors;
             this.Events = events;
             this.Fields = fields;

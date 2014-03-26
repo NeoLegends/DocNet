@@ -46,23 +46,12 @@ namespace DocNet.Documentation
         }
 
         /// <summary>
-        /// Contains Contract.Invariant definitions.
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(this.Assembly != null);
-            Contract.Invariant(this.Types != null);
-            Contract.Invariant(this.DocumentationPath != null);
-        }
-
-        /// <summary>
         /// Gets the <see cref="IEnumerator{T}"/>.
         /// </summary>
         /// <returns>The <see cref="IEnumerator{T}"/>.</returns>
         public IEnumerator<DocumentedType> GetEnumerator()
         {
-            return (this.Types ?? Enumerable.Empty<DocumentedType>()).GetEnumerator();
+            return this.Types.GetEnumerator();
         }
 
         /// <summary>
@@ -71,7 +60,18 @@ namespace DocNet.Documentation
         /// <returns>The <see cref="IEnumerator"/>.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return (this.Types ?? Enumerable.Empty<DocumentedType>()).GetEnumerator();
+            return this.Types.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Contains Contract.Invariant definitions.
+        /// </summary>
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant(this.Assembly != null);
+            Contract.Invariant(this.DocumentationPath != null);
+            Contract.Invariant(this.Types != null);
         }
     }
 }

@@ -61,7 +61,7 @@ namespace DocNet.Documentation
                         .Where(pDoc => pDoc.Key.DeclaringType == documentedType.Member)
                         .Select(pDoc => new DocumentedMember<PropertyInfo>(pDoc.Key, pDoc.Value));
                     return documentedType;
-                }).Where(documentedType => !documentedType.Member.IsNested));
+                }).Where(documentedType => !documentedType.Member.IsNested).ToArray());
             });
         }
 

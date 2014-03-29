@@ -15,14 +15,19 @@ namespace DocNet.Documentation
     public class DocumentedMember
     {
         /// <summary>
-        /// The documentation Xml.
+        /// The generated documentation.
         /// </summary>
-        public XElement Xml { get; set; }
+        public String DocumentationText { get; set; }
 
         /// <summary>
         /// The member to be documented.
         /// </summary>
         public MemberInfo Member { get; set; }
+
+        /// <summary>
+        /// The documentation Xml.
+        /// </summary>
+        public XElement Xml { get; set; }
 
         /// <summary>
         /// Initializes a new <see cref="DocumentedMember"/>.
@@ -36,8 +41,6 @@ namespace DocNet.Documentation
         /// <param name="xml">The documentation Xml.</param>
         public DocumentedMember(MemberInfo member, XElement xml)
         {
-            Contract.Requires<ArgumentNullException>(member != null && xml != null);
-
             this.Member = member;
             this.Xml = xml;
         }
@@ -77,10 +80,6 @@ namespace DocNet.Documentation
         /// </summary>
         /// <param name="member">The member that is being documented.</param>
         /// <param name="xml">The documentation Xml.</param>
-        public DocumentedMember(T member, XElement xml)
-            : base(member, xml)
-        {
-            Contract.Requires<ArgumentNullException>(member != null && xml != null);
-        }
+        public DocumentedMember(T member, XElement xml) : base(member, xml) { }
     }
 }

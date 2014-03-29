@@ -143,7 +143,6 @@
     <Compile Include="Documentation\DocumentedType.cs" />
     <Compile Include="Documentation\XmlDocumentationParser.cs" />
     <Compile Include="Documentation\IDocumentationParser.cs" />
-    <Compile Include="Generating\IPageGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -169,6 +168,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Generating\" />
     <Folder Include="Rest\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

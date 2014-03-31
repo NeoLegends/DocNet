@@ -124,16 +124,13 @@ namespace DocNet.Documentation
                 }
 
                 IEnumerable<XElement> memberElements = xmlDocumentation.Descendants("member").ToArray(); // ToArray for parallelization
-                IEnumerable<XElement> constructorDocumentation = memberElements.Where(element => element.Attribute("name").Value.Contains("#ctor") || element.Attribute("name").Value.Contains("#cctor"));
-                IEnumerable<XElement> eventDocumentation = memberElements.Where(element => element.Attribute("name").Value.StartsWith("E:"));
-                IEnumerable<XElement> fieldDocumentation = memberElements.Where(element => element.Attribute("name").Value.StartsWith("F:"));
-                IEnumerable<XElement> methodDocumentation = memberElements.Where(element => element.Attribute("name").Value.StartsWith("M:"));
-                IEnumerable<XElement> typeDocumentation = memberElements.Where(element => element.Attribute("name").Value.StartsWith("T:"));
-                IEnumerable<XElement> propertyDocumentation = memberElements.Where(element => element.Attribute("name").Value.StartsWith("P:"));
                 BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
 
                 this.ConstructorDocumentation = new Dictionary<ConstructorInfo, XElement>();
-                //this.ConstructorDocumentation = constructorDocumentation.AsParallel().ToDictionary(element =>
+                //this.ConstructorDocumentation = memberElements
+                //    .Where(element => element.Attribute("name").Value.Contains("#ctor") || element.Attribute("name").Value.Contains("#cctor"))
+                //    .AsParallel()
+                //    .ToDictionary(element =>
                 //{
                 //    String nameWithoutPrefix = this.GetNameAttributeValueWithoutPrefix(element);
                 //    Type declaringType = this.GetDeclaringType(nameWithoutPrefix, assembly);
@@ -141,7 +138,10 @@ namespace DocNet.Documentation
                 //    return declaringType.GetConstructors().First(cInfo => this.ParametersMatching(cInfo, this.GetMemberName(nameWithoutPrefix)));
                 //}, element => element);
 
-                this.EventDocumentation = eventDocumentation.AsParallel().ToDictionary(element =>
+                this.EventDocumentation = memberElements
+                    .Where(element => element.Attribute("name").Value.StartsWith("E:"))
+                    .AsParallel()
+                    .ToDictionary(element =>
                 {
                     String nameWithoutPrefix = this.GetNameAttributeValueWithoutPrefix(element);
                     Type declaringType = this.GetDeclaringType(nameWithoutPrefix, assembly);
@@ -150,7 +150,10 @@ namespace DocNet.Documentation
                     return declaringType.GetEvent(eventName, flags);
                 }, element => element);
 
-                this.FieldDocumentation = fieldDocumentation.AsParallel().ToDictionary(element =>
+                this.FieldDocumentation = memberElements
+                    .Where(element => element.Attribute("name").Value.StartsWith("F:"))
+                    .AsParallel()
+                    .ToDictionary(element =>
                 {
                     String nameWithoutPrefix = this.GetNameAttributeValueWithoutPrefix(element);
                     Type declaringType = this.GetDeclaringType(nameWithoutPrefix, assembly);
@@ -160,7 +163,10 @@ namespace DocNet.Documentation
                 }, element => element);
 
                 this.MethodDocumentation = new Dictionary<MethodInfo, XElement>();
-                //this.MethodDocumentation = methodDocumentation.AsParallel().ToDictionary(element =>
+                //this.MethodDocumentation = memberElements
+                //    .Where(element => element.Attribute("name").Value.StartsWith("M:"))
+                //    .AsParallel()
+                //    .ToDictionary(element =>
                 //{
                 //    String nameWithoutPrefix = this.GetNameAttributeValueWithoutPrefix(element);
                 //    Type declaringType = this.GetDeclaringType(nameWithoutPrefix, assembly);
@@ -168,12 +174,18 @@ namespace DocNet.Documentation
                 //    return declaringType.GetMethods().First(mInfo => this.ParametersMatching(mInfo, this.GetMemberName(nameWithoutPrefix)));
                 //}, element => element);
 
-                this.TypeDocumentation = typeDocumentation.AsParallel().ToDictionary(element =>
+                this.TypeDocumentation = memberElements
+                    .Where(element => element.Attribute("name").Value.StartsWith("T:"))
+                    .AsParallel()
+                    .ToDictionary(element =>
                 {
                     return this.GetTypeFromAllLoadedAssemblies(this.GetDeclaringTypeName(this.GetNameAttributeValueWithoutPrefix(element)));
                 }, element => element);
 
-                this.PropertyDocumentation = propertyDocumentation.AsParallel().ToDictionary(element =>
+                this.PropertyDocumentation = memberElements
+                    .Where(element => element.Attribute("name").Value.StartsWith("P:"))
+                    .AsParallel()
+                    .ToDictionary(element =>
                 {
                     String nameWithoutPrefix = this.GetNameAttributeValueWithoutPrefix(element);
                     Type declaringType = this.GetDeclaringType(nameWithoutPrefix, assembly);
